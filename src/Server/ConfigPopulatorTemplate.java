@@ -3,8 +3,8 @@ package Server;
 public class ConfigPopulatorTemplate {
     public static void main(String[] args) throws ConfigNotInitializedException, InvalidAttributeValueException {
         Config.initializeConfig("ServerConfiguration");
-        Config.setEmailUsername("Jstojkovic@Callutheran.edu");
-        Config.setEmailPassword("T*r1TheCat4");
+        Config.setEmailUsername("Your-Email-Here");
+        Config.setEmailPassword("Your-Email-Password-Here");
         Config.setUserDatabaseServerAddress("jdbc:mysql://localhost:3306/userdb");
         Config.setDatabaseUsername("ClientServerProject");
         Config.setDatabasePassword("");
