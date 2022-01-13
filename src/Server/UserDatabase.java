@@ -164,7 +164,7 @@ class UserDatabase extends Database {
     protected void resetLockCount(User usr) {
 
     }
-
+//main method used for testing class code
     public static void main(String[] args) throws ConfigNotInitializedException {
 //        ConfigPopulator.populate();
         Config.initializeConfig("ServerConfiguration.conf");
