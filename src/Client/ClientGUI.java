@@ -280,6 +280,21 @@ public class ClientGUI extends JFrame {
              disconnect = new JButton("Disconnect");
              register = new JButton("Register");
              login = new JButton("Login");
+             //add components to the window
+             gbc.gridx = 0;
+             gbc.gridy = 0;
+             gbc.ipadx = 10;
+             gbc.ipady = 10;
+             gbc.fill = GridBagConstraints.NONE;
+             this.add(username,gbc);
+             gbc.gridx = 1;
+             this.add(usrName,gbc);
+             gbc.gridx = 0;
+             gbc.gridy = 1;
+             this.add(password, gbc);
+             gbc.gridx = 1;
+             this.add(pasWord, gbc);
+
              prepareButtonHandlers();
 
 
