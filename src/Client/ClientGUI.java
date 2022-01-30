@@ -56,6 +56,14 @@ public class ClientGUI extends JFrame {
         return this.control;
     }
 
+    protected void updateData(displayPanel dataNew){
+        this.remove(Data);
+        this.Data = dataNew;
+        this.add(Data);
+        this.remove(windowTitle);
+        this.windowTitle = new Label(Data.getLabel());
+    }
+
     private class Label extends JPanel{
         private JLabel title;
 
@@ -188,10 +196,11 @@ public class ClientGUI extends JFrame {
                             if (matcher.find()) {
                                 matcher = portpattern.matcher(portnum.getText());
                                 if (matcher.find()) {
-                                    Visibility = false;
+//                                    Visibility = false;
 //                                    SetVis();
                                     client = new Client(host, port);
-                                    Log = new LoginGUI();
+                                    updateData(new Login());
+//                                    Log = new LoginGUI();
                                 }
                             }
                             else
@@ -212,6 +221,24 @@ public class ClientGUI extends JFrame {
             controlArea.setRight(connect);
 
         }
+    }
+    private class Login extends displayPanel{
+        private JLabel username;
+        private JLabel password;
+        private JTextField usrName;
+        private JTextField pasWord;
+        private JButton disconnect;
+        private JButton register;
+        private JButton login;
+        private GridBagConstraints gbc = new GridBagConstraints();
+
+         Login(){
+            setLayout(new GridBagLayout());
+             this.setPanelName("Login");
+             this.setSpaces("                                                                                                              ");
+             windowTitle = new Label(this.getLabel());
+
+         }
     }
     private class ControlArea extends JPanel{
         private JButton left;
