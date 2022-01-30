@@ -59,18 +59,25 @@ public class ClientGUI extends JFrame {
     protected void updateData(displayPanel dataNew){
         this.remove(Data);
         this.Data = dataNew;
-        this.add(Data);
-        this.remove(windowTitle);
-        this.windowTitle = new Label(Data.getLabel());
+        this.add(Data,BorderLayout.CENTER);
+
+//        System.out.println( "Login " +Data.getLabel());
+//        this.remove(windowTitle);
+//        this.windowTitle = new Label(Data.getLabel());
+//        this.add(windowTitle, BorderLayout.NORTH);
+//        this.windowTitle.repaint();
+//        System.out.println("Label " + windowTitle.getText());
         this.repaint();
     }
 
     private class Label extends JPanel{
         private JLabel title;
+        private String text;
 
         Label(String text){
             setLayout(new FlowLayout(1, 10,10));
             Border labelBorder = BorderFactory.createLineBorder(Color.black);
+            this.text = text;
             title = new JLabel(text);
             title.setBorder(labelBorder);
             title.setFont(new Font("TimesRoman", Font.PLAIN, 15));
@@ -78,6 +85,10 @@ public class ClientGUI extends JFrame {
         }
         protected void setText(String newText){
             this.title.setText(newText);
+            System.out.println("Label new text: " + newText);
+        }
+        protected String getText(){
+            return this.text;
         }
     }
     private abstract class displayPanel extends JPanel{
@@ -237,7 +248,7 @@ public class ClientGUI extends JFrame {
             setLayout(new GridBagLayout());
              this.setPanelName("Login");
              this.setSpaces("                                                                                                              ");
-             windowTitle = new Label(this.getLabel());
+             windowTitle.setText(this.getLabel());
 
          }
     }
