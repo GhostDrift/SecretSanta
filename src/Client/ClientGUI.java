@@ -326,6 +326,20 @@ public class ClientGUI extends JFrame {
              updateControl(disconnect,register,login);
          }
     }
+
+    private class Register extends displayPanel{
+        private JLabel username;
+        private JTextField usrName;
+        private JLabel eMail;
+        private JTextField eMailText;
+        private JLabel password;
+        private JTextField pasWord;
+        private JLabel rePassword;
+        private JTextField rePassText;
+        private JButton cancel;
+        private JButton submit;
+    }
+
     private class ControlArea extends JPanel{
         private JButton left;
         private JButton right;
