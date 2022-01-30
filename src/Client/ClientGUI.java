@@ -69,6 +69,26 @@ public class ClientGUI extends JFrame {
 //        System.out.println("Label " + windowTitle.getText());
         this.repaint();
     }
+    //method to update the control panel
+    protected void updateControl(JButton left, JButton center, JButton right){
+        this.remove(control);
+        this.control = new ControlArea();
+        this.control.setLeft(left);
+        this.control.setCenter(center);
+        this.control.setRight(right);
+//        System.out.println(left.getText() + " " + center.getText() + " " + right.getText() );
+        this.add(control, BorderLayout.SOUTH);
+//        this.control.repaint();
+        this.repaint();
+    }
+    protected void updateControl(JButton left, JButton right){
+        this.remove(control);
+        this.control = new ControlArea();
+        this.control.setLeft(left);
+        this.control.setRight(right);
+        this.add(control, BorderLayout.SOUTH);
+        this.repaint();
+    }
 
     private class Label extends JPanel{
         private JLabel title;
@@ -228,9 +248,7 @@ public class ClientGUI extends JFrame {
 
             });
 
-            this.controlArea = getControl();
-            controlArea.setLeft(Adv);
-            controlArea.setRight(connect);
+            updateControl(Adv,connect);
 
         }
     }
@@ -248,8 +266,49 @@ public class ClientGUI extends JFrame {
             setLayout(new GridBagLayout());
              this.setPanelName("Login");
              this.setSpaces("                                                                                                              ");
+             //Set windowTitle to the label of the datapanel
              windowTitle.setText(this.getLabel());
+             //create the Jlabels
+             username = new JLabel("Username");
+             username.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+             password = new JLabel("Password");
+             password.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+             //create the JTextfields
+             usrName = new JTextField("", 25);
+             pasWord = new JTextField("", 25);
+             //create the JButtons for the control panel
+             disconnect = new JButton("Disconnect");
+             register = new JButton("Register");
+             login = new JButton("Login");
+             prepareButtonHandlers();
 
+
+         }
+
+         private void prepareButtonHandlers(){
+             disconnect.addActionListener(new ActionListener() {
+                 @Override
+                 public void actionPerformed(ActionEvent e) {
+                     System.out.println("Disconnect");
+
+                 }
+             });
+             register.addActionListener(new ActionListener() {
+                 @Override
+                 public void actionPerformed(ActionEvent e) {
+                     System.out.println("Register");
+
+                 }
+             });
+             login.addActionListener(new ActionListener() {
+                 @Override
+                 public void actionPerformed(ActionEvent e) {
+                     System.out.println("Login");
+
+                 }
+             });
+
+             updateControl(disconnect,register,login);
          }
     }
     private class ControlArea extends JPanel{
@@ -259,17 +318,29 @@ public class ClientGUI extends JFrame {
         protected ControlArea(){
             setLayout(new BorderLayout(5, 10));
         }
-        protected void setLeft(JButton left){
-            this.left = left;
-            this.add(left, BorderLayout.WEST);
+        protected void setLeft(JButton newLeft){
+            if(this.left != null) {
+                this.remove(left);
+            }
+            this.left = newLeft;
+            this.add(newLeft, BorderLayout.WEST);
+            this.repaint();
         }
-        protected void setRight(JButton right){
-            this.right = right;
-            this.add(right,BorderLayout.EAST);
+        protected void setRight(JButton newRight){
+            if(this.right != null){
+                this.remove(right);
+            }
+            this.right = newRight;
+            this.add(newRight,BorderLayout.EAST);
+            this.repaint();
         }
-        protected void setCenter(JButton center){
-            this.center = center;
-            this.add(center,BorderLayout.CENTER);
+        protected void setCenter(JButton newCenter){
+            if(this.center != null){
+                this.remove(center);
+            }
+            this.center = newCenter;
+            this.add(newCenter,BorderLayout.CENTER);
+            this.repaint();
         }
         protected void delButton(int i){
             if(i == 0){
