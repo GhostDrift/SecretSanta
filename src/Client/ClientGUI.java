@@ -62,6 +62,7 @@ public class ClientGUI extends JFrame {
         this.add(Data);
         this.remove(windowTitle);
         this.windowTitle = new Label(Data.getLabel());
+        this.repaint();
     }
 
     private class Label extends JPanel{
