@@ -312,6 +312,7 @@ public class ClientGUI extends JFrame {
                  @Override
                  public void actionPerformed(ActionEvent e) {
                      System.out.println("Register");
+                     updateData(new Register());
 
                  }
              });
@@ -338,6 +339,77 @@ public class ClientGUI extends JFrame {
         private JTextField rePassText;
         private JButton cancel;
         private JButton submit;
+        private GridBagConstraints gbc = new GridBagConstraints();
+
+        Register(){
+            this.setLayout(new GridBagLayout());
+            this.setPanelName("Register");
+            this.setSpaces("                                                                                                              ");
+            //Set the window title label
+            windowTitle.setText(this.getLabel());
+            //prepare components
+            username = new JLabel("Username");
+            username.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            eMail = new JLabel("E-Mail");
+            eMail.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            password = new JLabel("Password");
+            password.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            rePassword = new JLabel("Re-enter Password");
+            rePassword.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            usrName = new JTextField("",25);
+            pasWord = new JTextField("", 25);
+            eMailText = new JTextField("", 25);
+            rePassText = new JTextField("", 25);
+            //prepare buttons
+            cancel = new JButton("Cancel");
+            submit = new JButton("Submit");
+            prepareButtonHandlers();
+            //add components to the JPanel
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.ipadx = 10;
+            gbc.ipady = 10;
+            gbc.fill = GridBagConstraints.NONE;
+            this.add(username,gbc);
+            gbc.gridx = 1;
+            this.add(usrName,gbc);
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            this.add(eMail,gbc);
+            gbc.gridx = 1;
+            this.add(eMailText,gbc);
+            gbc.gridx = 0;
+            gbc.gridy = 2;
+            this.add(password,gbc);
+            gbc.gridx = 1;
+            this.add(pasWord,gbc);
+            gbc.gridx = 0;
+            gbc.gridy = 3;
+            this.add(rePassword,gbc);
+            gbc.gridx = 1;
+            this.add(rePassText,gbc);
+
+        }
+        private void prepareButtonHandlers(){
+            cancel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("cancel");
+                    updateData(new Login());
+
+                }
+            });
+            submit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("submit");
+                    updateData(new Login());
+
+                }
+            });
+
+            updateControl(cancel,submit);
+        }
     }
 
     private class ControlArea extends JPanel{
