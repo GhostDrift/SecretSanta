@@ -89,6 +89,19 @@ public class ClientGUI extends JFrame {
         this.add(control, BorderLayout.SOUTH);
         this.repaint();
     }
+    protected void updateControl(JButton left, JButton centerLeft, JButton centerRight, JButton right){
+        this.remove(control);
+        this.control = new ControlArea();
+        JPanel center = new JPanel();
+        center.setLayout(new FlowLayout(1,10,0));
+        center.add(centerLeft);
+        center.add(centerRight);
+        this.control.setLeft(left);
+        this.control.setCenter(center);
+        this.control.setRight(right);
+        this.add(control, BorderLayout.SOUTH);
+        this.repaint();
+    }
 
     private class Label extends JPanel{
         private JLabel title;
@@ -260,6 +273,7 @@ public class ClientGUI extends JFrame {
         private JButton disconnect;
         private JButton register;
         private JButton login;
+        private JButton recover;
         private GridBagConstraints gbc = new GridBagConstraints();
 
          Login(){
@@ -280,6 +294,7 @@ public class ClientGUI extends JFrame {
              disconnect = new JButton("Disconnect");
              register = new JButton("Register");
              login = new JButton("Login");
+             recover = new JButton("Recover Password");
              //add components to the window
              gbc.gridx = 0;
              gbc.gridy = 0;
@@ -323,8 +338,15 @@ public class ClientGUI extends JFrame {
 
                  }
              });
+             recover.addActionListener(new ActionListener() {
+                 @Override
+                 public void actionPerformed(ActionEvent e) {
+                     System.out.println("Recover Password");
 
-             updateControl(disconnect,register,login);
+                 }
+             });
+
+             updateControl(disconnect,register,recover,login);
          }
     }
 
@@ -453,6 +475,10 @@ public class ClientGUI extends JFrame {
             else{
                 this.remove(right);
             }
+        }
+
+        public void setCenter(JPanel center) {
+            this.add(center, BorderLayout.CENTER);
         }
     }
 
