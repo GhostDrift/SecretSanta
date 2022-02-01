@@ -473,6 +473,7 @@ public class ClientGUI extends JFrame {
             remove = new JButton("Remove Item");
             clear = new JButton("Clear List");
             status = new JLabel("Status:Unconfirmed");
+            status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             logOut = new JButton("Log Out");
             accountSettings = new JButton("Account Settings");
             confirmWishlist = new JButton("Confirm Wish List");
@@ -537,6 +538,7 @@ public class ClientGUI extends JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("Add item");
+                        updateData(new AddItem());
 
 
                     }
@@ -584,6 +586,54 @@ public class ClientGUI extends JFrame {
                 updateControl(logOut,accountSettings,confirmWishlist);
                 wishListSelect.add(myWishListButton);
                 wishListSelect.add(recipientWishListButton);
+        }
+    }
+    private class AddItem extends displayPanel{
+        private JButton add;
+        private JButton cancel;
+        private JLabel addHere;
+        private JTextField itemEntry;
+        private GridBagConstraints gbc = new GridBagConstraints();
+
+        //constructor
+        protected AddItem(){
+            this.setPanelName("Add an Item");
+            //prepare components
+            windowTitle.setText(this.getLabel());
+            add = new JButton("Add Item");
+            cancel = new JButton("Cancel");
+            addHere = new JLabel("Enter the item you would like to put on your wish list");
+            addHere.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            itemEntry = new JTextField("",25);
+            prepareButtonHandlers();
+            //add components
+            this.setLayout(new GridBagLayout());
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            this.add(addHere,gbc);
+            gbc.gridy = 1;
+            this.add(itemEntry,gbc);
+        }
+
+        private void prepareButtonHandlers() {
+            add.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Add item");
+                    updateData(new Interaction());
+
+
+                }
+            });
+            cancel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Cancel");
+                    updateData(new Interaction());
+
+                }
+            });
+            updateControl(cancel,add);
         }
     }
 
