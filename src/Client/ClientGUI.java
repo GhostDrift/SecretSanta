@@ -547,6 +547,7 @@ public class ClientGUI extends JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("Remove Item");
+                        updateData(new RemoveItem());
 
 
                     }
@@ -636,7 +637,51 @@ public class ClientGUI extends JFrame {
             updateControl(cancel,add);
         }
     }
+    private class RemoveItem extends displayPanel{
+        private JLabel removeHere;
+        private JTextField itemToRemove;
+        private JButton remove;
+        private JButton cancel;
+        private GridBagConstraints gbc = new GridBagConstraints();
+        //Constructor
+        protected RemoveItem(){
+            this.setPanelName("Remove an Item");
+            this.setLayout(new GridBagLayout());
+            windowTitle.setText(this.getLabel());
+            //prepare components
+            removeHere = new JLabel("Enter the number of the item on the list you would like to remove");
+            removeHere.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            itemToRemove = new JTextField(25);
+            remove = new JButton("Remove");
+            cancel = new JButton("Cancel");
+            prepareButtonHandlers();
+            gbc.gridy = 0;
+            gbc.gridx = 0;
+            this.add(removeHere,gbc);
+            gbc.gridy = 1;
+            this.add(itemToRemove,gbc);
+        }
 
+        private void prepareButtonHandlers() {
+            remove.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Remove Item");
+                    updateData(new Interaction());
+
+                }
+            });
+            cancel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Cancel");
+                    updateData(new Interaction());
+
+                }
+            });
+            updateControl(cancel,remove);
+        }
+    }
     private class ControlArea extends JPanel{
         private JButton left;
         private JButton right;
