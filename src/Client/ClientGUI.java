@@ -459,32 +459,34 @@ public class ClientGUI extends JFrame {
             setLayout(new BorderLayout());
             setPanelName("Secret Santa Management System");
             //prepare components
+            windowTitle.setText(this.getLabel());
             wishListSelect = new JPanel();
             wishListSelect.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
-            myWishListButton = new JButton("My Wish List");
-            recipientWishListButton = new JButton("Recipient's Wish List");
-            wishlist = new JTextArea(30,10);
+            myWishListButton = new JButton("                                        My Wish List                                       ");
+            myWishListButton.setBackground(Color.WHITE);
+            recipientWishListButton = new JButton("                    Recipient's Wish List                    ");
+//            recipientWishListButton.setSize(new Dimension(100,10));
+            wishlist = new JTextArea(5,40);
             wishListArea = new JScrollPane(wishlist);
+            wishListArea.createVerticalScrollBar();
             add = new JButton("Add Item");
             remove = new JButton("Remove Item");
             clear = new JButton("Clear List");
             status = new JLabel("Status:Unconfirmed");
             logOut = new JButton("Log Out");
             accountSettings = new JButton("Account Settings");
-            confirmWishlist = new JButton("Confirm");
+            confirmWishlist = new JButton("Confirm Wish List");
             dataArea = new JPanel();
             dataArea.setLayout(new GridBagLayout());
             prepareButtonHandlers();
             //add components
             this.add(wishListSelect,BorderLayout.NORTH);
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            gbc.ipadx = 10;
-            gbc.ipady = 10;
-            gbc.gridheight = 5;
-            dataArea.add(wishListArea,gbc);
+            this.add(wishListArea, BorderLayout.WEST);
             gbc.gridx = 1;
             gbc.gridheight = 1;
+            gbc.ipady = 20;
+            gbc.ipadx = 10;
+            gbc.fill = GridBagConstraints.NONE;
             dataArea.add(add,gbc);
             gbc.gridy = 1;
             dataArea.add(remove,gbc);
@@ -493,7 +495,7 @@ public class ClientGUI extends JFrame {
             gbc.gridy = 3;
             dataArea.add(status,gbc);
             gbc.gridy = 4;
-            dataArea.add(confirmWishlist,gbc);
+//            dataArea.add(confirmWishlist,gbc);
             this.add(dataArea,BorderLayout.CENTER);
 
 
@@ -504,6 +506,13 @@ public class ClientGUI extends JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("My Wish List");
+                        recipientWishListButton.setBackground(null);
+                        myWishListButton.setBackground(Color.WHITE);
+                        add.setVisible(true);
+                        remove.setVisible(true);
+                        clear.setVisible(true);
+                        status.setVisible(true);
+                        confirmWishlist.setVisible(true);
 
 
                     }
@@ -512,6 +521,14 @@ public class ClientGUI extends JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("Recipient's Wishlist");
+                        myWishListButton.setBackground(null);
+                        recipientWishListButton.setBackground(Color.WHITE);
+                        add.setVisible(false);
+                        remove.setVisible(false);
+                        clear.setVisible(false);
+                        status.setVisible(false);
+                        confirmWishlist.setVisible(false);
+
 
 
                     }
