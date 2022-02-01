@@ -2,6 +2,7 @@ package Client;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -103,7 +104,7 @@ public class ClientGUI extends JFrame {
         this.repaint();
     }
 
-    private class Label extends JPanel{
+    private static class Label extends JPanel{
         private JLabel title;
         private String text;
 
@@ -126,7 +127,7 @@ public class ClientGUI extends JFrame {
     }
     private abstract class displayPanel extends JPanel{
         private  String panelName;
-        private  String spaces;
+        private  String spaces = "                                                                                                              ";
 
         public void setPanelName(String panelName){
             this.panelName = panelName;
@@ -335,6 +336,7 @@ public class ClientGUI extends JFrame {
                  @Override
                  public void actionPerformed(ActionEvent e) {
                      System.out.println("Login");
+                     updateData(new Interaction());
 
                  }
              });
@@ -431,6 +433,140 @@ public class ClientGUI extends JFrame {
             });
 
             updateControl(cancel,submit);
+        }
+    }
+
+    private class Interaction extends displayPanel{
+        private JPanel wishListSelect;
+        private JButton myWishListButton;
+        private JButton recipientWishListButton;
+        private JTextArea wishlist;
+        private JScrollPane wishListArea;
+        private JButton add;
+        private JButton remove;
+        private JButton clear;
+        private JLabel status;
+        private JButton logOut;
+        private JButton accountSettings;
+        private JButton confirmWishlist;
+        private JPanel dataArea;
+        private GridBagConstraints gbc = new GridBagConstraints();
+        private ArrayList<String> myWishList;
+        private ArrayList<String> recipientWishList;
+
+        //constructor
+        Interaction(){
+            setLayout(new BorderLayout());
+            setPanelName("Secret Santa Management System");
+            //prepare components
+            wishListSelect = new JPanel();
+            wishListSelect.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+            myWishListButton = new JButton("My Wish List");
+            recipientWishListButton = new JButton("Recipient's Wish List");
+            wishlist = new JTextArea(30,10);
+            wishListArea = new JScrollPane(wishlist);
+            add = new JButton("Add Item");
+            remove = new JButton("Remove Item");
+            clear = new JButton("Clear List");
+            status = new JLabel("Status:Unconfirmed");
+            logOut = new JButton("Log Out");
+            accountSettings = new JButton("Account Settings");
+            confirmWishlist = new JButton("Confirm");
+            dataArea = new JPanel();
+            dataArea.setLayout(new GridBagLayout());
+            prepareButtonHandlers();
+            //add components
+            this.add(wishListSelect,BorderLayout.NORTH);
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.ipadx = 10;
+            gbc.ipady = 10;
+            gbc.gridheight = 5;
+            dataArea.add(wishListArea,gbc);
+            gbc.gridx = 1;
+            gbc.gridheight = 1;
+            dataArea.add(add,gbc);
+            gbc.gridy = 1;
+            dataArea.add(remove,gbc);
+            gbc.gridy = 2;
+            dataArea.add(clear,gbc);
+            gbc.gridy = 3;
+            dataArea.add(status,gbc);
+            gbc.gridy = 4;
+            dataArea.add(confirmWishlist,gbc);
+            this.add(dataArea,BorderLayout.CENTER);
+
+
+
+        }
+        private void prepareButtonHandlers(){
+                myWishListButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("My Wish List");
+
+
+                    }
+                });
+                recipientWishListButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("Recipient's Wishlist");
+
+
+                    }
+                });
+                add.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("Add item");
+
+
+                    }
+                });
+                remove.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("Remove Item");
+
+
+                    }
+                });
+                clear.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("Clear Wish List");
+
+
+                    }
+                });
+                confirmWishlist.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("Confirm Wish List");
+
+
+                    }
+                });
+                logOut.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("Log Out");
+
+
+                    }
+                });
+                accountSettings.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("Acount Settings");
+
+
+                    }
+                });
+                updateControl(logOut,accountSettings,confirmWishlist);
+                wishListSelect.add(myWishListButton);
+                wishListSelect.add(recipientWishListButton);
         }
     }
 
