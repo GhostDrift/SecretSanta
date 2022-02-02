@@ -579,7 +579,8 @@ public class ClientGUI extends JFrame {
                 accountSettings.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("Acount Settings");
+                        System.out.println("Account Settings");
+                        updateData(new AccountSettings());
 
 
                     }
@@ -680,6 +681,65 @@ public class ClientGUI extends JFrame {
                 }
             });
             updateControl(cancel,remove);
+        }
+    }
+    private class AccountSettings extends displayPanel{
+        private JLabel password;
+        private JLabel email;
+        private JTextField passText;
+        private JTextField emailText;
+        private JButton cancel;
+        private JButton apply;
+        private GridBagConstraints gbc = new GridBagConstraints();
+
+        //constructor
+        protected AccountSettings(){
+            this.setPanelName("Account Settings");
+            windowTitle.setText(this.getLabel());
+            this.setLayout(new GridBagLayout());
+            //prepare components
+            password = new JLabel("Password");
+            password.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            email = new JLabel("Email");
+            email.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            passText = new JTextField("Your password here", 25);
+            emailText = new JTextField("Your email here", 25);
+            cancel = new JButton("Cancel");
+            apply = new JButton("Apply");
+            prepareButtonHandlers();
+            //add components to frame
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            this.add(password,gbc);
+            gbc.gridx = 1;
+            this.add(passText,gbc);
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            this.add(email,gbc);
+            gbc.gridx = 1;
+            this.add(emailText,gbc);
+
+
+        }
+
+        private void prepareButtonHandlers() {
+            cancel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Cancel");
+                    updateData(new Interaction());
+
+                }
+            });
+            apply.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Apply");
+                    updateData(new Interaction());
+
+                }
+            });
+            updateControl(cancel,apply);
         }
     }
     private class ControlArea extends JPanel{
