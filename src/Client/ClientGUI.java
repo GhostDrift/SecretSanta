@@ -36,6 +36,8 @@ public class ClientGUI extends JFrame {
         // -- set the layout manager and add items
         // 5, 5 is the border around the edges of the areas
         setLayout(new BorderLayout(0, 0));
+        //create new WindowTitle
+        this.windowTitle = new Label();
         //create control pannel area
         control = new ControlArea();
         //set the data panel to display the connect panel.
@@ -43,7 +45,7 @@ public class ClientGUI extends JFrame {
 
 //          x.setLayout(new BoxLayout(x,BoxLayout.Y_AXIS));
         //set the title pannel to display the Connect text
-        this.windowTitle = new Label(Data.getLabel());
+//        this.windowTitle = new Label(Data.getLabel());
         this.add(windowTitle, BorderLayout.NORTH);
         this.add(Data, BorderLayout.CENTER);
         this.add(control,BorderLayout.SOUTH);
@@ -108,14 +110,20 @@ public class ClientGUI extends JFrame {
         private JLabel title;
         private String text;
 
-        Label(String text){
+
+        Label(){
             setLayout(new FlowLayout(1, 10,10));
             Border labelBorder = BorderFactory.createLineBorder(Color.black);
-            this.text = text;
+            this.text = "";
             title = new JLabel(text);
             title.setBorder(labelBorder);
             title.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             this.add(title);
+        }
+
+        Label(String text){
+            super();
+            this.setText(text);
         }
         protected void setText(String newText){
             this.title.setText(newText);
@@ -158,7 +166,7 @@ public class ClientGUI extends JFrame {
 //            setLayout(new BorderLayout(0,0));
             this.setPanelName("Connect");
             this.setSpaces("                                                                                                              ");
-
+            windowTitle.setText(this.getLabel());
             I = new JLabel("HostName");
             I.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             IP = new JTextField("", 25);
@@ -321,6 +329,8 @@ public class ClientGUI extends JFrame {
                  @Override
                  public void actionPerformed(ActionEvent e) {
                      System.out.println("Disconnect");
+                     client.disconnect();
+                     updateData(new Connect());
 
                  }
              });

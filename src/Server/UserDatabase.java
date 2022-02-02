@@ -187,7 +187,7 @@ class UserDatabase extends Database {
 //            System.out.println(usrDB.getNumberOfLoggedIn());
 //            System.out.println(usrDB.getWhoLoggedIn());
 //            usrDB.getNumRegistered();
-            usrDB.getWhoLockedOut();
+            System.out.println(usrDB.getWhoLockedOut());
         } catch (SQLException e) {
             e.printStackTrace();
         }
