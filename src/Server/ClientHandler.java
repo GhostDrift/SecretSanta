@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import Common.Message;
 import Common.NetworkAccess;
+import Common.User;
 
 
 public class ClientHandler extends Thread {
@@ -82,7 +83,7 @@ public class ClientHandler extends Thread {
     public Server getServer() {
         return server;
     }
-
+//method to login a user
     public boolean login(Common.User usr){
         UserDatabase userDB = this.server.getUserDatabase();
         String username = usr.getUsername();
@@ -97,6 +98,19 @@ public class ClientHandler extends Thread {
         }
         catch (SQLException throwables) {
             throwables.printStackTrace();
+            return false;
+        }
+    }
+    //method to logout a user
+    public boolean logout(User usr){
+        UserDatabase userDB = this.server.getUserDatabase();
+        String username = usr.getUsername();
+        try {
+            User result = userDB.getUser(username);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("cannot logout " + username);
             return false;
         }
     }
@@ -120,7 +134,9 @@ public class ClientHandler extends Thread {
                         networkaccess.sendMessage(new Message(null,"success"),false);
                     }
                 }
+                else if(cmd.message.equals("logout")){
 
+                }
                 // -- if it is not the termination message, send it back adding the
                 //    required (by readLine) "\n"
 
