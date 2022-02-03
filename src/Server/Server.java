@@ -94,8 +94,12 @@ public class Server extends Thread {
     public ArrayList<String> getWhoLockedOut() throws SQLException{
 	    return userDatabase.getWhoLockedOut();
     }
-	
-	/**
+    //returns the userDatabase object
+    public UserDatabase getUserDatabase() {
+        return userDatabase;
+    }
+
+    /**
 	 * constructor creates the list of clients and
 	 * starts the server listening on the port
 	 */

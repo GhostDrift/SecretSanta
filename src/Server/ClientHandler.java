@@ -2,6 +2,7 @@ package Server;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.SQLException;
 
 import Common.Message;
 import Common.NetworkAccess;
@@ -82,6 +83,24 @@ public class ClientHandler extends Thread {
         return server;
     }
 
+    public boolean login(Common.User usr){
+        UserDatabase userDB = this.server.getUserDatabase();
+        String username = usr.getUsername();
+        String password = usr.getPassword();
+        try {
+            Common.User result = userDB.getUser(username);
+            if(result.getPassword().equals(password)){
+                userDB.login(usr);
+                return true;
+            }
+            else return false;
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+    }
+
     // -- similar to a main() function in that it is the entry point of
     //    the thread
     public void run() {
@@ -94,6 +113,7 @@ public class ClientHandler extends Thread {
                 //    The client adds it to the user's string but the BufferedReader
                 //    readLine() call strips it off
                 Message cmd = networkaccess.readMessage();
+
 
                 // -- if it is not the termination message, send it back adding the
                 //    required (by readLine) "\n"
