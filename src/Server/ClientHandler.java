@@ -113,7 +113,13 @@ public class ClientHandler extends Thread {
                 //    The client adds it to the user's string but the BufferedReader
                 //    readLine() call strips it off
                 Message cmd = networkaccess.readMessage();
-
+                //logic for login
+                if(cmd.message.equals("login")){
+//                    login(cmd.user);
+                    if(login(cmd.user)){
+                        networkaccess.sendMessage(new Message(null,"success"),false);
+                    }
+                }
 
                 // -- if it is not the termination message, send it back adding the
                 //    required (by readLine) "\n"

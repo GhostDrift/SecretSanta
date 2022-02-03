@@ -2,6 +2,7 @@ package Client;
 
 import Common.Message;
 import Common.NetworkAccess;
+import Common.User;
 
 import java.net.ConnectException;
 
@@ -53,5 +54,16 @@ public class Client {
         String text = "disconnect";
         networkaccess.sendMessage(new Message(null, text), false);
         networkaccess.close();
+    }
+
+    //sends login message to the server
+    public boolean login(String username, String password){
+        User usr = new User();
+        usr.setUsername(username);
+        usr.setPassword(password);
+        Message msg = new Message(usr,"login");
+        Message result = networkaccess.sendMessage(msg,true);
+        return result.message.equals("success");
+
     }
 }
