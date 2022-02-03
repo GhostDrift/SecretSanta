@@ -133,8 +133,17 @@ public class ClientHandler extends Thread {
                     if(login(cmd.user)){
                         networkaccess.sendMessage(new Message(null,"success"),false);
                     }
+                    else {
+                        networkaccess.sendMessage(new Message(null, "fail"),false);
+                    }
                 }
                 else if(cmd.message.equals("logout")){
+                    if(logout(cmd.user)){
+                        networkaccess.sendMessage(new Message(null,"success"),false);
+                    }
+                    else {
+                        networkaccess.sendMessage(new Message(null,"fail"), false);
+                    }
 
                 }
                 // -- if it is not the termination message, send it back adding the
