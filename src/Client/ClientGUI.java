@@ -346,8 +346,19 @@ public class ClientGUI extends JFrame {
                  @Override
                  public void actionPerformed(ActionEvent e) {
                      System.out.println("Login");
-                     updateData(new Interaction());
-
+                     String username = usrName.getText();
+                     String password = pasWord.getText();
+                     if((username != null) && (password != null)){
+                         if(client.login(username,password)){
+                             updateData(new Interaction());
+                         }
+                         else {
+                             System.out.println("Incorrect Username or password");
+                         }
+                     }
+                     else{
+                         System.out.println("Username and password cannot be null");
+                     }
                  }
              });
              recover.addActionListener(new ActionListener() {
