@@ -101,12 +101,17 @@ public class ClientHandler extends Thread {
             return false;
         }
     }
-    //method to logout a user
+    //method to log out a user
     public boolean logout(User usr){
         UserDatabase userDB = this.server.getUserDatabase();
         String username = usr.getUsername();
         try {
             User result = userDB.getUser(username);
+            if(result.getLoggedIn()!= 0){
+                result.setLoggedIn(result.getLoggedIn()-1);
+                userDB.updateUser(result);
+                return true;
+            }
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

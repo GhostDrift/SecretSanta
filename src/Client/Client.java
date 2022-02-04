@@ -66,4 +66,10 @@ public class Client {
         return result.message.equals("success");
 
     }
+    //sends log out message to server
+    public boolean logout(User usr){
+        Message msg = new Message(usr, "logout");
+        Message result = networkaccess.sendMessage(msg,true);
+        return result.message.equals("success");
+    }
 }
