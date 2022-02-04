@@ -1,4 +1,6 @@
 package Client;
+import Common.User;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -350,7 +352,7 @@ public class ClientGUI extends JFrame {
                      String password = pasWord.getText();
                      if((username != null) && (password != null)){
                          if(client.login(username,password)){
-                             updateData(new Interaction());
+                             updateData(new Interaction(new User(username)));
                          }
                          else {
                              System.out.println("Incorrect Username or password");
@@ -474,6 +476,7 @@ public class ClientGUI extends JFrame {
         private GridBagConstraints gbc = new GridBagConstraints();
         private ArrayList<String> myWishList;
         private ArrayList<String> recipientWishList;
+        private User usr = new User();
 
         //constructor
         Interaction(){
@@ -522,6 +525,10 @@ public class ClientGUI extends JFrame {
 
 
 
+        }
+        Interaction(User usr){
+            super();
+            this.usr = usr;
         }
         private void prepareButtonHandlers(){
                 myWishListButton.addActionListener(new ActionListener() {
@@ -593,7 +600,12 @@ public class ClientGUI extends JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("Log Out");
-
+                        if(client.logout(usr)){
+                            updateData(new Login());
+                        }
+                        else {
+                            System.out.println("Cannot Logout User");
+                        }
 
                     }
                 });
