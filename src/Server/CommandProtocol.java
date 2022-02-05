@@ -90,7 +90,7 @@ public class CommandProtocol {
     public static boolean logout(User usr, ClientHandler ch){
         UserDatabase userDB = ch.getServer().getUserDatabase();
         String username = usr.getUsername();
-        System.out.println(username + " logout method clientHandler");
+        System.out.println(username + " logout method CommandProtocol");
         //            User result = userDB.getUser(username);
 
         return userDB.logout(usr);
