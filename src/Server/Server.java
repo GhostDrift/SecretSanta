@@ -218,5 +218,12 @@ public class Server extends Thread {
 			}
 		}
 	}
+	protected void removeServersocket(){
+        try {
+            this.serversocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

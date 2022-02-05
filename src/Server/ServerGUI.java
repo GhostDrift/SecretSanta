@@ -51,7 +51,7 @@ public class ServerGUI extends JFrame {
 
         // MENU Settings
         JMenuBar MenBar = new JMenuBar();
-        JButton Act = new JButton("Activate Surver");
+        JButton Act = new JButton("Activate Server");
         //  JButton DeAct = new JButton("Deactivate Server");
         JButton Conf = new JButton("Edit Config");
         JButton AConnect = new JButton("Number of Active Connections");
@@ -68,12 +68,19 @@ public class ServerGUI extends JFrame {
         Act.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(Act.getText().equals("Activate Server")) {
+                    server = new Server(owner);
+                    server.start();
+                    //server.stop();
+                    Act.setText("Deactivate Server");
 
-                server = new Server(owner);
-                server.start();
-                //server.stop();
+                }
+                else if(Act.getText().equals("Deactivate Server")){
+                    server.stop();
+                    server.removeServersocket();
+                    Act.setText("Activate Server");
+                }
                 requestFocus();
-
 
             }
 
