@@ -61,7 +61,7 @@ public class Client {
         User usr = new User();
         usr.setUsername(username);
         usr.setPassword(password);
-        Message msg = new Message(usr,"login1");
+        Message msg = new Message(usr,"login");
         Message result = networkaccess.sendMessage(msg,true);
         return result.message.equals("success");
 

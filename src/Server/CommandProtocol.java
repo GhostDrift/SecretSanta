@@ -1,5 +1,6 @@
 package Server;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -43,10 +44,36 @@ public class CommandProtocol {
             // -- client is expecting a response
             na.sendMessage(new Message(null, "world!" + "\n"), false);
 
+        }else if(cmd.message.equals("login")){
+//                    login(cmd.user);
+            if(login(cmd.user,ch)){
+                na.sendMessage(new Message(null,"success"),false);
+            }
+            else {
+                na.sendMessage(new Message(null, "fail"),false);
+            }
         } else {
 
             na.sendMessage(cmd, false);
 
+        }
+    }
+    //method to login a user
+    public static boolean login(Common.User usr, ClientHandler ch){
+        UserDatabase userDB = ch.getServer().getUserDatabase();
+        String username = usr.getUsername();
+        String password = usr.getPassword();
+        try {
+            Common.User result = userDB.getUser(username);
+            if(result.getPassword().equals(password)){
+                userDB.login(usr);
+                return true;
+            }
+            else return false;
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
         }
     }
 }

@@ -84,23 +84,23 @@ public class ClientHandler extends Thread {
         return server;
     }
 //method to login a user
-    public boolean login(Common.User usr){
-        UserDatabase userDB = this.server.getUserDatabase();
-        String username = usr.getUsername();
-        String password = usr.getPassword();
-        try {
-            Common.User result = userDB.getUser(username);
-            if(result.getPassword().equals(password)){
-                userDB.login(usr);
-                return true;
-            }
-            else return false;
-        }
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return false;
-        }
-    }
+//    public boolean login(Common.User usr){
+//        UserDatabase userDB = this.server.getUserDatabase();
+//        String username = usr.getUsername();
+//        String password = usr.getPassword();
+//        try {
+//            Common.User result = userDB.getUser(username);
+//            if(result.getPassword().equals(password)){
+//                userDB.login(usr);
+//                return true;
+//            }
+//            else return false;
+//        }
+//        catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//            return false;
+//        }
+//    }
     //method to log out a user
     public boolean logout(User usr){
         UserDatabase userDB = this.server.getUserDatabase();
@@ -124,16 +124,17 @@ public class ClientHandler extends Thread {
                 //    readLine() call strips it off
                 Message cmd = networkaccess.readMessage();
                 //logic for login
-                if(cmd.message.equals("login1")){
-//                    login(cmd.user);
-                    if(login(cmd.user)){
-                        networkaccess.sendMessage(new Message(null,"success"),false);
-                    }
-                    else {
-                        networkaccess.sendMessage(new Message(null, "fail"),false);
-                    }
-                }
-                else if(cmd.message.equals("logout")){
+//                if(cmd.message.equals("login")){
+////                    login(cmd.user);
+//                    if(login(cmd.user)){
+//                        networkaccess.sendMessage(new Message(null,"success"),false);
+//                    }
+//                    else {
+//                        networkaccess.sendMessage(new Message(null, "fail"),false);
+//                    }
+//                }
+//                else
+                if(cmd.message.equals("logout")){
                     System.out.println(cmd.user.getUsername());
                     if(logout(cmd.user)){
                         networkaccess.sendMessage(new Message(null,"success"),false);
