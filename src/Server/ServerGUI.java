@@ -73,12 +73,14 @@ public class ServerGUI extends JFrame {
                     server.start();
                     //server.stop();
                     Act.setText("Deactivate Server");
+                    Conf.setVisible(false);
 
                 }
                 else if(Act.getText().equals("Deactivate Server")){
                     server.stop();
                     server.removeServersocket();
                     Act.setText("Activate Server");
+                    Conf.setVisible(true);
                 }
                 requestFocus();
 
