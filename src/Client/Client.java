@@ -61,15 +61,18 @@ public class Client {
         User usr = new User();
         usr.setUsername(username);
         usr.setPassword(password);
-        Message msg = new Message(usr,"login");
+        Message msg = new Message(usr,"login1");
         Message result = networkaccess.sendMessage(msg,true);
         return result.message.equals("success");
 
     }
     //sends log out message to server
     public boolean logout(User usr){
-        Message msg = new Message(usr, "logout");
-        Message result = networkaccess.sendMessage(msg,true);
+        Message msg1 = new Message(usr, "logout");
+        System.out.println("Message being sent " + msg1.message);
+        System.out.println(msg1.user.getUsername() + "client logout");
+        Message result = networkaccess.sendMessage(msg1,true);
+        System.out.println("result = " +result.message );
         return result.message.equals("success");
     }
 }

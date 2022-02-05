@@ -21,6 +21,7 @@ public class ClientGUI extends JFrame {
     private Label windowTitle;
     private boolean Visibility;
     private ControlArea control;
+    private User usr;
 //    Client.ConnectGUI.BottomPanel Bot;
 
     //main method
@@ -352,7 +353,8 @@ public class ClientGUI extends JFrame {
                      String password = pasWord.getText();
                      if((username != null) && (password != null)){
                          if(client.login(username,password)){
-                             updateData(new Interaction(new User(username)));
+                             usr = new User(username);
+                             updateData(new Interaction());
                          }
                          else {
                              System.out.println("Incorrect Username or password");
@@ -476,7 +478,6 @@ public class ClientGUI extends JFrame {
         private GridBagConstraints gbc = new GridBagConstraints();
         private ArrayList<String> myWishList;
         private ArrayList<String> recipientWishList;
-        private User usr = new User();
 
         //constructor
         Interaction(){
@@ -526,10 +527,7 @@ public class ClientGUI extends JFrame {
 
 
         }
-        Interaction(User usr){
-            super();
-            this.usr = usr;
-        }
+
         private void prepareButtonHandlers(){
                 myWishListButton.addActionListener(new ActionListener() {
                     @Override
@@ -600,7 +598,9 @@ public class ClientGUI extends JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("Log Out");
+                        System.out.println(usr.getUsername());
                         if(client.logout(usr)){
+                            usr = new User(); //clearing the global User variable when the client logs out
                             updateData(new Login());
                         }
                         else {

@@ -56,7 +56,7 @@ class UserDatabase extends Database {
                 }
 
             }
-            usr.print();
+//            usr.print();
 //            System.out.println(usr.getUsername());
 //            System.out.println(rset.getString(numberOfColumns));
         }
@@ -78,11 +78,16 @@ class UserDatabase extends Database {
     }
 
     //method to log out a user
-    protected void logout(User usr) {
+    protected boolean logout(User usr) {
         int loggedIn = usr.getLoggedIn();
+        System.out.println("logout in userDatabase");
         if(loggedIn > 0) {
             usr.setLoggedIn(loggedIn - 1);
             this.update("UPDATE `userdb`.`users` SET `loggedIn` = '" + usr.getLoggedIn() + "' WHERE (`username` = '" + usr.getUsername() + "');");
+            return true;
+        }
+        else {
+            return false;
         }
     }
     //method to add a new user to the database

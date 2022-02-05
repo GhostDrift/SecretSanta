@@ -105,19 +105,10 @@ public class ClientHandler extends Thread {
     public boolean logout(User usr){
         UserDatabase userDB = this.server.getUserDatabase();
         String username = usr.getUsername();
-        try {
-            User result = userDB.getUser(username);
-            if(result.getLoggedIn()!= 0){
-                result.setLoggedIn(result.getLoggedIn()-1);
-                userDB.updateUser(result);
-                return true;
-            }
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("cannot logout " + username);
-            return false;
-        }
+        System.out.println(username + " logout method clientHandler");
+        //            User result = userDB.getUser(username);
+        userDB.logout(usr);
+        return true;
     }
 
     // -- similar to a main() function in that it is the entry point of
@@ -133,7 +124,7 @@ public class ClientHandler extends Thread {
                 //    readLine() call strips it off
                 Message cmd = networkaccess.readMessage();
                 //logic for login
-                if(cmd.message.equals("login")){
+                if(cmd.message.equals("login1")){
 //                    login(cmd.user);
                     if(login(cmd.user)){
                         networkaccess.sendMessage(new Message(null,"success"),false);
@@ -143,6 +134,7 @@ public class ClientHandler extends Thread {
                     }
                 }
                 else if(cmd.message.equals("logout")){
+                    System.out.println(cmd.user.getUsername());
                     if(logout(cmd.user)){
                         networkaccess.sendMessage(new Message(null,"success"),false);
                     }
