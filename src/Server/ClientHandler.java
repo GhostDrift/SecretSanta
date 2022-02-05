@@ -102,14 +102,14 @@ public class ClientHandler extends Thread {
 //        }
 //    }
     //method to log out a user
-    public boolean logout(User usr){
-        UserDatabase userDB = this.server.getUserDatabase();
-        String username = usr.getUsername();
-        System.out.println(username + " logout method clientHandler");
-        //            User result = userDB.getUser(username);
-        userDB.logout(usr);
-        return true;
-    }
+//    public boolean logout(User usr){
+//        UserDatabase userDB = this.server.getUserDatabase();
+//        String username = usr.getUsername();
+//        System.out.println(username + " logout method clientHandler");
+//        //            User result = userDB.getUser(username);
+//        userDB.logout(usr);
+//        return true;
+//    }
 
     // -- similar to a main() function in that it is the entry point of
     //    the thread
@@ -134,16 +134,7 @@ public class ClientHandler extends Thread {
 //                    }
 //                }
 //                else
-                if(cmd.message.equals("logout")){
-                    System.out.println(cmd.user.getUsername());
-                    if(logout(cmd.user)){
-                        networkaccess.sendMessage(new Message(null,"success"),false);
-                    }
-                    else {
-                        networkaccess.sendMessage(new Message(null,"fail"), false);
-                    }
 
-                }
                 // -- if it is not the termination message, send it back adding the
                 //    required (by readLine) "\n"
 

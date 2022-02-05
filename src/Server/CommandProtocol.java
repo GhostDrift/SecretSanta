@@ -6,6 +6,7 @@ import java.util.Set;
 
 import Common.Message;
 import Common.NetworkAccess;
+import Common.User;
 
 
 /**
@@ -52,6 +53,15 @@ public class CommandProtocol {
             else {
                 na.sendMessage(new Message(null, "fail"),false);
             }
+        }else if(cmd.message.equals("logout")){
+            System.out.println(cmd.user.getUsername());
+            if(logout(cmd.user,ch)){
+                na.sendMessage(new Message(null,"success"),false);
+            }
+            else {
+                na.sendMessage(new Message(null,"fail"), false);
+            }
+
         } else {
 
             na.sendMessage(cmd, false);
@@ -75,5 +85,14 @@ public class CommandProtocol {
             throwables.printStackTrace();
             return false;
         }
+    }
+    //method to log out a user
+    public static boolean logout(User usr, ClientHandler ch){
+        UserDatabase userDB = ch.getServer().getUserDatabase();
+        String username = usr.getUsername();
+        System.out.println(username + " logout method clientHandler");
+        //            User result = userDB.getUser(username);
+
+        return userDB.logout(usr);
     }
 }
