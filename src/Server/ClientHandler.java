@@ -40,6 +40,8 @@ public class ClientHandler extends Thread {
      */
     private final Server server;
 
+    private User usr = new User();
+
     /**
      * Constructor saves the ID, socket, and reference to the server
      * then construct the NetworkAccess object

@@ -233,8 +233,8 @@ public class Server extends Thread {
             e.printStackTrace();
         }
     }
-    //method to disconnect all the clients from the server
-    protected void disconnectClients(){
+    //method to log out and  disconnect all the clients from the server
+    protected void logoutAndDisconnectClients(){
 	    int i = getconnections()-1;
         NetworkAccess na;
         while(getconnections()>0){
@@ -248,7 +248,7 @@ public class Server extends Thread {
     //method to stop the server
     protected void stopServer(){
 	    this.running = false;
-	    disconnectClients();
+	    logoutAndDisconnectClients();
     }
 
 }
