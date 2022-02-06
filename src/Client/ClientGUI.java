@@ -279,7 +279,7 @@ public class ClientGUI extends JFrame {
                             }
 
                         } catch (Exception m) {
-//                            System.out.println(m);
+                            System.out.println(m);
                             cannotConnect();
                         }
                     }
@@ -347,6 +347,7 @@ public class ClientGUI extends JFrame {
                  public void actionPerformed(ActionEvent e) {
                      System.out.println("Disconnect");
                      client.disconnect();
+                     client = null;
                      updateData(new Connect());
 
                  }

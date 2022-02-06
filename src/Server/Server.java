@@ -164,7 +164,7 @@ public class Server extends Thread {
                     //    between the server (thread) and client (route the call to the requested extension)
                     peerconnection(socket);
                 } catch(Exception e){
-
+                    System.out.println("Server has been stopped");
                 }
 			}
 		}
