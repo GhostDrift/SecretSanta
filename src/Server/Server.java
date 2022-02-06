@@ -47,7 +47,7 @@ public class Server extends Thread {
 	/**
 	 * used for shutting down the server thread
 	 */
-	private final boolean running = true;
+	private boolean running = true;
 	
 	/**
 	 * unique ID for each client connection
@@ -156,12 +156,16 @@ public class Server extends Thread {
 			// -- server runs until we manually shut it down
 			while (running) {
 				
-					// -- block until a client comes along (listen for the phone to ring)
-					Socket socket = serversocket.accept();
-					
-					// -- connection accepted, create a peer-to-peer socket
-					//    between the server (thread) and client (route the call to the requested extension)
-				peerconnection(socket);
+				try {
+                    // -- block until a client comes along (listen for the phone to ring)
+                    Socket socket = serversocket.accept();
+
+                    // -- connection accepted, create a peer-to-peer socket
+                    //    between the server (thread) and client (route the call to the requested extension)
+                    peerconnection(socket);
+                } catch(Exception e){
+
+                }
 			}
 		}
 		catch (IOException e) {
@@ -230,16 +234,21 @@ public class Server extends Thread {
         }
     }
     //method to disconnect all the clients from the server
-//    protected void disconnectClients(){
-//	    int i = 0;
-//        NetworkAccess na;
-//        while(getconnections()>0){
-//            na = clientconnections.get(i).getNetworkaccess();
-//            na.sendMessage(new Message(null,"disconnect"),false);
-////            removeID(i);
-//            i++;
-//        }
-//
-//    }
+    protected void disconnectClients(){
+	    int i = getconnections()-1;
+        NetworkAccess na;
+        while(getconnections()>0){
+            na = clientconnections.get(i).getNetworkaccess();
+            na.sendMessage(new Message(null,"disconnect"),false);
+            removeID(i);
+            i = getconnections()-1;
+        }
+
+    }
+    //method to stop the server
+    protected void stopServer(){
+	    this.running = false;
+	    disconnectClients();
+    }
 
 }
