@@ -159,4 +159,7 @@ public class ClientHandler extends Thread {
 
         }
     }
+    protected NetworkAccess getNetworkaccess(){
+        return this.networkaccess;
+    }
 }

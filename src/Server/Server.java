@@ -1,5 +1,8 @@
 package Server;
 
+import Common.Message;
+import Common.NetworkAccess;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -218,6 +221,7 @@ public class Server extends Thread {
 			}
 		}
 	}
+	//method to close the server socket
 	protected void removeServersocket(){
         try {
             this.serversocket.close();
@@ -225,6 +229,17 @@ public class Server extends Thread {
             e.printStackTrace();
         }
     }
-
+    //method to disconnect all the clients from the server
+//    protected void disconnectClients(){
+//	    int i = 0;
+//        NetworkAccess na;
+//        while(getconnections()>0){
+//            na = clientconnections.get(i).getNetworkaccess();
+//            na.sendMessage(new Message(null,"disconnect"),false);
+////            removeID(i);
+//            i++;
+//        }
+//
+//    }
 
 }
