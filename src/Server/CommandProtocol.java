@@ -73,6 +73,9 @@ public class CommandProtocol {
         UserDatabase userDB = ch.getServer().getUserDatabase();
         String username = usr.getUsername();
         String password = usr.getPassword();
+        if(username.equals("")){
+            return false;
+        }
         try {
             Common.User result = userDB.getUser(username);
             if(result.getPassword().equals(password)){
