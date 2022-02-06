@@ -363,6 +363,7 @@ public class ClientGUI extends JFrame {
              login.addActionListener(new ActionListener() {
                  @Override
                  public void actionPerformed(ActionEvent e) {
+                     System.out.println("Connection Status: " + client.networkaccess.testConnection());
                      System.out.println("Login");
                      String username = usrName.getText();
                      String password = pasWord.getText();

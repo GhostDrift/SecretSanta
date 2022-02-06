@@ -160,4 +160,8 @@ public class NetworkAccess {
             System.out.println("close: invalid socket");
         }
     }
+    public boolean testConnection(){
+        Message result = sendMessage(new Message(null,"hello"), true);
+        return result.message.equals("world!");
+    }
 }

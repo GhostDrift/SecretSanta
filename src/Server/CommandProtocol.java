@@ -43,7 +43,7 @@ public class CommandProtocol {
         } else if (cmd.message.equals("hello")) {
 
             // -- client is expecting a response
-            na.sendMessage(new Message(null, "world!" + "\n"), false);
+            na.sendMessage(new Message(null, "world!"), false);
 
         }else if(cmd.message.equals("login")){
 //                    login(cmd.user);
