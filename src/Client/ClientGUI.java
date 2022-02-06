@@ -163,6 +163,7 @@ public class ClientGUI extends JFrame {
         private GridBagConstraints gbc = new GridBagConstraints();
         private ControlArea controlArea;
         private LoginGUI Log;
+        private JLabel errorMessage;
 
         Connect() {
             setLayout(new GridBagLayout());
@@ -199,6 +200,14 @@ public class ClientGUI extends JFrame {
 //            gbc.fill = GridBagConstraints.HORIZONTAL;
             portnum.setVisible(false);
             this.add(portnum,gbc);
+            this.errorMessage = new JLabel("Server is unreachable");
+            this.errorMessage.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            this.errorMessage.setForeground(Color.RED);
+            this.gbc.gridx = 0;
+            this.gbc.gridy = 2;
+            this.gbc.gridwidth = 2;
+            this.add(errorMessage,gbc);
+            this.errorMessage.setVisible(false);
 //            gbc.gridx = 0;
 //            gbc.gridy = 3;
 //            gbc.anchor = GridBagConstraints.LAST_LINE_START;
@@ -210,6 +219,10 @@ public class ClientGUI extends JFrame {
             PrepareButtons();
 
 
+        }
+        protected void cannotConnect(){
+            this.errorMessage.setVisible(true);
+            this.repaint();
         }
         protected void setPortVis(Boolean value){
             this.portnum.setVisible(value);
@@ -267,6 +280,7 @@ public class ClientGUI extends JFrame {
 
                         } catch (Exception m) {
 //                            System.out.println(m);
+                            cannotConnect();
                         }
                     }
                 }
