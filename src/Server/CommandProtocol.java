@@ -49,6 +49,7 @@ public class CommandProtocol {
 //                    login(cmd.user);
             if(login(cmd.user,ch)){
                 na.sendMessage(new Message(null,"success"),false);
+                ch.setUser(cmd.user);
             }
             else {
                 na.sendMessage(new Message(null, "fail"),false);
@@ -57,6 +58,7 @@ public class CommandProtocol {
             System.out.println(cmd.user.getUsername());
             if(logout(cmd.user,ch)){
                 na.sendMessage(new Message(null,"success"),false);
+                ch.setUser(null);
             }
             else {
                 na.sendMessage(new Message(null,"fail"), false);

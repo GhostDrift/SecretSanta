@@ -85,33 +85,15 @@ public class ClientHandler extends Thread {
     public Server getServer() {
         return server;
     }
-//method to login a user
-//    public boolean login(Common.User usr){
-//        UserDatabase userDB = this.server.getUserDatabase();
-//        String username = usr.getUsername();
-//        String password = usr.getPassword();
-//        try {
-//            Common.User result = userDB.getUser(username);
-//            if(result.getPassword().equals(password)){
-//                userDB.login(usr);
-//                return true;
-//            }
-//            else return false;
-//        }
-//        catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//            return false;
-//        }
-//    }
-    //method to log out a user
-//    public boolean logout(User usr){
-//        UserDatabase userDB = this.server.getUserDatabase();
-//        String username = usr.getUsername();
-//        System.out.println(username + " logout method clientHandler");
-//        //            User result = userDB.getUser(username);
-//        userDB.logout(usr);
-//        return true;
-//    }
+
+    //method to set the user
+    protected void setUser(User usr){
+        this.usr = usr;
+    }
+    //method to get the user
+    protected User getUser(){
+        return this.usr;
+    }
 
     // -- similar to a main() function in that it is the entry point of
     //    the thread
