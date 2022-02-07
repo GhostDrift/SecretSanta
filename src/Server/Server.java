@@ -2,6 +2,7 @@ package Server;
 
 import Common.Message;
 import Common.NetworkAccess;
+import Common.User;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -236,9 +237,20 @@ public class Server extends Thread {
     //method to log out and  disconnect all the clients from the server
     protected void logoutAndDisconnectClients(){
 	    int i = getconnections()-1;
+        User usr;
         NetworkAccess na;
         while(getconnections()>0){
             na = clientconnections.get(i).getNetworkaccess();
+            usr = clientconnections.get(i).getUser();
+            try {
+                usr = userDatabase.getUser(usr.getUsername());
+                if(usr.getLoggedIn()>0){
+                    userDatabase.logout(usr);
+                }
+            } catch (SQLException e) {
+                System.out.println("Cannot find user in database");
+                e.printStackTrace();
+            }
             na.sendMessage(new Message(null,"disconnect"),false);
             removeID(i);
             i = getconnections()-1;
