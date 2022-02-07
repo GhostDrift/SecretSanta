@@ -360,8 +360,12 @@ public class ClientGUI extends JFrame {
                  @Override
                  public void actionPerformed(ActionEvent e) {
                      System.out.println("Register");
-                     if(client.networkaccess.testConnection()) {
-                         updateData(new Register());
+                     if(client != null) {
+                         if (client.networkaccess.testConnection()) {
+                             updateData(new Register());
+                         } else {
+                             updateData(new Connect(true));
+                         }
                      }
                      else{
                          updateData(new Connect(true));
@@ -398,6 +402,17 @@ public class ClientGUI extends JFrame {
              recover.addActionListener(new ActionListener() {
                  @Override
                  public void actionPerformed(ActionEvent e) {
+                     if(client != null){
+                         if(client.networkaccess.testConnection()){
+
+                         }
+                         else{
+                             updateData(new Connect(true));
+                         }
+                     }
+                     else{
+                         updateData(new Connect(true));
+                     }
                      System.out.println("Recover Password");
 
                  }
