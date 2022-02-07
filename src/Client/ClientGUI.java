@@ -398,6 +398,17 @@ public class ClientGUI extends JFrame {
              recover.addActionListener(new ActionListener() {
                  @Override
                  public void actionPerformed(ActionEvent e) {
+                     if(client != null){
+                         if(client.networkaccess.testConnection()){
+
+                         }
+                         else{
+                             updateData(new Connect(true));
+                         }
+                     }
+                     else{
+                         updateData(new Connect(true));
+                     }
                      System.out.println("Recover Password");
 
                  }
