@@ -242,14 +242,17 @@ public class Server extends Thread {
         while(getconnections()>0){
             na = clientconnections.get(i).getNetworkaccess();
             usr = clientconnections.get(i).getUser();
-            try {
-                usr = userDatabase.getUser(usr.getUsername());
-                if(usr.getLoggedIn()>0){
-                    userDatabase.logout(usr);
+            if(usr != null) {
+                try {
+                    System.out.println(userDatabase.getUser(usr.getUsername()));
+                    usr = userDatabase.getUser(usr.getUsername());
+                    if (usr.getLoggedIn() > 0) {
+                        userDatabase.logout(usr);
+                    }
+                } catch (SQLException e) {
+                    System.out.println("Cannot find user in database");
+                    e.printStackTrace();
                 }
-            } catch (SQLException e) {
-                System.out.println("Cannot find user in database");
-                e.printStackTrace();
             }
             na.sendMessage(new Message(null,"disconnect"),false);
             removeID(i);

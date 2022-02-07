@@ -44,7 +44,7 @@ public class ClientGUI extends JFrame {
         //create control pannel area
         control = new ControlArea();
         //set the data panel to display the connect panel.
-        Data = new ClientGUI.Connect();
+        Data = new ClientGUI.Connect(false);
 
 //          x.setLayout(new BoxLayout(x,BoxLayout.Y_AXIS));
         //set the title pannel to display the Connect text
@@ -165,7 +165,7 @@ public class ClientGUI extends JFrame {
         private LoginGUI Log;
         private JLabel errorMessage;
 
-        Connect() {
+        Connect(Boolean error) {
             setLayout(new GridBagLayout());
 //            setLayout(new BorderLayout(0,0));
             this.setPanelName("Connect");
@@ -217,9 +217,13 @@ public class ClientGUI extends JFrame {
 //            gbc.anchor = GridBagConstraints.LAST_LINE_END;
 //            this.add(connect);
             PrepareButtons();
-
+            if(error){
+                cannotConnect();
+            }
+            client = null;
 
         }
+
         protected void cannotConnect(){
             this.errorMessage.setVisible(true);
             this.repaint();
@@ -348,7 +352,7 @@ public class ClientGUI extends JFrame {
                      System.out.println("Disconnect");
                      client.disconnect();
                      client = null;
-                     updateData(new Connect());
+                     updateData(new Connect(false));
 
                  }
              });
@@ -356,28 +360,38 @@ public class ClientGUI extends JFrame {
                  @Override
                  public void actionPerformed(ActionEvent e) {
                      System.out.println("Register");
-                     updateData(new Register());
-
+                     if(client.networkaccess.testConnection()) {
+                         updateData(new Register());
+                     }
+                     else{
+                         updateData(new Connect(true));
+                     }
                  }
              });
              login.addActionListener(new ActionListener() {
                  @Override
                  public void actionPerformed(ActionEvent e) {
-                     System.out.println("Connection Status: " + client.networkaccess.testConnection());
+//                     System.out.println("Connection Status: " + client.networkaccess.testConnection());
                      System.out.println("Login");
                      String username = usrName.getText();
                      String password = pasWord.getText();
-                     if((username != null) && (password != null)){
-                         if(client.login(username,password)){
-                             usr = new User(username);
-                             updateData(new Interaction());
+                     try {
+                         if (client.networkaccess.testConnection()) {
+                             if ((username != null) && (password != null)) {
+                                 if (client.login(username, password)) {
+                                     usr = new User(username);
+                                     updateData(new Interaction());
+                                 } else {
+                                     System.out.println("Incorrect Username or password");
+                                 }
+                             } else {
+                                 System.out.println("Username and password cannot be null");
+                             }
+                         } else {
+                             updateData(new Connect(true));
                          }
-                         else {
-                             System.out.println("Incorrect Username or password");
-                         }
-                     }
-                     else{
-                         System.out.println("Username and password cannot be null");
+                     } catch(Exception n){
+                         updateData(new Connect(true));
                      }
                  }
              });
