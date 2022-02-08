@@ -1,5 +1,7 @@
 package Server;
 
+import Common.displayPanel;
+
 import java.awt.*;
 
 import java.awt.BorderLayout;
@@ -26,7 +28,7 @@ public class ServerGUI extends JFrame {
     private Server server;
     private  BottomPanel low;
     private  FieldPanel con;
-
+    private displayPanel data;
 
 
     public ServerGUI() {
@@ -43,176 +45,8 @@ public class ServerGUI extends JFrame {
         // -- set the layout manager and add items
         // 5, 5 is the border around the edges of the areas
         setLayout(new BorderLayout(15, 5));
-        con = new FieldPanel();
-        this.add(con, BorderLayout.CENTER);
-
-
-        low = new BottomPanel();
-        this.add(low, BorderLayout.SOUTH);
-
-        // MENU Settings
-        JMenuBar MenBar = new JMenuBar();
-        JButton Act = new JButton("Activate Server");
-        //  JButton DeAct = new JButton("Deactivate Server");
-        JButton Conf = new JButton("Edit Config");
-        JButton AConnect = new JButton("Number of Active Connections");
-
-
-        // MenBar.add(Menu1);
-        MenBar.add(Act);
-        // MenBar.add(DeAct);
-        MenBar.add(Conf);
-        MenBar.add(AConnect);
-        AConnect.setVisible(false);
-        JMenuBar MenBar2 = new JMenuBar();
-        JButton WhoLog = new JButton("Who is Logged in ");
-        JButton NumLog = new JButton("Number Logged in ");
-        JButton NumReg = new JButton("Number Registered");
-        JButton WhoLock = new JButton("Who is Locked Out");
-
-        //Action listeners for buttons in MenBar2
-        NumLog.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Number of logged in");
-                int numLoggedIn = server.getNumLoggedIn();
-                addToTextArea( "Number of logged in clients: " + numLoggedIn);
-                requestFocus();
-            }
-
-        });
-        WhoLog.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Logged in accounts");
-                String result = "Logged in accounts: \n";
-                try {
-                    ArrayList loggedInAccounts =  server.getWhoLoggedIn();
-
-                    for(int i = 0; i< loggedInAccounts.size(); i++){
-//                       addToTextArea(loggedInAccounts.get(i) + "\n");
-                        result += loggedInAccounts.get(i) + "\n";
-                    }
-                    addToTextArea(result);
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-                requestFocus();
-            }
-
-        });
-        NumReg.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Number regestered");
-                int numRegistered = 0;
-                try {
-                    numRegistered = server.getNumRegistered();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-                addToTextArea( "Number of registered accounts: " + numRegistered);
-                requestFocus();
-            }
-
-        });
-        WhoLock.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Locked out accounts");
-                String result = "Locked out accounts: \n";
-                try {
-                    ArrayList LockedOutAccounts =  server.getWhoLockedOut();
-
-                    for(int i = 0; i< LockedOutAccounts.size(); i++){
-//                       addToTextArea(loggedInAccounts.get(i) + "\n");
-                        result += LockedOutAccounts.get(i) + "\n";
-                    }
-                    addToTextArea(result);
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-                requestFocus();
-            }
-
-        });
-
-        MenBar2.add(WhoLog);
-        MenBar2.add(NumLog);
-        MenBar2.add(NumReg);
-        MenBar2.add(WhoLock);
-
-
-        this.add(MenBar2, BorderLayout.SOUTH);
-        MenBar2.setVisible(false);
-
-
-        // Activate Server
-        Act.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(Act.getText().equals("Activate Server")) {
-                    server = new Server(owner);
-                    server.start();
-                    //server.stop();
-                    Act.setText("Deactivate Server");
-                    Conf.setVisible(false);
-                    AConnect.setVisible(true);
-                    MenBar2.setVisible(true);
-                    addToTextArea("Server is running");
-
-                }
-                else if(Act.getText().equals("Deactivate Server")){
-//                    server.disconnectClients();
-//                    server.stop();
-                    server.stopServer();
-                    server.removeServersocket();
-                    Act.setText("Activate Server");
-                    Conf.setVisible(true);
-                    addToTextArea("Server has stopped");
-                    AConnect.setVisible(false);
-                    MenBar2.setVisible(false);
-                }
-                requestFocus();
-
-            }
-
-
-        });
-        // Deactivate Server
-//            DeAct.addActionListener(new ActionListener(){
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//
-//                }
-//
-//            });
-// Config File Button
-        Conf.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-
-        });
-
-
-        AConnect.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(server);
-                int p = server.getconnections();
-                addToTextArea(p + "");
-                requestFocus();
-            }
-
-        });
-
-
-        this.add(MenBar, BorderLayout.NORTH);
-
-
-
+        this.data = new ServerControl();
+        this.add(data,BorderLayout.CENTER);
 
         setVisible(true);
 
@@ -233,6 +67,199 @@ public class ServerGUI extends JFrame {
             }
         });
 
+    }
+    private class ServerControl extends displayPanel{
+        protected ServerControl(){
+
+            setTitle("Server");
+
+            // -- size of the frame: width, height
+            setSize(WIDTH, HEIGHT);
+
+            // -- center the frame on the screen
+            setLocationRelativeTo(null);
+
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            // -- set the layout manager and add items
+            // 5, 5 is the border around the edges of the areas
+            setLayout(new BorderLayout(15, 5));
+            con = new FieldPanel();
+            this.add(con, BorderLayout.CENTER);
+
+
+            low = new BottomPanel();
+            this.add(low, BorderLayout.SOUTH);
+
+            // MENU Settings
+            JMenuBar MenBar = new JMenuBar();
+            JButton Act = new JButton("Activate Server");
+            //  JButton DeAct = new JButton("Deactivate Server");
+            JButton Conf = new JButton("Edit Config");
+            JButton AConnect = new JButton("Number of Active Connections");
+
+
+            // MenBar.add(Menu1);
+            MenBar.add(Act);
+            // MenBar.add(DeAct);
+            MenBar.add(Conf);
+            MenBar.add(AConnect);
+            AConnect.setVisible(false);
+            JMenuBar MenBar2 = new JMenuBar();
+            JButton WhoLog = new JButton("Who is Logged in ");
+            JButton NumLog = new JButton("Number Logged in ");
+            JButton NumReg = new JButton("Number Registered");
+            JButton WhoLock = new JButton("Who is Locked Out");
+
+            //Action listeners for buttons in MenBar2
+            NumLog.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Number of logged in");
+                    int numLoggedIn = server.getNumLoggedIn();
+                    addToTextArea( "Number of logged in clients: " + numLoggedIn);
+                    requestFocus();
+                }
+
+            });
+            WhoLog.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Logged in accounts");
+                    String result = "Logged in accounts: \n";
+                    try {
+                        ArrayList loggedInAccounts =  server.getWhoLoggedIn();
+
+                        for(int i = 0; i< loggedInAccounts.size(); i++){
+//                       addToTextArea(loggedInAccounts.get(i) + "\n");
+                            result += loggedInAccounts.get(i) + "\n";
+                        }
+                        addToTextArea(result);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                    requestFocus();
+                }
+
+            });
+            NumReg.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Number regestered");
+                    int numRegistered = 0;
+                    try {
+                        numRegistered = server.getNumRegistered();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                    addToTextArea( "Number of registered accounts: " + numRegistered);
+                    requestFocus();
+                }
+
+            });
+            WhoLock.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Locked out accounts");
+                    String result = "Locked out accounts: \n";
+                    try {
+                        ArrayList LockedOutAccounts =  server.getWhoLockedOut();
+
+                        for(int i = 0; i< LockedOutAccounts.size(); i++){
+//                       addToTextArea(loggedInAccounts.get(i) + "\n");
+                            result += LockedOutAccounts.get(i) + "\n";
+                        }
+                        addToTextArea(result);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                    requestFocus();
+                }
+
+            });
+
+            MenBar2.add(WhoLog);
+            MenBar2.add(NumLog);
+            MenBar2.add(NumReg);
+            MenBar2.add(WhoLock);
+
+
+            this.add(MenBar2, BorderLayout.SOUTH);
+            MenBar2.setVisible(false);
+
+
+            // Activate Server
+            Act.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(Act.getText().equals("Activate Server")) {
+                        server = new Server(owner);
+                        server.start();
+                        //server.stop();
+                        Act.setText("Deactivate Server");
+                        Conf.setVisible(false);
+                        AConnect.setVisible(true);
+                        MenBar2.setVisible(true);
+                        addToTextArea("Server is running");
+
+                    }
+                    else if(Act.getText().equals("Deactivate Server")){
+//                    server.disconnectClients();
+//                    server.stop();
+                        server.stopServer();
+                        server.removeServersocket();
+                        Act.setText("Activate Server");
+                        Conf.setVisible(true);
+                        addToTextArea("Server has stopped");
+                        AConnect.setVisible(false);
+                        MenBar2.setVisible(false);
+                    }
+                    requestFocus();
+
+                }
+
+
+            });
+            // Deactivate Server
+//            DeAct.addActionListener(new ActionListener(){
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+//
+//                }
+//
+//            });
+// Config File Button
+            Conf.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                }
+
+            });
+
+
+            AConnect.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println(server);
+                    int p = server.getconnections();
+                    addToTextArea(p + "");
+                    requestFocus();
+                }
+
+            });
+
+
+            this.add(MenBar, BorderLayout.NORTH);
+
+
+
+
+            setVisible(true);
+
+
+
+        }
     }
 
     public void addToTextArea(String s) {
