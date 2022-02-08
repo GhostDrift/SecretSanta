@@ -262,7 +262,14 @@ public class ClientGUI extends JFrame {
                             Pattern portpattern = Pattern.compile(portformat);
 //                            String host = "127.0.0.1";
 //                            int port = 8000;
-                            String host = IP.getText();
+                            String host;
+                            //checks to see if host box is empty
+                            if(!IP.getText().equals("")) {
+                                host = IP.getText();
+                            }
+                            else{
+                                host = "127.0.0.1";
+                            }
                             int port = Integer.parseInt(portnum.getText());
                             System.out.println(host);
                             System.out.println(port);
