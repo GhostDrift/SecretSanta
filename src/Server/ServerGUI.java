@@ -62,6 +62,7 @@ public class ServerGUI extends JFrame {
         // MenBar.add(DeAct);
         MenBar.add(Conf);
         MenBar.add(AConnect);
+        AConnect.setVisible(false);
 
 
         // Activate Server
@@ -74,6 +75,7 @@ public class ServerGUI extends JFrame {
                     //server.stop();
                     Act.setText("Deactivate Server");
                     Conf.setVisible(false);
+                    AConnect.setVisible(true);
                     addToTextArea("Server is running");
 
                 }
@@ -85,6 +87,7 @@ public class ServerGUI extends JFrame {
                     Act.setText("Activate Server");
                     Conf.setVisible(true);
                     addToTextArea("Server has stopped");
+                    AConnect.setVisible(false);
                 }
                 requestFocus();
 
