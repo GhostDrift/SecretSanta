@@ -57,6 +57,16 @@ public class ClientGUI extends JFrame {
 //        this.add(Bot, BorderLayout.SOUTH);
         setVisible(true);
         Visibility = true;
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            //modified code from
+            //https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                System.out.println("Close button has been pressed");
+                shutDown();
+                System.exit(0);
+            }
+        });
     }
     protected ControlArea getControl(){
         return this.control;
@@ -74,6 +84,7 @@ public class ClientGUI extends JFrame {
 //        this.windowTitle.repaint();
 //        System.out.println("Label " + windowTitle.getText());
         this.repaint();
+//        shutDown();
     }
     //method to update the control panel
     protected void updateControl(JButton left, JButton center, JButton right){
@@ -1076,6 +1087,29 @@ public class ClientGUI extends JFrame {
         public void setCenter(JPanel center) {
             this.add(center, BorderLayout.CENTER);
         }
+    }
+
+    //method to shut off client properly
+    private void shutDown(){
+        if(Data instanceof Connect){
+            System.out.println("connect window");
+//            System.exit(0);
+        }
+        else if((Data instanceof Login)||(Data instanceof Register) || (Data instanceof Recover)){
+            System.out.println("Login window");
+            client.disconnect();
+//            System.exit(0);
+        }
+        else{
+//            System.out.println("Interaction window");
+            logoutAndDisconnect();
+        }
+
+    }
+    private void logoutAndDisconnect(){
+        client.logout(usr);
+        client.disconnect();
+//        System.exit(0);
     }
 
     public static void main(String[] args) {
