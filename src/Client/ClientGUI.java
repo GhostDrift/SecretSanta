@@ -1,5 +1,6 @@
 package Client;
 import Common.User;
+import Common.displayPanel;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -147,23 +148,23 @@ public class ClientGUI extends JFrame {
             return this.text;
         }
     }
-    private abstract class displayPanel extends JPanel{
-        private  String panelName;
-        private  String spaces = "                                                                                                              ";
-
-        public void setPanelName(String panelName){
-            this.panelName = panelName;
-        }
-        public void setSpaces(String spaces){
-            this.spaces = spaces;
-        }
-        public String getLabel(){
-            return spaces + panelName + spaces;
-        }
-
-
-    }
-    private class Connect extends displayPanel{
+//    private abstract class displayPanel extends JPanel{
+//        private  String panelName;
+//        private  String spaces = "                                                                                                              ";
+//
+//        public void setPanelName(String panelName){
+//            this.panelName = panelName;
+//        }
+//        public void setSpaces(String spaces){
+//            this.spaces = spaces;
+//        }
+//        public String getLabel(){
+//            return spaces + panelName + spaces;
+//        }
+//
+//
+//    }
+    private class Connect extends displayPanel {
         private final JLabel I;
         private final JTextField IP;
         private final JButton Adv;

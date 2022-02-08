@@ -24,8 +24,9 @@ public class ServerGUI extends JFrame {
     private final ServerGUI owner = null;
 
     private Server server;
-    private final BottomPanel low;
-    private final FieldPanel con;
+    private  BottomPanel low;
+    private  FieldPanel con;
+
 
 
     public ServerGUI() {
