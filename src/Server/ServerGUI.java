@@ -63,71 +63,6 @@ public class ServerGUI extends JFrame {
         MenBar.add(Conf);
         MenBar.add(AConnect);
         AConnect.setVisible(false);
-
-
-        // Activate Server
-        Act.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(Act.getText().equals("Activate Server")) {
-                    server = new Server(owner);
-                    server.start();
-                    //server.stop();
-                    Act.setText("Deactivate Server");
-                    Conf.setVisible(false);
-                    AConnect.setVisible(true);
-                    addToTextArea("Server is running");
-
-                }
-                else if(Act.getText().equals("Deactivate Server")){
-//                    server.disconnectClients();
-//                    server.stop();
-                    server.stopServer();
-                    server.removeServersocket();
-                    Act.setText("Activate Server");
-                    Conf.setVisible(true);
-                    addToTextArea("Server has stopped");
-                    AConnect.setVisible(false);
-                }
-                requestFocus();
-
-            }
-
-
-        });
-        // Deactivate Server
-//            DeAct.addActionListener(new ActionListener(){
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//
-//                }
-//
-//            });
-// Config File Button
-        Conf.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-
-        });
-
-
-        AConnect.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(server);
-                int p = server.getconnections();
-                addToTextArea(p + "");
-                requestFocus();
-            }
-
-        });
-
-
-        this.add(MenBar, BorderLayout.NORTH);
-
-
         JMenuBar MenBar2 = new JMenuBar();
         JButton WhoLog = new JButton("Who is Logged in ");
         JButton NumLog = new JButton("Number Logged in ");
@@ -151,13 +86,13 @@ public class ServerGUI extends JFrame {
                 System.out.println("Logged in accounts");
                 String result = "Logged in accounts: \n";
                 try {
-                   ArrayList loggedInAccounts =  server.getWhoLoggedIn();
+                    ArrayList loggedInAccounts =  server.getWhoLoggedIn();
 
-                   for(int i = 0; i< loggedInAccounts.size(); i++){
+                    for(int i = 0; i< loggedInAccounts.size(); i++){
 //                       addToTextArea(loggedInAccounts.get(i) + "\n");
-                       result += loggedInAccounts.get(i) + "\n";
-                   }
-                   addToTextArea(result);
+                        result += loggedInAccounts.get(i) + "\n";
+                    }
+                    addToTextArea(result);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -208,6 +143,75 @@ public class ServerGUI extends JFrame {
 
 
         this.add(MenBar2, BorderLayout.SOUTH);
+        MenBar2.setVisible(false);
+
+
+        // Activate Server
+        Act.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(Act.getText().equals("Activate Server")) {
+                    server = new Server(owner);
+                    server.start();
+                    //server.stop();
+                    Act.setText("Deactivate Server");
+                    Conf.setVisible(false);
+                    AConnect.setVisible(true);
+                    MenBar2.setVisible(true);
+                    addToTextArea("Server is running");
+
+                }
+                else if(Act.getText().equals("Deactivate Server")){
+//                    server.disconnectClients();
+//                    server.stop();
+                    server.stopServer();
+                    server.removeServersocket();
+                    Act.setText("Activate Server");
+                    Conf.setVisible(true);
+                    addToTextArea("Server has stopped");
+                    AConnect.setVisible(false);
+                    MenBar2.setVisible(false);
+                }
+                requestFocus();
+
+            }
+
+
+        });
+        // Deactivate Server
+//            DeAct.addActionListener(new ActionListener(){
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+//
+//                }
+//
+//            });
+// Config File Button
+        Conf.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+
+        });
+
+
+        AConnect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(server);
+                int p = server.getconnections();
+                addToTextArea(p + "");
+                requestFocus();
+            }
+
+        });
+
+
+        this.add(MenBar, BorderLayout.NORTH);
+
+
+
 
         setVisible(true);
 
