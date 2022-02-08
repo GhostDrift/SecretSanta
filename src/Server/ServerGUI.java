@@ -67,7 +67,7 @@ public class ServerGUI extends JFrame {
     protected void updateData(displayPanel dataNew){
         this.remove(data);
         this.data = dataNew;
-        this.add(data,BorderLayout.CENTER);
+//        this.add(data,BorderLayout.CENTER);
 
 //        System.out.println( "Login " +Data.getLabel());
 //        this.remove(windowTitle);
@@ -243,7 +243,8 @@ public class ServerGUI extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        updateData(new EditConfig());
+                        new ConfigEditor();
+                        dispose();
                     } catch (ConfigNotInitializedException ex) {
                         ex.printStackTrace();
                         System.out.println("Config has not been initialized");
@@ -315,12 +316,14 @@ public class ServerGUI extends JFrame {
         protected EditConfig() throws ConfigNotInitializedException {
             Config.initializeConfig("ServerConfiguration.conf");
             setTitle("Config Editor");
-            this.setLayout(new FlowLayout(1,10,10));
-            this.minUsernameLength = new JLabel("Minimum Password Length: ");
+            setLayout(new BorderLayout(15, 5));
+            this.minPasswordLength = new JLabel("Minimum Password Length: ");
+            this.minPasswordLength.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             this.minPasswordValue = new JTextField(String.valueOf(Config.getMinPasswordLength()), 25);
-            this.add(minPasswordLength);
-            this.add(minPasswordValue);
-
+            this.add(minPasswordLength,BorderLayout.CENTER);
+            this.add(minPasswordValue,BorderLayout.CENTER);
+            this.setVisible(true);
+            this.repaint();
         }
 
     }
