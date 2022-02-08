@@ -849,17 +849,34 @@ public class ClientGUI extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Add item");
-                    updateData(new Interaction());
-
-
+                    if(client != null){
+                        if(client.networkaccess.testConnection()){
+                            updateData(new Interaction());
+                        }
+                        else {
+                            updateData(new Connect(true));
+                        }
+                    }
+                    else{
+                        updateData(new Connect(true));
+                    }
                 }
             });
             cancel.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Cancel");
-                    updateData(new Interaction());
-
+                    if(client != null){
+                        if(client.networkaccess.testConnection()){
+                            updateData(new Interaction());
+                        }
+                        else {
+                            updateData(new Connect(true));
+                        }
+                    }
+                    else{
+                        updateData(new Connect(true));
+                    }
                 }
             });
             updateControl(cancel,add);
@@ -895,16 +912,34 @@ public class ClientGUI extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Remove Item");
-                    updateData(new Interaction());
-
+                    if(client != null){
+                        if(client.networkaccess.testConnection()){
+                            updateData(new Interaction());
+                        }
+                        else {
+                            updateData(new Connect(true));
+                        }
+                    }
+                    else{
+                        updateData(new Connect(true));
+                    }
                 }
             });
             cancel.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Cancel");
-                    updateData(new Interaction());
-
+                    if(client != null){
+                        if(client.networkaccess.testConnection()){
+                            updateData(new Interaction());
+                        }
+                        else {
+                            updateData(new Connect(true));
+                        }
+                    }
+                    else{
+                        updateData(new Connect(true));
+                    }
                 }
             });
             updateControl(cancel,remove);
@@ -954,7 +989,17 @@ public class ClientGUI extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Cancel");
-                    updateData(new Interaction());
+                    if(client != null){
+                        if(client.networkaccess.testConnection()){
+                            updateData(new Interaction());
+                        }
+                        else {
+                            updateData(new Connect(true));
+                        }
+                    }
+                    else{
+                        updateData(new Connect(true));
+                    }
 
                 }
             });
@@ -962,8 +1007,17 @@ public class ClientGUI extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Apply");
-                    updateData(new Interaction());
-
+                    if(client != null){
+                        if(client.networkaccess.testConnection()){
+                            updateData(new Interaction());
+                        }
+                        else {
+                            updateData(new Connect(true));
+                        }
+                    }
+                    else{
+                        updateData(new Connect(true));
+                    }
                 }
             });
             updateControl(cancel,apply);
