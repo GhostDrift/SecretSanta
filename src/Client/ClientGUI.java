@@ -404,7 +404,7 @@ public class ClientGUI extends JFrame {
                  public void actionPerformed(ActionEvent e) {
                      if(client != null){
                          if(client.networkaccess.testConnection()){
-
+                            updateData(new Recover());
                          }
                          else{
                              updateData(new Connect(true));
@@ -420,6 +420,73 @@ public class ClientGUI extends JFrame {
 
              updateControl(disconnect,register,recover,login);
          }
+    }
+
+    private class Recover extends displayPanel{
+        private JLabel username;
+        private JTextField userText;
+        private JLabel instructions;
+        private JButton submit;
+        private JButton cancel;
+        private GridBagConstraints gbc = new GridBagConstraints();
+
+        Recover(){
+            setPanelName("Recover");
+            this.setSpaces("                                                                                                              ");
+            this.setLayout(new GridBagLayout());
+            //Set windowTitle to the label of the datapanel
+            windowTitle.setText(this.getLabel());
+            //prepare components
+            this.username = new JLabel("Username");
+            this.username.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            this.instructions = new JLabel("Enter the username of the account you would like to recover, an email will be sent.");
+            this.instructions.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            this.userText = new JTextField("",25);
+            this.submit = new JButton("Submit");
+            this.cancel = new JButton("Cancel");
+            prepareButtonHandlers();
+            //add components
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.ipadx = 10;
+            gbc.ipady = 10;
+            gbc.fill = GridBagConstraints.NONE;
+            this.add(username,gbc);
+            gbc.gridx = 1;
+            this.add(userText,gbc);
+
+
+        }
+
+        private void prepareButtonHandlers() {
+            this.submit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("submit");
+                    if(client!= null){
+                        if(client.networkaccess.testConnection()){
+                            updateData(new Login());
+                        }
+                        else{
+                            updateData(new Connect(true));
+                        }
+                    }
+                    else{
+                        updateData(new Connect(true));
+                    }
+
+                }
+            });
+            this.cancel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Cancel");
+                    updateData(new Login());
+
+                }
+            });
+            updateControl(cancel,submit);
+        }
     }
 
     private class Register extends displayPanel{
