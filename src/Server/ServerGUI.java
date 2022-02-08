@@ -12,10 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
+import javax.swing.*;
 //import Server.java;
 
 
@@ -260,6 +257,24 @@ public class ServerGUI extends JFrame {
 
 
         }
+    }
+
+    //innerclass for editing config
+    protected class EditConfig extends displayPanel{
+        private JButton apply;
+        private JButton cancel;
+        private JLabel minUsernameLength;
+        private JTextField minUsernameValue;
+        private JLabel maxUsernameLength;
+        private JTextField maxUsernameValue;
+        private JLabel illegalUsernameCharacters;
+        private JTextField illegalUsernameChars;
+        private ArrayList illegalUsernameCharsList;
+        private JLabel minPasswordLength;
+        private JTextField minPasswordValue;
+        private JLabel maxPasswordLength;
+        private JTextField maxPasswordValue;
+
     }
 
     public void addToTextArea(String s) {
