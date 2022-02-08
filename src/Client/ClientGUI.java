@@ -324,7 +324,7 @@ public class ClientGUI extends JFrame {
              disconnect = new JButton("Disconnect");
              register = new JButton("Register");
              login = new JButton("Login");
-             recover = new JButton("Recover Password");
+             recover = new JButton("Recover");
              //add components to the window
              gbc.gridx = 0;
              gbc.gridy = 0;
@@ -564,7 +564,18 @@ public class ClientGUI extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("submit");
-                    updateData(new Login());
+                    if(client != null){
+                        if(client.networkaccess.testConnection()){
+                            updateData(new Login());
+                        }
+                        else{
+                            updateData(new Connect(true));
+                        }
+                    }
+                    else{
+                        updateData(new Connect(true));
+                    }
+
 
                 }
             });
@@ -645,28 +656,46 @@ public class ClientGUI extends JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("My Wish List");
-                        recipientWishListButton.setBackground(null);
-                        myWishListButton.setBackground(Color.WHITE);
-                        add.setVisible(true);
-                        remove.setVisible(true);
-                        clear.setVisible(true);
-                        status.setVisible(true);
-                        confirmWishlist.setVisible(true);
-
-
+                        if(client != null){
+                            if(client.networkaccess.testConnection()){
+                                recipientWishListButton.setBackground(null);
+                                myWishListButton.setBackground(Color.WHITE);
+                                add.setVisible(true);
+                                remove.setVisible(true);
+                                clear.setVisible(true);
+                                status.setVisible(true);
+                                confirmWishlist.setVisible(true);
+                            }
+                            else{
+                                updateData(new Connect(true));
+                            }
+                        }
+                        else{
+                            updateData(new Connect(true));
+                        }
                     }
                 });
                 recipientWishListButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("Recipient's Wishlist");
-                        myWishListButton.setBackground(null);
-                        recipientWishListButton.setBackground(Color.WHITE);
-                        add.setVisible(false);
-                        remove.setVisible(false);
-                        clear.setVisible(false);
-                        status.setVisible(false);
-                        confirmWishlist.setVisible(false);
+                        if(client != null){
+                            if(client.networkaccess.testConnection()){
+                                System.out.println("Recipient's Wishlist");
+                                myWishListButton.setBackground(null);
+                                recipientWishListButton.setBackground(Color.WHITE);
+                                add.setVisible(false);
+                                remove.setVisible(false);
+                                clear.setVisible(false);
+                                status.setVisible(false);
+                                confirmWishlist.setVisible(false);
+                            }
+                            else{
+                                updateData(new Connect(true));
+                            }
+                        }
+                        else{
+                            updateData(new Connect(true));
+                        }
 
 
 
@@ -676,25 +705,51 @@ public class ClientGUI extends JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("Add item");
-                        updateData(new AddItem());
-
-
+                        if(client != null){
+                            if(client.networkaccess.testConnection()){
+                                updateData(new AddItem());
+                            }
+                            else {
+                                updateData(new Connect(true));
+                            }
+                        }
+                        else{
+                            updateData(new Connect(true));
+                        }
                     }
                 });
                 remove.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("Remove Item");
-                        updateData(new RemoveItem());
-
-
+                        if(client != null){
+                            if(client.networkaccess.testConnection()){
+                                updateData(new RemoveItem());
+                            }
+                            else {
+                                updateData(new Connect(true));
+                            }
+                        }
+                        else{
+                            updateData(new Connect(true));
+                        }
                     }
                 });
                 clear.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("Clear Wish List");
-
+                        if(client != null){
+                            if(client.networkaccess.testConnection()){
+                                System.out.println("wishlist cleared");
+                            }
+                            else {
+                                updateData(new Connect(true));
+                            }
+                        }
+                        else{
+                            updateData(new Connect(true));
+                        }
 
                     }
                 });
@@ -702,7 +757,17 @@ public class ClientGUI extends JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("Confirm Wish List");
-
+                        if(client != null){
+                            if(client.networkaccess.testConnection()){
+                                System.out.println("Wishlist Confirmed");
+                            }
+                            else {
+                                updateData(new Connect(true));
+                            }
+                        }
+                        else{
+                            updateData(new Connect(true));
+                        }
 
                     }
                 });
@@ -711,23 +776,40 @@ public class ClientGUI extends JFrame {
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("Log Out");
                         System.out.println(usr.getUsername());
-                        if(client.logout(usr)){
-                            usr = new User(); //clearing the global User variable when the client logs out
-                            updateData(new Login());
+                        if(client != null){
+                            if(client.networkaccess.testConnection()){
+                                if(client.logout(usr)){
+                                    usr = new User(); //clearing the global User variable when the client logs out
+                                    updateData(new Login());
+                                }
+                                else {
+                                    System.out.println("Cannot Logout User");
+                                }
+                            }
+                            else {
+                                updateData(new Connect(true));
+                            }
                         }
-                        else {
-                            System.out.println("Cannot Logout User");
+                        else{
+                            updateData(new Connect(true));
                         }
-
                     }
                 });
                 accountSettings.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("Account Settings");
-                        updateData(new AccountSettings());
-
-
+                        if(client != null){
+                            if(client.networkaccess.testConnection()){
+                                updateData(new AccountSettings());
+                            }
+                            else {
+                                updateData(new Connect(true));
+                            }
+                        }
+                        else{
+                            updateData(new Connect(true));
+                        }
                     }
                 });
                 updateControl(logOut,accountSettings,confirmWishlist);
