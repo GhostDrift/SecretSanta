@@ -44,7 +44,6 @@ public class ServerGUI extends JFrame {
         setLayout(new BorderLayout(15, 5));
         this.data = new ServerControl();
         this.add(data,BorderLayout.CENTER);
-
         setVisible(true);
 
         this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -64,6 +63,20 @@ public class ServerGUI extends JFrame {
             }
         });
 
+    }
+    protected void updateData(displayPanel dataNew){
+        this.remove(data);
+        this.data = dataNew;
+        this.add(data,BorderLayout.CENTER);
+
+//        System.out.println( "Login " +Data.getLabel());
+//        this.remove(windowTitle);
+//        this.windowTitle = new Label(Data.getLabel());
+//        this.add(windowTitle, BorderLayout.NORTH);
+//        this.windowTitle.repaint();
+//        System.out.println("Label " + windowTitle.getText());
+        this.repaint();
+//        shutDown();
     }
     private class ServerControl extends displayPanel{
         protected ServerControl(){
@@ -229,7 +242,12 @@ public class ServerGUI extends JFrame {
             Conf.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
+                    try {
+                        updateData(new EditConfig());
+                    } catch (ConfigNotInitializedException ex) {
+                        ex.printStackTrace();
+                        System.out.println("Config has not been initialized");
+                    }
                 }
 
             });
@@ -274,6 +292,36 @@ public class ServerGUI extends JFrame {
         private JTextField minPasswordValue;
         private JLabel maxPasswordLength;
         private JTextField maxPasswordValue;
+        private JLabel illegalPasswordCharacters;
+        private JTextField illegalPasswordChars;
+        private ArrayList illegalPasswordCharList;
+        private JLabel validEmailFormat;
+        private JTextField validEmailFormatValue;
+        private JLabel systemEmail;
+        private JTextField systemEmailValue;
+        private JLabel systemEmailPassword;
+        private JTextField systemEmailPasswordValue;
+        private JLabel userDatabaseFilePath;
+        private JTextField userDatabaseFilePathValue;
+        private JLabel systemDatabaseFilePath;
+        private JTextField systemDatabaseFilePathValue;
+        private JLabel databaseUsername;
+        private JTextField databaseUsernameValue;
+        private JLabel databasePassword;
+        private JTextField databasePasswordValue;
+        private JLabel lockoutThreshold;
+        private JTextField lockoutThresholdValue;
+
+        protected EditConfig() throws ConfigNotInitializedException {
+            Config.initializeConfig("ServerConfiguration.conf");
+            setTitle("Config Editor");
+            this.setLayout(new FlowLayout(1,10,10));
+            this.minUsernameLength = new JLabel("Minimum Password Length: ");
+            this.minPasswordValue = new JTextField(String.valueOf(Config.getMinPasswordLength()), 25);
+            this.add(minPasswordLength);
+            this.add(minPasswordValue);
+
+        }
 
     }
 
