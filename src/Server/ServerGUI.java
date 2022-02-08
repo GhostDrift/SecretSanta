@@ -208,6 +208,23 @@ public class ServerGUI extends JFrame {
 
         setVisible(true);
 
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            //modified code from
+            //https://stackoverflow.com/questions/9093448/how-to-capture-a-jframes-close-button-click-event
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                System.out.println("Close button has been pressed");
+                if(server != null) {
+                    if (server.isRunning()) {
+                        System.out.println("Logging out and disconnecting clients");
+                        server.stopServer();
+                        server.removeServersocket();
+                    }
+                }
+                System.exit(0);
+            }
+        });
+
     }
 
     public void addToTextArea(String s) {

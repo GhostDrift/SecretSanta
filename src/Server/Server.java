@@ -103,6 +103,11 @@ public class Server extends Thread {
         return userDatabase;
     }
 
+    //returns the value of running
+    public boolean isRunning(){
+	    return this.running;
+    }
+
     /**
 	 * constructor creates the list of clients and
 	 * starts the server listening on the port
