@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 
 import javax.swing.*;
+import javax.swing.border.Border;
 //import Server.java;
 
 
@@ -26,10 +27,12 @@ public class ServerGUI extends JFrame {
     private  BottomPanel low;
     private  FieldPanel con;
     private displayPanel data;
+    private Label windowTitle;
+//    private ClientGUI.Label windowTitle;
 
 
     public ServerGUI() {
-        setTitle("Server");
+        setTitle("Secret Santa Management System Server");
 
         // -- size of the frame: width, height
         setSize(WIDTH, HEIGHT);
@@ -42,8 +45,15 @@ public class ServerGUI extends JFrame {
         // -- set the layout manager and add items
         // 5, 5 is the border around the edges of the areas
         setLayout(new BorderLayout(15, 5));
+        this.windowTitle = new Label();
         this.data = new ServerControl();
+//        try {
+//            this.data = new EditConfig();
+//        } catch (ConfigNotInitializedException e) {
+//            e.printStackTrace();
+//        }
         this.add(data,BorderLayout.CENTER);
+        this.add(windowTitle, BorderLayout.NORTH);
         setVisible(true);
 
         this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -67,7 +77,7 @@ public class ServerGUI extends JFrame {
     protected void updateData(displayPanel dataNew){
         this.remove(data);
         this.data = dataNew;
-//        this.add(data,BorderLayout.CENTER);
+        this.add(data);
 
 //        System.out.println( "Login " +Data.getLabel());
 //        this.remove(windowTitle);
@@ -80,9 +90,10 @@ public class ServerGUI extends JFrame {
     }
     private class ServerControl extends displayPanel{
         protected ServerControl(){
-
-            setTitle("Server");
-
+            this.setPanelName("Server");
+            this.setSpaces("                                                                                                              ");
+//            setTitle("Server");
+            windowTitle.setText(this.getLabel());
             // -- size of the frame: width, height
             setSize(WIDTH, HEIGHT);
 
@@ -243,8 +254,9 @@ public class ServerGUI extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        new ConfigEditor();
-                        dispose();
+//                        new ConfigEditor();
+//                        dispose();
+                        updateData(new EditConfig());
                     } catch (ConfigNotInitializedException ex) {
                         ex.printStackTrace();
                         System.out.println("Config has not been initialized");
@@ -275,6 +287,34 @@ public class ServerGUI extends JFrame {
 
 
 
+        }
+    }
+    //innerclass for holding the window title
+    private static class Label extends JPanel{
+        private JLabel title;
+        private String text;
+
+
+        Label(){
+            setLayout(new FlowLayout(1, 10,10));
+            Border labelBorder = BorderFactory.createLineBorder(Color.black);
+            this.text = "";
+            title = new JLabel(text);
+            title.setBorder(labelBorder);
+            title.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            this.add(title);
+        }
+
+        Label(String text){
+            super();
+            this.setText(text);
+        }
+        protected void setText(String newText){
+            this.title.setText(newText);
+            System.out.println("Label new text: " + newText);
+        }
+        protected String getText(){
+            return this.text;
         }
     }
 
@@ -314,16 +354,43 @@ public class ServerGUI extends JFrame {
         private JTextField lockoutThresholdValue;
 
         protected EditConfig() throws ConfigNotInitializedException {
-            Config.initializeConfig("ServerConfiguration.conf");
-            setTitle("Config Editor");
-            setLayout(new BorderLayout(15, 5));
+//            Config.initializeConfig("ServerConfiguration.conf");
+//            setTitle("Config Editor");
+//            setLayout(new BorderLayout(15, 5));
+//            this.minPasswordLength = new JLabel("Minimum Password Length: ");
+//            this.minPasswordLength.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+//            this.minPasswordValue = new JTextField(String.valueOf(Config.getMinPasswordLength()), 25);
+//            this.add(minPasswordLength,BorderLayout.CENTER);
+//            this.add(minPasswordValue,BorderLayout.CENTER);
+//            this.setVisible(true);
+//            this.repaint();
+            this.setPanelName("Config Editor");
+//            this.setSpaces("                                                                                                              ");
+//            setTitle("Config Editor");
+            setSize(WIDTH, HEIGHT);
+            setLayout(new FlowLayout(1,10,10));
+            windowTitle.setText(this.getLabel());
             this.minPasswordLength = new JLabel("Minimum Password Length: ");
             this.minPasswordLength.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             this.minPasswordValue = new JTextField(String.valueOf(Config.getMinPasswordLength()), 25);
-            this.add(minPasswordLength,BorderLayout.CENTER);
-            this.add(minPasswordValue,BorderLayout.CENTER);
+            this.cancel = new JButton("Cancel");
+            prepareButtonHandlers();
+            this.add(minPasswordLength);
+            this.add(minPasswordValue);
+            this.add(cancel);
             this.setVisible(true);
             this.repaint();
+        }
+
+        private void prepareButtonHandlers() {
+            cancel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Cancel");
+                    updateData(new ServerControl());
+                }
+
+            });
         }
 
     }
