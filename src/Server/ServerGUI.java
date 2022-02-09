@@ -442,7 +442,7 @@ public class ServerGUI extends JFrame {
             gbc.gridy = 5;
             this.add(illegalPasswordCharacters,gbc);
             gbc.gridx = 1;
-            this.add(illegalPasswordCharList,gbc);
+
             this.add(cancel);
             this.setVisible(true);
             this.repaint();
