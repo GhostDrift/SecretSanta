@@ -337,9 +337,11 @@ public class ServerGUI extends JFrame {
         private JTextField illegalPasswordChars;
         private JTextField illegalPasswordCharList;
         private JLabel requiredCharSets;
-        private JTextField requiredCharSetsValue;
-        private JLabel enforcePassHistory;
-        private JTextField enforcePassHistoryValue;
+        private JCheckBox uppercaseLetters;
+        private JCheckBox lowercaseLetters;
+        private JCheckBox numbers;
+        private JCheckBox symbols;
+        private JCheckBox enforcePassHistoryValue;
         private JLabel validEmailFormat;
         private JTextField validEmailFormatValue;
         private JLabel systemEmail;
@@ -385,16 +387,30 @@ public class ServerGUI extends JFrame {
             this.maxUsernameValue = new JTextField(String.valueOf(Config.getMaxUsernameLength()), 25);
             this.illegalUsernameCharacters = new JLabel("Illegal Username Characters");
             this.illegalUsernameCharacters.setFont(timesNewRoman);
-            this.illegalUsernameCharsList = new JTextField(Config.getIllegalUsernameCharacters().toString());
+            String badUserChars;
+            if (Config.getIllegalUsernameCharacters().length < 1){
+                badUserChars = "";
+            }
+            else{
+                badUserChars = Config.getIllegalUsernameCharacters().toString();
+            }
+            this.illegalUsernameCharsList = new JTextField(badUserChars,25);
             this.minPasswordLength = new JLabel("Minimum Password Length: ");
             this.minPasswordLength.setFont(timesNewRoman);
             this.minPasswordValue = new JTextField(String.valueOf(Config.getMinPasswordLength()), 25);
             this.maxPasswordLength = new JLabel("Maximum Password Length");
             this.maxPasswordLength.setFont(timesNewRoman);
             this.maxPasswordValue = new JTextField(String.valueOf(Config.getMaxPasswordLength()), 25);
-            this.illegalPasswordCharacters = new JLabel("IllegalUsernameCharacters");
+            this.illegalPasswordCharacters = new JLabel("Illegal Password Characters");
             this.illegalPasswordCharacters.setFont(timesNewRoman);
-
+            this.illegalPasswordCharList = new JTextField(Config.getIllegalPasswordCharacters(),25);
+            this.requiredCharSets = new JLabel("Required Character sets:");
+            this.requiredCharSets.setFont(timesNewRoman);
+            boolean[] charSetRequirements = Config.getRequiredCharacterSets();
+            this.lowercaseLetters = new JCheckBox("Lowercase",charSetRequirements[0]);
+            this.uppercaseLetters = new JCheckBox("Uppercase",charSetRequirements[1]);
+            this.numbers = new JCheckBox("Numbers", charSetRequirements[2]);
+            this.symbols = new JCheckBox("Symbols", charSetRequirements[3]);
             this.cancel = new JButton("Cancel");
             prepareButtonHandlers();
             gbc.gridx = 0;
@@ -409,21 +425,28 @@ public class ServerGUI extends JFrame {
             this.add(maxUsernameValue,gbc);
             gbc.gridx = 0;
             gbc.gridy = 2;
+            this.add(illegalUsernameCharacters,gbc);
+            gbc.gridx = 1;
+            this.add(illegalUsernameCharsList,gbc);
+            gbc.gridx = 0;
+            gbc.gridy = 3;
             this.add(minPasswordLength,gbc);
             gbc.gridx = 1;
             this.add(minPasswordValue,gbc);
             gbc.gridx = 0;
-            gbc.gridy = 3;
-//            this.add(maxPasswordLength,gbc);
-//            gbc.gridx = 1;
-//            this.add(maxPasswordValue,gbc);
-//            this.add(illegalUsernameCharacters);
-//            this.add(illegalUsernameCharsList);
-//            this.add(minPasswordLength);
-//            this.add(minPasswordValue);
+            gbc.gridy = 4;
+            this.add(maxPasswordLength,gbc);
+            gbc.gridx = 1;
+            this.add(maxPasswordValue,gbc);
+            gbc.gridx = 0;
+            gbc.gridy = 5;
+            this.add(illegalPasswordCharacters,gbc);
+            gbc.gridx = 1;
+            this.add(illegalPasswordCharList,gbc);
             this.add(cancel);
             this.setVisible(true);
             this.repaint();
+            Config.printConfig();
         }
 
         private void prepareButtonHandlers() {
