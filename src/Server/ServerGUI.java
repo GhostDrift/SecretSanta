@@ -343,6 +343,7 @@ public class ServerGUI extends JFrame {
         private JCheckBox numbers;
         private JCheckBox symbols;
         private JCheckBox enforcePassHistoryValue;
+        private JLabel enforcePassHistory;
         private JLabel validEmailFormat;
         private JTextField validEmailFormatValue;
         private JLabel systemEmail;
@@ -416,6 +417,9 @@ public class ServerGUI extends JFrame {
             this.numbers.setMnemonic(KeyEvent.VK_H);
             this.symbols = new JCheckBox("Symbols", charSetRequirements[3]);
             this.symbols.setMnemonic(KeyEvent.VK_T);
+            this.enforcePassHistoryValue = new JCheckBox("",Config.getEnforcePasswordHistory());
+            this.enforcePassHistoryValue.setMnemonic(KeyEvent.VK_0);
+            this.enforcePassHistory = new JLabel("Enforce Password History:");
             this.cancel = new JButton("Cancel");
             prepareButtonHandlers();
             gbc.gridx = 0;
@@ -472,6 +476,11 @@ public class ServerGUI extends JFrame {
             this.add(numbers,gbc);
             gbc.gridx = 4;
             this.add(symbols,gbc);
+            gbc.gridx = 0;
+            gbc.gridy = 7;
+            this.add(enforcePassHistory);
+            gbc.gridx = 1;
+            this.add(enforcePassHistoryValue);
             this.add(cancel);
             this.setVisible(true);
             this.repaint();
