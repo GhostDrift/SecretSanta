@@ -1,4 +1,5 @@
 package Client;
+import Common.ControlArea;
 import Common.User;
 import Common.displayPanel;
 
@@ -1042,53 +1043,53 @@ public class ClientGUI extends JFrame {
             updateControl(cancel,apply);
         }
     }
-    private class ControlArea extends JPanel{
-        private JButton left;
-        private JButton right;
-        private JButton center;
-        protected ControlArea(){
-            setLayout(new BorderLayout(5, 10));
-        }
-        protected void setLeft(JButton newLeft){
-            if(this.left != null) {
-                this.remove(left);
-            }
-            this.left = newLeft;
-            this.add(newLeft, BorderLayout.WEST);
-            this.repaint();
-        }
-        protected void setRight(JButton newRight){
-            if(this.right != null){
-                this.remove(right);
-            }
-            this.right = newRight;
-            this.add(newRight,BorderLayout.EAST);
-            this.repaint();
-        }
-        protected void setCenter(JButton newCenter){
-            if(this.center != null){
-                this.remove(center);
-            }
-            this.center = newCenter;
-            this.add(newCenter,BorderLayout.CENTER);
-            this.repaint();
-        }
-        protected void delButton(int i){
-            if(i == 0){
-                this.remove(left);
-            }
-            else if(i == 1){
-                this.remove(center);
-            }
-            else{
-                this.remove(right);
-            }
-        }
-
-        public void setCenter(JPanel center) {
-            this.add(center, BorderLayout.CENTER);
-        }
-    }
+//    private class ControlArea extends JPanel{
+//        private JButton left;
+//        private JButton right;
+//        private JButton center;
+//        protected ControlArea(){
+//            setLayout(new BorderLayout(5, 10));
+//        }
+//        protected void setLeft(JButton newLeft){
+//            if(this.left != null) {
+//                this.remove(left);
+//            }
+//            this.left = newLeft;
+//            this.add(newLeft, BorderLayout.WEST);
+//            this.repaint();
+//        }
+//        protected void setRight(JButton newRight){
+//            if(this.right != null){
+//                this.remove(right);
+//            }
+//            this.right = newRight;
+//            this.add(newRight,BorderLayout.EAST);
+//            this.repaint();
+//        }
+//        protected void setCenter(JButton newCenter){
+//            if(this.center != null){
+//                this.remove(center);
+//            }
+//            this.center = newCenter;
+//            this.add(newCenter,BorderLayout.CENTER);
+//            this.repaint();
+//        }
+//        protected void delButton(int i){
+//            if(i == 0){
+//                this.remove(left);
+//            }
+//            else if(i == 1){
+//                this.remove(center);
+//            }
+//            else{
+//                this.remove(right);
+//            }
+//        }
+//
+//        public void setCenter(JPanel center) {
+//            this.add(center, BorderLayout.CENTER);
+//        }
+//    }
 
     //method to shut off client properly
     private void shutDown(){
