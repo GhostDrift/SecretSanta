@@ -45,7 +45,7 @@ public class ServerGUI extends JFrame {
 
         // -- set the layout manager and add items
         // 5, 5 is the border around the edges of the areas
-        setLayout(new BorderLayout(15, 5));
+        setLayout(new BorderLayout(1, 1));
         this.windowTitle = new Label();
         this.data = new ServerControl();
 //        try {
@@ -323,6 +323,10 @@ public class ServerGUI extends JFrame {
     protected class EditConfig extends displayPanel{
         private JButton apply;
         private JButton cancel;
+        private JButton usernameSettings;
+        private JButton passwordSettings;
+        private JButton emailSettings;
+        private JButton databaseAndOtherSettings;
         private JLabel minUsernameLength;
         private JTextField minUsernameValue;
         private JLabel maxUsernameLength;
@@ -478,8 +482,8 @@ public class ServerGUI extends JFrame {
             this.add(symbols,gbc);
             gbc.gridx = 0;
             gbc.gridy = 7;
-            this.add(enforcePassHistory);
-            gbc.gridx = 1;
+//            this.add(enforcePassHistory);
+//            gbc.gridx = 1;
             this.add(enforcePassHistoryValue);
             this.add(cancel);
             this.setVisible(true);
