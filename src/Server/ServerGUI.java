@@ -1,5 +1,6 @@
 package Server;
 
+import Common.ControlArea;
 import Common.displayPanel;
 
 import java.awt.*;
@@ -321,12 +322,14 @@ public class ServerGUI extends JFrame {
 
     //innerclass for editing config
     protected class EditConfig extends displayPanel{
+//        private ControlArea control;
         private JButton apply;
         private JButton cancel;
-        private JButton usernameSettings;
-        private JButton passwordSettings;
-        private JButton emailSettings;
-        private JButton databaseAndOtherSettings;
+//        private JButton usernameSettings;
+//        private JButton passwordSettings;
+//        private JButton emailSettings;
+//        private JButton databaseAndOtherSettings;
+//        private JLabel settings;
         private JLabel minUsernameLength;
         private JTextField minUsernameValue;
         private JLabel maxUsernameLength;
@@ -378,13 +381,20 @@ public class ServerGUI extends JFrame {
 //            this.add(minPasswordValue,BorderLayout.CENTER);
 //            this.setVisible(true);
 //            this.repaint();
-            this.setPanelName("Config Editor");
+            this.setPanelName("Username Settings");
 //            this.setSpaces("                                                                                                              ");
 //            setTitle("Config Editor");
             setSize(WIDTH, HEIGHT);
 //            setLayout(new FlowLayout(1,10,10));
             setLayout(new GridBagLayout());
             windowTitle.setText(this.getLabel());
+            //initialize components
+//            this.settings = new JLabel("Username Settings");
+//            this.usernameSettings = new JButton("Username Settings");
+//            this.passwordSettings = new JButton("Password Settings");
+//            this.emailSettings = new JButton("Email Settings");
+//            this.databaseAndOtherSettings = new JButton("Database And Other Settings");
+//            this.control = new ControlArea();
             this.minUsernameLength = new JLabel("Minimum Username Length");
             this.minUsernameLength.setFont(timesNewRoman);
             this.minUsernameValue = new JTextField(String.valueOf(Config.getMinUsernameLength()), 25);
@@ -424,6 +434,16 @@ public class ServerGUI extends JFrame {
             this.enforcePassHistoryValue = new JCheckBox("",Config.getEnforcePasswordHistory());
             this.enforcePassHistoryValue.setMnemonic(KeyEvent.VK_0);
             this.enforcePassHistory = new JLabel("Enforce Password History:");
+            this.enforcePassHistory.setFont(timesNewRoman);
+            this.validEmailFormat = new JLabel("Valid Email Format");
+            this.validEmailFormat.setFont(timesNewRoman);
+            this.validEmailFormatValue = new JTextField(Config.getValidEmailFormat(),25);
+            this.systemEmail = new JLabel("System Email: ");
+            this.systemEmail.setFont(timesNewRoman);
+            this.systemEmailValue = new JTextField(Config.getEmailUsername(),25);
+            this.systemEmailPassword = new JLabel("System Email Password");
+            this.systemEmailPassword.setFont(timesNewRoman);
+            this.systemEmailPasswordValue = new JTextField(Config.getEmailPassword(),25);
             this.cancel = new JButton("Cancel");
             prepareButtonHandlers();
             gbc.gridx = 0;
@@ -482,9 +502,30 @@ public class ServerGUI extends JFrame {
             this.add(symbols,gbc);
             gbc.gridx = 0;
             gbc.gridy = 7;
-//            this.add(enforcePassHistory);
-//            gbc.gridx = 1;
-            this.add(enforcePassHistoryValue);
+            this.add(enforcePassHistory,gbc);
+            gbc.gridx = 1;
+            this.add(enforcePassHistoryValue,gbc);
+            gbc.gridx = 0;
+            gbc.gridy = 8;
+            gbc.gridwidth = 1;
+            this.add(validEmailFormat,gbc);
+            gbc.gridx = 1;
+            gbc.gridwidth = 4;
+            this.add(validEmailFormatValue,gbc);
+            gbc.gridx = 0;
+            gbc.gridy = 9;
+            gbc.gridwidth = 1;
+            this.add(systemEmail,gbc);
+            gbc.gridx = 1;
+            gbc.gridwidth = 4;
+            this.add(systemEmailValue,gbc);
+            gbc.gridx = 0;
+            gbc.gridy = 10;
+            gbc.gridwidth = 1;
+            this.add(systemEmailPassword,gbc);
+            gbc.gridx = 1;
+            gbc.gridwidth = 4;
+            this.add(systemEmailPasswordValue,gbc);
             this.add(cancel);
             this.setVisible(true);
             this.repaint();
@@ -500,6 +541,35 @@ public class ServerGUI extends JFrame {
                 }
 
             });
+//            usernameSettings.addActionListener(new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+//                    System.out.println("Username Settings");
+//
+//                }
+//
+//            });
+//            passwordSettings.addActionListener(new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+//                    System.out.println("Password Settings");
+//                }
+//
+//            });
+//            emailSettings.addActionListener(new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+//                    System.out.println("Email Settings");
+//                }
+//
+//            });
+//            databaseAndOtherSettings.addActionListener(new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+//                    System.out.println("Database and other Settings");
+//                }
+//
+//            });
         }
 
     }
