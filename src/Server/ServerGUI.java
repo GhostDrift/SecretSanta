@@ -471,6 +471,7 @@ public class ServerGUI extends JFrame {
             this.uppercaseLetters.addItemListener(this);
             this.numbers.addItemListener(this);
             this.symbols.addItemListener(this);
+            this.enforcePassHistoryValue.addItemListener(this);
             prepareButtonHandlers();
             gbc.gridx = 0;
             gbc.gridy = 0;
@@ -607,6 +608,7 @@ public class ServerGUI extends JFrame {
         }
         public void itemStateChanged(ItemEvent e){
             int i = 0;
+            int flag = 0;
             boolean value = false;
             Object source = e.getSource();
             if(source == lowercaseLetters){
@@ -624,15 +626,28 @@ public class ServerGUI extends JFrame {
                 i = 4;
                 value = true;
             }
+            else if(source == enforcePassHistoryValue){
+                value = true;
+            }
             if(e.getStateChange()==ItemEvent.DESELECTED){
                 value = false;
             }
-            try {
-               boolean[] reqChars = Config.getRequiredCharacterSets();
-               reqChars[i]= value;
-               System.out.println(Arrays.toString(Config.getRequiredCharacterSets()));
-            } catch (ConfigNotInitializedException ex) {
-                ex.printStackTrace();
+            if(flag == 0) {
+                try {
+                    boolean[] reqChars = Config.getRequiredCharacterSets();
+                    reqChars[i] = value;
+                    System.out.println(Arrays.toString(Config.getRequiredCharacterSets()));
+                } catch (ConfigNotInitializedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            else{
+                try {
+                    Config.setEnforcePasswordHistory(value);
+                    System.out.println("Enforce Password History: " + Config.getEnforcePasswordHistory());
+                } catch (ConfigNotInitializedException ex) {
+                    ex.printStackTrace();
+                }
             }
 
         }
@@ -646,35 +661,6 @@ public class ServerGUI extends JFrame {
                 }
 
             });
-//            usernameSettings.addActionListener(new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    System.out.println("Username Settings");
-//
-//                }
-//
-//            });
-//            passwordSettings.addActionListener(new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    System.out.println("Password Settings");
-//                }
-//
-//            });
-//            emailSettings.addActionListener(new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    System.out.println("Email Settings");
-//                }
-//
-//            });
-//            databaseAndOtherSettings.addActionListener(new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    System.out.println("Database and other Settings");
-//                }
-//
-//            });
         }
 
     }

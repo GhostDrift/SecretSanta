@@ -261,6 +261,12 @@ public class Config implements Serializable {
             throw new ConfigNotInitializedException("The config file has not been initialized.");
         return config.enforcePasswordHistory;
     }
+    public static void setEnforcePasswordHistory(boolean value) throws ConfigNotInitializedException {
+        if (config == null)
+            throw new ConfigNotInitializedException("The config file has not been initialized.");
+        config.enforcePasswordHistory = value;
+    }
+
 
     public static void setRequiredCharacterSets(boolean enforceHistory) throws ConfigNotInitializedException, InvalidAttributeValueException {
         if (config == null)
