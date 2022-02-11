@@ -473,6 +473,7 @@ public class ServerGUI extends JFrame {
             this.symbols.addItemListener(this);
             this.enforcePassHistoryValue.addItemListener(this);
             prepareButtonHandlers();
+            prepareMouseHandlers();
             gbc.gridx = 0;
             gbc.gridy = 0;
             gbc.gridwidth = 5;
@@ -606,6 +607,16 @@ public class ServerGUI extends JFrame {
             this.repaint();
             Config.printConfig();
         }
+        private void saveChanges() throws ConfigNotInitializedException{
+            try {
+                Config.setMinUsernameLength(Integer.parseInt(minUsernameValue.getText()));
+                minUsernameValue.setForeground(Color.BLACK);
+            } catch (Exception e) {
+                minUsernameValue.setForeground(Color.RED);
+                minUsernameValue.setText(minPasswordValue.getText() + " Must be an integer");
+//                e.printStackTrace();
+            }
+        }
         public void itemStateChanged(ItemEvent e){
             int i = 0;
             int flag = 0;
@@ -652,6 +663,16 @@ public class ServerGUI extends JFrame {
             }
 
         }
+        private void prepareMouseHandlers(){
+            minUsernameValue.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    minUsernameValue.setForeground(Color.BLACK);
+                    minUsernameValue.setText("");
+                }
+            });
+        }
 
         private void prepareButtonHandlers() {
             cancel.addActionListener(new ActionListener() {
@@ -661,6 +682,17 @@ public class ServerGUI extends JFrame {
                     updateData(new ServerControl());
                 }
 
+            });
+            apply.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    System.out.println("Apply");
+                    try {
+                        saveChanges();
+                    } catch (ConfigNotInitializedException e) {
+                        e.printStackTrace();
+                    }
+                }
             });
         }
 
