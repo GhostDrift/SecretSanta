@@ -7,11 +7,10 @@ import java.awt.*;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 import javax.swing.*;
@@ -321,7 +320,7 @@ public class ServerGUI extends JFrame {
     }
 
     //innerclass for editing config
-    protected class EditConfig extends displayPanel{
+    protected class EditConfig extends displayPanel implements ItemListener {
 //        private ControlArea control;
         private JButton apply;
         private JButton cancel;
@@ -468,6 +467,10 @@ public class ServerGUI extends JFrame {
             this.lockoutThresholdValue = new JTextField(String.valueOf(Config.getLockoutThreshold()),25);
             this.cancel = new JButton("Cancel");
             this.apply = new JButton("Apply");
+            this.lowercaseLetters.addItemListener(this);
+            this.uppercaseLetters.addItemListener(this);
+            this.numbers.addItemListener(this);
+            this.symbols.addItemListener(this);
             prepareButtonHandlers();
             gbc.gridx = 0;
             gbc.gridy = 0;
@@ -601,6 +604,37 @@ public class ServerGUI extends JFrame {
             this.setVisible(true);
             this.repaint();
             Config.printConfig();
+        }
+        public void itemStateChanged(ItemEvent e){
+            int i = 0;
+            boolean value = false;
+            Object source = e.getSource();
+            if(source == lowercaseLetters){
+                value = true;
+            }
+            else if(source == uppercaseLetters){
+                i = 1;
+                value = true;
+            }
+            else if(source == numbers){
+                i = 3;
+                value = true;
+            }
+            else if(source == symbols){
+                i = 4;
+                value = true;
+            }
+            if(e.getStateChange()==ItemEvent.DESELECTED){
+                value = false;
+            }
+            try {
+               boolean[] reqChars = Config.getRequiredCharacterSets();
+               reqChars[i]= value;
+               System.out.println(Arrays.toString(Config.getRequiredCharacterSets()));
+            } catch (ConfigNotInitializedException ex) {
+                ex.printStackTrace();
+            }
+
         }
 
         private void prepareButtonHandlers() {
