@@ -628,6 +628,7 @@ public class ServerGUI extends JFrame {
             }
             else if(source == enforcePassHistoryValue){
                 value = true;
+                flag =1;
             }
             if(e.getStateChange()==ItemEvent.DESELECTED){
                 value = false;
