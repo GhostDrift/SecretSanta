@@ -720,6 +720,14 @@ public class ServerGUI extends JFrame {
                     }
                 }
             });
+            lockoutThresholdValue.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    lockoutThresholdValue.setForeground(Color.BLACK);
+                    lockoutThresholdValue.setText("");
+                }
+            });
         }
 
         private void prepareButtonHandlers() {
