@@ -70,8 +70,21 @@ public class CommandProtocol {
                 if(Config.getMinUsernameLength() >usr.getUsername().length()){
                     na.sendMessage(new Message(null,"Username must be at least " + Config.getMinUsernameLength() + " characters long"),false);
                 }
-                else if(Config.getMinUsernameLength() < usr.getUsername().length()){
+                else if(Config.getMaxUsernameLength() < usr.getUsername().length()){
                     na.sendMessage(new Message(null,"Username must be less than " + Config.getMaxUsernameLength() + " characters long"),false);
+                }
+                else {
+                    char[] illegalChars = Config.getIllegalUsernameCharacters();
+                    Boolean stop = false;
+                    int i = 0;
+                    String testVal;
+                    while ((!stop) && (i < usr.getUsername().length())){
+                        testVal = Character.toString(illegalChars[i]);
+                        if(usr.getUsername().contains(testVal)){
+                            na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Converters.getStringFromArray(illegalChars)),false);
+                            stop = true;
+                        }
+                    }
                 }
             } catch (ConfigNotInitializedException e) {
                 e.printStackTrace();
