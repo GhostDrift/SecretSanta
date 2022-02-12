@@ -626,6 +626,7 @@ public class ServerGUI extends JFrame {
             return str;
         }
         private void saveChanges() throws ConfigNotInitializedException{
+            int flag = 0;
             try {
                 Config.setMinUsernameLength(Integer.parseInt(minUsernameValue.getText()));
                 minUsernameValue.setForeground(Color.BLACK);
@@ -633,6 +634,7 @@ public class ServerGUI extends JFrame {
                 minUsernameValue.setForeground(Color.RED);
                 minUsernameValue.setText(minPasswordValue.getText() + " Must be an integer");
 //                e.printStackTrace();
+                flag = 1;
             }
             try {
                 Config.setMaxUsernameLength(Integer.parseInt(maxUsernameValue.getText()));
@@ -640,6 +642,7 @@ public class ServerGUI extends JFrame {
                 maxUsernameValue.setForeground(Color.RED);
                 maxUsernameValue.setText(maxPasswordValue.getText() + " Must be an integer");
 //                e.printStackTrace();
+                flag = 1;
             }
             try {
                 Config.setIllegalUsernameCharacters(getCharArray(illegalUsernameCharsList.getText()));
@@ -647,6 +650,7 @@ public class ServerGUI extends JFrame {
                 e.printStackTrace();
                 illegalUsernameCharsList.setForeground(Color.RED);
                 illegalUsernameCharsList.setText(illegalUsernameCharsList.getText() + " Must only include Chars");
+                flag = 1;
             }
             try{
                 Config.setMinPasswordLength(Integer.parseInt(minPasswordValue.getText()));
@@ -655,6 +659,7 @@ public class ServerGUI extends JFrame {
 //                e.printStackTrace();
                 minPasswordValue.setForeground(Color.RED);
                 minPasswordValue.setText(minPasswordValue.getText() + " Must be an integer");
+                flag = 1;
             }
             try{
                 Config.setMaxPasswordLength(Integer.parseInt(maxPasswordValue.getText()));
@@ -662,52 +667,62 @@ public class ServerGUI extends JFrame {
             catch(Exception e){
                 maxPasswordValue.setForeground(Color.RED);
                 maxPasswordValue.setText(maxPasswordValue.getText() + " Must be an integer");
+                flag = 1;
             }
             try{
                 Config.setIllegalPasswordCharacters(illegalPasswordCharList.getText());
             }
             catch(Exception e){
                 illegalPasswordCharList.setForeground(Color.RED);
+                flag = 1;
             }
             try{
                 Config.setValidEmailFormat(validEmailFormatValue.getText());
             } catch (InvalidAttributeValueException e) {
                 validEmailFormatValue.setForeground(Color.RED);
+                flag = 1;
             }
             try {
                 Config.setEmailUsername(systemEmailValue.getText());
             } catch (InvalidAttributeValueException e) {
 //                e.printStackTrace();
                 systemEmailValue.setForeground(Color.RED);
+                flag = 1;
             }
             try {
                 Config.setEmailPassword(systemEmailPasswordValue.getText());
             } catch (InvalidAttributeValueException e) {
 //                e.printStackTrace();
                 systemEmailPasswordValue.setForeground(Color.RED);
+                flag = 1;
             }
             try {
                 Config.setUserDatabaseServerAddress(userDatabaseFilePathValue.getText());
             } catch (InvalidAttributeValueException e) {
 //                e.printStackTrace();
                 userDatabaseFilePathValue.setForeground(Color.RED);
+                flag = 1;
             }
             try {
                 Config.setSystemDatabaseServerAddress(systemDatabaseFilePathValue.getText());
             } catch (InvalidAttributeValueException e) {
 //                e.printStackTrace();
                 systemDatabaseFilePathValue.setForeground(Color.RED);
+                flag = 1;
             }
             try {
                 Config.setDatabaseUsername(databaseUsernameValue.getText());
             } catch (InvalidAttributeValueException e) {
 //                e.printStackTrace();
                 databaseUsernameValue.setForeground(Color.RED);
+                flag = 1;
             }
             try {
                 Config.setDatabasePassword(databasePasswordValue.getText());
             } catch (InvalidAttributeValueException e) {
 //                e.printStackTrace();
+                databasePasswordValue.setForeground(Color.RED);
+                flag = 1;
             }
             try{
                 Config.setLockoutThreshold(Integer.parseInt(lockoutThresholdValue.getText()));
@@ -715,8 +730,12 @@ public class ServerGUI extends JFrame {
             catch (Exception e){
                 lockoutThresholdValue.setForeground(Color.RED);
                 lockoutThresholdValue.setText(lockoutThresholdValue.getText() + " Must be an integer");
+                flag = 1;
             }
-            Config.saveConfig();
+            if(flag == 0) {
+                Config.saveConfig();
+                updateData(new ServerControl());
+            }
         }
         public void itemStateChanged(ItemEvent e){
             int i = 0;
