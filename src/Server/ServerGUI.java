@@ -674,6 +674,41 @@ public class ServerGUI extends JFrame {
             } catch (InvalidAttributeValueException e) {
                 validEmailFormatValue.setForeground(Color.RED);
             }
+            try {
+                Config.setEmailUsername(systemEmailValue.getText());
+            } catch (InvalidAttributeValueException e) {
+                e.printStackTrace();
+                systemEmailValue.setForeground(Color.RED);
+            }
+            try {
+                Config.setEmailPassword(systemEmailPasswordValue.getText());
+            } catch (InvalidAttributeValueException e) {
+                e.printStackTrace();
+                systemEmailPasswordValue.setForeground(Color.RED);
+            }
+            try {
+                Config.setUserDatabaseServerAddress(userDatabaseFilePathValue.getText());
+            } catch (InvalidAttributeValueException e) {
+                e.printStackTrace();
+                userDatabaseFilePathValue.setForeground(Color.RED);
+            }
+            try {
+                Config.setSystemDatabaseServerAddress(systemDatabaseFilePathValue.getText());
+            } catch (InvalidAttributeValueException e) {
+                e.printStackTrace();
+                systemDatabaseFilePathValue.setForeground(Color.RED);
+            }
+            try {
+                Config.setDatabaseUsername(databaseUsernameValue.getText());
+            } catch (InvalidAttributeValueException e) {
+                e.printStackTrace();
+                databaseUsernameValue.setForeground(Color.RED);
+            }
+            try {
+                Config.setDatabasePassword(databasePasswordValue.getText());
+            } catch (InvalidAttributeValueException e) {
+                e.printStackTrace();
+            }
             Config.saveConfig();
         }
         public void itemStateChanged(ItemEvent e){
