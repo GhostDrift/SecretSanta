@@ -520,6 +520,7 @@ public class ClientGUI extends JFrame {
         private JTextField rePassText;
         private JButton cancel;
         private JButton submit;
+        private JLabel error;
         private GridBagConstraints gbc = new GridBagConstraints();
 
         Register(){
@@ -541,6 +542,9 @@ public class ClientGUI extends JFrame {
             pasWord = new JTextField("", 25);
             eMailText = new JTextField("", 25);
             rePassText = new JTextField("", 25);
+            error = new JLabel("Errors will be displayed here");
+            error.setForeground(Color.RED);
+            error.setVisible(false);
             //prepare buttons
             cancel = new JButton("Cancel");
             submit = new JButton("Submit");
@@ -550,22 +554,26 @@ public class ClientGUI extends JFrame {
             gbc.gridy = 0;
             gbc.ipadx = 10;
             gbc.ipady = 10;
+            gbc.gridwidth = 2;
             gbc.fill = GridBagConstraints.NONE;
+            this.add(error,gbc);
+            gbc.gridy = 1;
+            gbc.gridwidth = 1;
             this.add(username,gbc);
             gbc.gridx = 1;
             this.add(usrName,gbc);
             gbc.gridx = 0;
-            gbc.gridy = 1;
+            gbc.gridy = 2;
             this.add(eMail,gbc);
             gbc.gridx = 1;
             this.add(eMailText,gbc);
             gbc.gridx = 0;
-            gbc.gridy = 2;
+            gbc.gridy = 3;
             this.add(password,gbc);
             gbc.gridx = 1;
             this.add(pasWord,gbc);
             gbc.gridx = 0;
-            gbc.gridy = 3;
+            gbc.gridy = 4;
             this.add(rePassword,gbc);
             gbc.gridx = 1;
             this.add(rePassText,gbc);
@@ -586,7 +594,15 @@ public class ClientGUI extends JFrame {
                     System.out.println("submit");
                     if(client != null){
                         if(client.networkaccess.testConnection()){
-                            updateData(new Login());
+                            String result =client.register(usrName.getText(),eMailText.getText(),pasWord.getText(),rePassText.getText());
+                            if(result.equals("success")){
+                                updateData(new Login());
+                            }
+                            else{
+                                error.setText(result);
+                                error.setVisible(true);
+                            }
+
                         }
                         else{
                             updateData(new Connect(true));
