@@ -75,4 +75,14 @@ public class Client {
         System.out.println("result = " +result.message );
         return result.message.equals("success");
     }
+    //registers a new user
+    public String register(String username, String email, String password, String rePassword){
+        if(!password.equals(rePassword)){
+            return "passMisMatch";
+
+        }
+        User usr = new User(username,password,email);
+        Message answer = networkaccess.sendMessage(new Message(usr,"Register"), true);
+        return answer.message;
+    }
 }
