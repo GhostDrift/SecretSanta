@@ -677,37 +677,44 @@ public class ServerGUI extends JFrame {
             try {
                 Config.setEmailUsername(systemEmailValue.getText());
             } catch (InvalidAttributeValueException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                 systemEmailValue.setForeground(Color.RED);
             }
             try {
                 Config.setEmailPassword(systemEmailPasswordValue.getText());
             } catch (InvalidAttributeValueException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                 systemEmailPasswordValue.setForeground(Color.RED);
             }
             try {
                 Config.setUserDatabaseServerAddress(userDatabaseFilePathValue.getText());
             } catch (InvalidAttributeValueException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                 userDatabaseFilePathValue.setForeground(Color.RED);
             }
             try {
                 Config.setSystemDatabaseServerAddress(systemDatabaseFilePathValue.getText());
             } catch (InvalidAttributeValueException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                 systemDatabaseFilePathValue.setForeground(Color.RED);
             }
             try {
                 Config.setDatabaseUsername(databaseUsernameValue.getText());
             } catch (InvalidAttributeValueException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                 databaseUsernameValue.setForeground(Color.RED);
             }
             try {
                 Config.setDatabasePassword(databasePasswordValue.getText());
             } catch (InvalidAttributeValueException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
+            }
+            try{
+                Config.setLockoutThreshold(Integer.parseInt(lockoutThresholdValue.getText()));
+            }
+            catch (Exception e){
+                lockoutThresholdValue.setForeground(Color.RED);
+                lockoutThresholdValue.setText(lockoutThresholdValue.getText() + " Must be an integer");
             }
             Config.saveConfig();
         }
