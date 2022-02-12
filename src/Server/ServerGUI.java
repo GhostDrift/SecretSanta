@@ -656,6 +656,24 @@ public class ServerGUI extends JFrame {
                 minPasswordValue.setForeground(Color.RED);
                 minPasswordValue.setText(minPasswordValue.getText() + " Must be an integer");
             }
+            try{
+                Config.setMaxPasswordLength(Integer.parseInt(maxPasswordValue.getText()));
+            }
+            catch(Exception e){
+                maxPasswordValue.setForeground(Color.RED);
+                maxPasswordValue.setText(maxPasswordValue.getText() + " Must be an integer");
+            }
+            try{
+                Config.setIllegalPasswordCharacters(illegalPasswordCharList.getText());
+            }
+            catch(Exception e){
+                illegalPasswordCharList.setForeground(Color.RED);
+            }
+            try{
+                Config.setValidEmailFormat(validEmailFormatValue.getText());
+            } catch (InvalidAttributeValueException e) {
+                validEmailFormatValue.setForeground(Color.RED);
+            }
             Config.saveConfig();
         }
         public void itemStateChanged(ItemEvent e){
@@ -759,6 +777,63 @@ public class ServerGUI extends JFrame {
                     } catch (ConfigNotInitializedException ex) {
                         ex.printStackTrace();
                     }
+                }
+            });
+            lockoutThresholdValue.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    lockoutThresholdValue.setForeground(Color.BLACK);
+                    lockoutThresholdValue.setText("");
+                }
+            });
+            validEmailFormatValue.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    validEmailFormatValue.setForeground(Color.BLACK);
+                }
+            });
+            systemEmailValue.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    systemEmailValue.setForeground(Color.black);
+                }
+            });
+            systemEmailPasswordValue.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    systemEmailPasswordValue.setForeground(Color.black);
+                }
+            });
+            userDatabaseFilePathValue.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    userDatabaseFilePathValue.setForeground(Color.BLACK);
+                }
+            });
+            systemDatabaseFilePathValue.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    systemDatabaseFilePathValue.setForeground(Color.BLACK);
+                }
+            });
+            databaseUsernameValue.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    databaseUsernameValue.setForeground(Color.BLACK);
+                }
+            });
+            databasePasswordValue.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    databasePasswordValue.setForeground(Color.BLACK);
                 }
             });
             lockoutThresholdValue.addMouseListener(new MouseAdapter() {
