@@ -672,6 +672,54 @@ public class ServerGUI extends JFrame {
                     minUsernameValue.setText("");
                 }
             });
+            maxUsernameValue.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    maxUsernameValue.setForeground(Color.BLACK);
+                    maxUsernameValue.setText("");
+                }
+            });
+            illegalUsernameCharsList.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    illegalUsernameCharsList.setForeground(Color.BLACK);
+                    try {
+                        illegalUsernameCharsList.setText(Arrays.toString(Config.getIllegalUsernameCharacters()));
+                    } catch (ConfigNotInitializedException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
+            minPasswordValue.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    minPasswordValue.setForeground(Color.BLACK);
+                    minPasswordValue.setText("");
+                }
+            });
+            maxPasswordValue.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    maxPasswordValue.setForeground(Color.BLACK);
+                    maxPasswordValue.setText("");
+                }
+            });
+            illegalPasswordCharList.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    illegalPasswordCharList.setForeground(Color.black);
+                    try {
+                        illegalPasswordCharList.setText(Config.getIllegalPasswordCharacters());
+                    } catch (ConfigNotInitializedException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
         }
 
         private void prepareButtonHandlers() {
