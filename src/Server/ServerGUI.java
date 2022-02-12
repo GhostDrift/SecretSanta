@@ -414,7 +414,7 @@ public class ServerGUI extends JFrame {
                 badUserChars = "";
             }
             else{
-                badUserChars = Config.getIllegalUsernameCharacters().toString();
+                badUserChars = getStringFromArray(Config.getIllegalUsernameCharacters());
             }
             this.illegalUsernameCharsList = new JTextField(badUserChars,25);
             this.minPasswordLength = new JLabel("Minimum Password Length: ");
@@ -607,6 +607,24 @@ public class ServerGUI extends JFrame {
             this.repaint();
             Config.printConfig();
         }
+        private char[] getCharArray(String str){
+            //modified code from Geeks for Geeks
+//            https://www.geeksforgeeks.org/convert-a-string-to-character-array-in-java/
+            char[] ch = new char[str.length()];
+
+            // Copy character by character into array
+            for (int i = 0; i < str.length(); i++) {
+                ch[i] = str.charAt(i);
+            }
+            return ch;
+        }
+        private String getStringFromArray(char[] chars){
+            String str = "";
+            for(int i = 0; i < chars.length; i ++){
+                str = str + chars[i];
+            }
+            return str;
+        }
         private void saveChanges() throws ConfigNotInitializedException{
             try {
                 Config.setMinUsernameLength(Integer.parseInt(minUsernameValue.getText()));
@@ -616,6 +634,21 @@ public class ServerGUI extends JFrame {
                 minUsernameValue.setText(minPasswordValue.getText() + " Must be an integer");
 //                e.printStackTrace();
             }
+            try {
+                Config.setMaxUsernameLength(Integer.parseInt(maxUsernameValue.getText()));
+            } catch (Exception e) {
+                maxUsernameValue.setForeground(Color.RED);
+                maxUsernameValue.setText(maxPasswordValue.getText() + " Must be an integer");
+//                e.printStackTrace();
+            }
+            try {
+                Config.setIllegalUsernameCharacters(getCharArray(illegalUsernameCharsList.getText()));
+            } catch (InvalidAttributeValueException e) {
+                e.printStackTrace();
+                illegalUsernameCharsList.setForeground(Color.RED);
+                illegalUsernameCharsList.setText(illegalUsernameCharsList.getText() + " Must only include Chars");
+            }
+            Config.saveConfig();
         }
         public void itemStateChanged(ItemEvent e){
             int i = 0;
@@ -686,7 +719,7 @@ public class ServerGUI extends JFrame {
                     super.mouseClicked(e);
                     illegalUsernameCharsList.setForeground(Color.BLACK);
                     try {
-                        illegalUsernameCharsList.setText(Arrays.toString(Config.getIllegalUsernameCharacters()));
+                        illegalUsernameCharsList.setText(getStringFromArray(Config.getIllegalUsernameCharacters()));
                     } catch (ConfigNotInitializedException ex) {
                         ex.printStackTrace();
                     }
