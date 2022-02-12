@@ -648,6 +648,14 @@ public class ServerGUI extends JFrame {
                 illegalUsernameCharsList.setForeground(Color.RED);
                 illegalUsernameCharsList.setText(illegalUsernameCharsList.getText() + " Must only include Chars");
             }
+            try{
+                Config.setMinPasswordLength(Integer.parseInt(minPasswordValue.getText()));
+            }
+            catch(Exception e){
+//                e.printStackTrace();
+                minPasswordValue.setForeground(Color.RED);
+                minPasswordValue.setText(minPasswordValue.getText() + " Must be an integer");
+            }
             Config.saveConfig();
         }
         public void itemStateChanged(ItemEvent e){
