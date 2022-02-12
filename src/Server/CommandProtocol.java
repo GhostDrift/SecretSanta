@@ -64,7 +64,19 @@ public class CommandProtocol {
                 na.sendMessage(new Message(null,"fail"), false);
             }
 
-        } else {
+        } else if(cmd.message.equals("Register")){
+            User usr = cmd.user;
+            try {
+                if(Config.getMinUsernameLength() >usr.getUsername().length()){
+                    na.sendMessage(new Message(null,"Username must be at least " + Config.getMinUsernameLength() + " characters long"),false);
+                }
+                else if(Config.getMinUsernameLength() < usr.getUsername().length()){
+                    na.sendMessage(new Message(null,"Username must be less than " + Config.getMaxUsernameLength() + " characters long"),false);
+                }
+            } catch (ConfigNotInitializedException e) {
+                e.printStackTrace();
+            }
+        }else {
 
             na.sendMessage(cmd, false);
 

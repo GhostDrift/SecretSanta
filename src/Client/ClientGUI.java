@@ -601,6 +601,7 @@ public class ClientGUI extends JFrame {
                             else{
                                 error.setText(result);
                                 error.setVisible(true);
+                                repaint();
                             }
 
                         }
