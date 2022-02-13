@@ -78,7 +78,7 @@ public class Client {
     //registers a new user
     public String register(String username, String email, String password, String rePassword){
         if(!password.equals(rePassword)){
-            return "passMisMatch";
+            return "Passwords do not match";
 
         }
         User usr = new User(username,password,email);

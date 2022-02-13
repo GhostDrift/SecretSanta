@@ -8,4 +8,19 @@ public class Converters {
         }
         return str;
     }
+    public static Boolean containsCharacters(String test, char[] characters){
+        Boolean stop = false;
+        int i = 0;
+        String testVal;
+        while ((!stop) && (i < characters.length)){
+            testVal = Character.toString(characters[i]);
+//                        System.out.println(testVal);
+            if(test.contains(testVal)){
+//                            na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Converters.getStringFromArray(illegalChars)),false);
+                stop = true;
+            }
+            i++;
+        }
+        return stop;
+    }
 }

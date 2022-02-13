@@ -75,19 +75,19 @@ public class CommandProtocol {
                 }
                 else {
                     char[] illegalChars = Config.getIllegalUsernameCharacters();
-                    Boolean stop = false;
-                    int i = 0;
-                    String testVal;
-//                    System.out.println(illegalChars.length);
-                    while ((!stop) && (i < illegalChars.length)){
-                        testVal = Character.toString(illegalChars[i]);
-//                        System.out.println(testVal);
-                        if(usr.getUsername().contains(testVal)){
-//                            na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Converters.getStringFromArray(illegalChars)),false);
-                            stop = true;
-                        }
-                        i++;
-                    }
+                    Boolean stop = Converters.containsCharacters(usr.getUsername(),illegalChars);
+//                    int i = 0;
+//                    String testVal;
+////                    System.out.println(illegalChars.length);
+//                    while ((!stop) && (i < illegalChars.length)){
+//                        testVal = Character.toString(illegalChars[i]);
+////                        System.out.println(testVal);
+//                        if(usr.getUsername().contains(testVal)){
+////                            na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Converters.getStringFromArray(illegalChars)),false);
+//                            stop = true;
+//                        }
+//                        i++;
+//                    }
                     if(stop){
                         na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Converters.getStringFromArray(illegalChars)),false);
                     }
@@ -103,7 +103,13 @@ public class CommandProtocol {
                             na.sendMessage(new Message(null, "Password must be at least " + Config.getMinPasswordLength() + " characters long"),false);
                         }
                         else{
-                            na.sendMessage(new Message(null, "Password length is fine"), false);
+                            stop = Converters.containsCharacters(usr.getPassword(),Config.getIllegalPasswordCharacters().toCharArray());
+                            if(stop){
+                                na.sendMessage(new Message(null, "Passwords cannot contain the following: " + Config.getIllegalPasswordCharacters()),false);
+                            }
+                            else{
+                                na.sendMessage(new Message(null, "Password is fine"), false);
+                            }
                         }
                     }
 
