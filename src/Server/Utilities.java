@@ -56,13 +56,13 @@ public class Utilities {
     public static boolean containsSymbols(String test){
         //Modified code from
         //https://stackoverflow.com/questions/1795402/check-if-a-string-contains-a-special-character
-        Pattern symbols = Pattern.compile("[!@#$%^&*]");
+        Pattern symbols = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
         Matcher hasSymbol = symbols.matcher(test);
         return hasSymbol.find();
     }
 
     public static void main(String[] args) {
-        String test = "te@t";
+        String test = "[";
         System.out.println(containsSymbols(test));
     }
 }

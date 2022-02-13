@@ -434,7 +434,7 @@ public class ServerGUI extends JFrame {
             this.uppercaseLetters.setMnemonic(KeyEvent.VK_G);
             this.numbers = new JCheckBox("Numbers", charSetRequirements[2]);
             this.numbers.setMnemonic(KeyEvent.VK_H);
-            this.symbols = new JCheckBox("Symbols", charSetRequirements[3]);
+            this.symbols = new JCheckBox("Special", charSetRequirements[3]);
             this.symbols.setMnemonic(KeyEvent.VK_T);
             this.enforcePassHistoryValue = new JCheckBox("",Config.getEnforcePasswordHistory());
             this.enforcePassHistoryValue.setMnemonic(KeyEvent.VK_0);

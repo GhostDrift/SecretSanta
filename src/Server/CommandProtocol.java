@@ -139,16 +139,16 @@ public class CommandProtocol {
                                 if(stop){
                                     String required = "";
                                     if(requiredTypes[0]){
-                                        required += "a lowercase letter";
+                                        required += " A lowercase letter.";
                                     }
                                     if(requiredTypes[1]){
-                                        required += " an uppercase letter";
+                                        required += " An uppercase letter.";
                                     }
                                     if(requiredTypes[2]){
-                                        required += " a number";
+                                        required += " A number.";
                                     }
                                     if(requiredTypes[3]){
-                                        required += " one of the following: !@#$%^&*";
+                                        required += " A special character.";
                                     }
                                     na.sendMessage(new Message(null,"Passwords must contain:" + required),false);
                                 }
