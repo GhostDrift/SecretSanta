@@ -96,8 +96,14 @@ public class CommandProtocol {
                         if(test.getUsername() != null){
                             na.sendMessage(new Message(null, "Username already exists"),false);
                         }
+                        else if(usr.getPassword().length() > Config.getMaxPasswordLength()){
+                            na.sendMessage(new Message(null, "Password must be less than " + Config.getMaxPasswordLength() + " characters long"),false);
+                        }
+                        else if(usr.getPassword().length() < Config.getMinPasswordLength()){
+                            na.sendMessage(new Message(null, "Password must be at least " + Config.getMinPasswordLength() + " characters long"),false);
+                        }
                         else{
-                            na.sendMessage(new Message(null, "Username is free"),false);
+                            na.sendMessage(new Message(null, "Password length is fine"), false);
                         }
                     }
 
