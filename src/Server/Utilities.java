@@ -1,5 +1,8 @@
 package Server;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Utilities {
     public static String getStringFromArray(char[] chars){
         String str = "";
@@ -32,9 +35,34 @@ public class Utilities {
         }
         return result;
     }
+    public static boolean containsUppercase(String test){
+        boolean result = false;
+        int i = 0;
+        while((!result)&&(i < test.length())){
+            result = Character.isUpperCase(test.charAt(i));
+            i++;
+        }
+        return result;
+    }
+    public static boolean containsNumbers(String test){
+        boolean result = false;
+        int i = 0;
+        while((!result)&&(i < test.length())){
+            result = Character.isDigit(test.charAt(i));
+            i++;
+        }
+        return result;
+    }
+    public static boolean containsSymbols(String test){
+        //Modified code from
+        //https://stackoverflow.com/questions/1795402/check-if-a-string-contains-a-special-character
+        Pattern symbols = Pattern.compile("[!@#$%^&*]");
+        Matcher hasSymbol = symbols.matcher(test);
+        return hasSymbol.find();
+    }
 
     public static void main(String[] args) {
-        String test = "UPPER";
-        System.out.println(containsLowercase(test));
+        String test = "te@t";
+        System.out.println(containsSymbols(test));
     }
 }
