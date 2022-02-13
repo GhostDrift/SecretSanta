@@ -106,8 +106,55 @@ public class CommandProtocol {
                             if(stop){
                                 na.sendMessage(new Message(null, "Passwords cannot contain the following: " + Config.getIllegalPasswordCharacters()),false);
                             }
-                            else{
-                                na.sendMessage(new Message(null, "Password is fine"), false);
+                            else {
+                                System.out.println("Testing password required sets");
+                                boolean[] requiredTypes = Config.getRequiredCharacterSets();
+                                stop = false;
+                                int i = 0;
+                                while((!stop) && (i < requiredTypes.length)){
+                                    if(requiredTypes[i]){
+                                        if(i ==0){
+                                            if(!Utilities.containsLowercase(usr.getPassword())){
+                                                stop = true;
+                                            }
+                                        }
+                                        else if(i == 1){
+                                            if(!Utilities.containsUppercase(usr.getPassword())){
+                                                stop = true;
+                                            }
+                                        }
+                                        else if(i == 2){
+                                            if(!Utilities.containsNumbers(usr.getPassword())){
+                                                stop = true;
+                                            }
+                                        }
+                                        else{
+                                            if(!Utilities.containsSymbols(usr.getPassword())){
+                                                stop = true;
+                                            }
+                                        }
+                                    }
+                                    i++;
+                                }
+                                if(stop){
+                                    String required = "";
+                                    if(requiredTypes[0]){
+                                        required += "a lowercase letter";
+                                    }
+                                    if(requiredTypes[1]){
+                                        required += " an uppercase letter";
+                                    }
+                                    if(requiredTypes[2]){
+                                        required += " a number";
+                                    }
+                                    if(requiredTypes[3]){
+                                        required += " one of the following: !@#$%^&*";
+                                    }
+                                    na.sendMessage(new Message(null,"Passwords must contain:" + required),false);
+                                }
+                                else{
+                                    na.sendMessage(new Message(null,"Password is fine"),false);
+                                }
                             }
                         }
                     }

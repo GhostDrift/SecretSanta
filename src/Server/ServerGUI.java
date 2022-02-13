@@ -745,20 +745,20 @@ public class ServerGUI extends JFrame {
                 value = true;
             }
             else if(source == uppercaseLetters){
-                i = 1;
+                i = 0;
                 value = true;
             }
             else if(source == numbers){
-                i = 3;
+                i = 2;
                 value = true;
             }
             else if(source == symbols){
-                i = 4;
+                i = 3;
                 value = true;
             }
             else if(source == enforcePassHistoryValue){
                 value = true;
-                flag =1;
+                flag =4;
             }
             if(e.getStateChange()==ItemEvent.DESELECTED){
                 value = false;
