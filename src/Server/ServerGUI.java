@@ -1,6 +1,5 @@
 package Server;
 
-import Common.ControlArea;
 import Common.displayPanel;
 
 import java.awt.*;
@@ -414,7 +413,7 @@ public class ServerGUI extends JFrame {
                 badUserChars = "";
             }
             else{
-                badUserChars = getStringFromArray(Config.getIllegalUsernameCharacters());
+                badUserChars = Converters.getStringFromArray(Config.getIllegalUsernameCharacters());
             }
             this.illegalUsernameCharsList = new JTextField(badUserChars,25);
             this.minPasswordLength = new JLabel("Minimum Password Length: ");
@@ -618,13 +617,13 @@ public class ServerGUI extends JFrame {
             }
             return ch;
         }
-        private String getStringFromArray(char[] chars){
-            String str = "";
-            for(int i = 0; i < chars.length; i ++){
-                str = str + chars[i];
-            }
-            return str;
-        }
+//        private String getStringFromArray(char[] chars){
+//            String str = "";
+//            for(int i = 0; i < chars.length; i ++){
+//                str = str + chars[i];
+//            }
+//            return str;
+//        }
         private void saveChanges() throws ConfigNotInitializedException{
             int flag = 0;
             try {
@@ -806,7 +805,7 @@ public class ServerGUI extends JFrame {
                     super.mouseClicked(e);
                     illegalUsernameCharsList.setForeground(Color.BLACK);
                     try {
-                        illegalUsernameCharsList.setText(getStringFromArray(Config.getIllegalUsernameCharacters()));
+                        illegalUsernameCharsList.setText(Converters.getStringFromArray(Config.getIllegalUsernameCharacters()));
                     } catch (ConfigNotInitializedException ex) {
                         ex.printStackTrace();
                     }
