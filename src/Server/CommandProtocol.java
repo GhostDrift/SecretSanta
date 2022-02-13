@@ -2,7 +2,6 @@ package Server;
 
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Set;
 
 import Common.Message;
 import Common.NetworkAccess;
@@ -75,7 +74,7 @@ public class CommandProtocol {
                 }
                 else {
                     char[] illegalChars = Config.getIllegalUsernameCharacters();
-                    Boolean stop = Converters.containsCharacters(usr.getUsername(),illegalChars);
+                    Boolean stop = Utilities.containsCharacters(usr.getUsername(),illegalChars);
 //                    int i = 0;
 //                    String testVal;
 ////                    System.out.println(illegalChars.length);
@@ -89,7 +88,7 @@ public class CommandProtocol {
 //                        i++;
 //                    }
                     if(stop){
-                        na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Converters.getStringFromArray(illegalChars)),false);
+                        na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Utilities.getStringFromArray(illegalChars)),false);
                     }
                     else{
                         User test = ch.getServer().getUserDatabase().getUser(usr.getUsername());
@@ -103,7 +102,7 @@ public class CommandProtocol {
                             na.sendMessage(new Message(null, "Password must be at least " + Config.getMinPasswordLength() + " characters long"),false);
                         }
                         else{
-                            stop = Converters.containsCharacters(usr.getPassword(),Config.getIllegalPasswordCharacters().toCharArray());
+                            stop = Utilities.containsCharacters(usr.getPassword(),Config.getIllegalPasswordCharacters().toCharArray());
                             if(stop){
                                 na.sendMessage(new Message(null, "Passwords cannot contain the following: " + Config.getIllegalPasswordCharacters()),false);
                             }

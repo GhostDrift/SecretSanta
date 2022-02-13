@@ -413,7 +413,7 @@ public class ServerGUI extends JFrame {
                 badUserChars = "";
             }
             else{
-                badUserChars = Converters.getStringFromArray(Config.getIllegalUsernameCharacters());
+                badUserChars = Utilities.getStringFromArray(Config.getIllegalUsernameCharacters());
             }
             this.illegalUsernameCharsList = new JTextField(badUserChars,25);
             this.minPasswordLength = new JLabel("Minimum Password Length: ");
@@ -805,7 +805,7 @@ public class ServerGUI extends JFrame {
                     super.mouseClicked(e);
                     illegalUsernameCharsList.setForeground(Color.BLACK);
                     try {
-                        illegalUsernameCharsList.setText(Converters.getStringFromArray(Config.getIllegalUsernameCharacters()));
+                        illegalUsernameCharsList.setText(Utilities.getStringFromArray(Config.getIllegalUsernameCharacters()));
                     } catch (ConfigNotInitializedException ex) {
                         ex.printStackTrace();
                     }
