@@ -92,11 +92,17 @@ public class CommandProtocol {
                         na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Converters.getStringFromArray(illegalChars)),false);
                     }
                     else{
-                        na.sendMessage(new Message(null, "All characters are fine"),false);
+                        User test = ch.getServer().getUserDatabase().getUser(usr.getUsername());
+                        if(test.getUsername() != null){
+                            na.sendMessage(new Message(null, "Username already exists"),false);
+                        }
+                        else{
+                            na.sendMessage(new Message(null, "Username is free"),false);
+                        }
                     }
 
                 }
-            } catch (ConfigNotInitializedException e) {
+            } catch (ConfigNotInitializedException | SQLException e) {
                 e.printStackTrace();
             }
         }else {
