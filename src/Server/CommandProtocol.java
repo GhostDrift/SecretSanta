@@ -78,13 +78,23 @@ public class CommandProtocol {
                     Boolean stop = false;
                     int i = 0;
                     String testVal;
-                    while ((!stop) && (i < usr.getUsername().length())){
+//                    System.out.println(illegalChars.length);
+                    while ((!stop) && (i < illegalChars.length)){
                         testVal = Character.toString(illegalChars[i]);
+//                        System.out.println(testVal);
                         if(usr.getUsername().contains(testVal)){
-                            na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Converters.getStringFromArray(illegalChars)),false);
+//                            na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Converters.getStringFromArray(illegalChars)),false);
                             stop = true;
                         }
+                        i++;
                     }
+                    if(stop){
+                        na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Converters.getStringFromArray(illegalChars)),false);
+                    }
+                    else{
+                        na.sendMessage(new Message(null, "All characters are fine"),false);
+                    }
+
                 }
             } catch (ConfigNotInitializedException e) {
                 e.printStackTrace();
