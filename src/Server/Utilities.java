@@ -23,4 +23,18 @@ public class Utilities {
         }
         return stop;
     }
+    public static boolean containsLowercase(String test){
+        boolean result = false;
+        int i = 0;
+        while((!result)&&(i < test.length())){
+            result = Character.isLowerCase(test.charAt(i));
+            i++;
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        String test = "UPPER";
+        System.out.println(containsLowercase(test));
+    }
 }
