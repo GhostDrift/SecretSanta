@@ -402,8 +402,8 @@ public class ClientGUI extends JFrame {
                      try {
                          if (client.networkaccess.testConnection()) {
                              if ((username != null) && (password != null)) {
-                                 if (client.login(username, password)) {
-                                     usr = new User(username);
+                                 if (client.login(username.toLowerCase(), password)) {
+                                     usr = new User(username.toLowerCase());
                                      updateData(new Interaction());
                                  } else {
                                      System.out.println("Incorrect Username or password");
@@ -594,7 +594,7 @@ public class ClientGUI extends JFrame {
                     System.out.println("submit");
                     if(client != null){
                         if(client.networkaccess.testConnection()){
-                            String result =client.register(usrName.getText(),eMailText.getText(),pasWord.getText(),rePassText.getText());
+                            String result =client.register(usrName.getText().toLowerCase(),eMailText.getText(),pasWord.getText(),rePassText.getText());
                             if(result.equals("success")){
                                 updateData(new Login());
                             }
