@@ -464,10 +464,14 @@ public class ClientGUI extends JFrame {
                                      usr = new User(username.toLowerCase());
                                      updateData(new Interaction());
                                  } else {
-                                     System.out.println("Incorrect Username or password");
+                                     status.setVisible(true);
+                                     status.setText("Incorrect Username or Password");
+                                     status.setForeground(Color.RED);
                                  }
                              } else {
-                                 System.out.println("Username and password cannot be null");
+                                 status.setVisible(true);
+                                 status.setText("Username and password cannot be empty");
+                                 status.setForeground(Color.RED);
                              }
                          } else {
                              updateData(new Connect(true));
@@ -651,6 +655,9 @@ public class ClientGUI extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("submit");
                     if(client != null){
+                        status.setText("Working...");
+                        status.setVisible(true);
+                        repaint();
                         if(client.networkaccess.testConnection()){
                             String result =client.register(usrName.getText().toLowerCase(),eMailText.getText(),pasWord.getText(),rePassText.getText());
                             if(result.equals("success")){
