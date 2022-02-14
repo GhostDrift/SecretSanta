@@ -32,6 +32,7 @@ public class SendEmailUsingGMailSMTP {
 //
 //				Regards,
 //				Team MERJ""");
+        sendEmail("Jrstojkovic123@gmail.com","Test Email", "Dear User,\n\n\nThis is a test Email.\n\n\nWith regards, Jessica Stojkovic");
 	}
 
 	public static void sendEmail(String to, String subject, String _message) throws ConfigNotInitializedException
