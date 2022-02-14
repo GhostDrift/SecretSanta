@@ -200,6 +200,7 @@ public class CommandProtocol {
                                 if(Utilities.goodEmail(usr.getEmail())){
                                     result.message = "success";
                                     ch.getServer().getUserDatabase().addUser(usr);
+                                    Utilities.accountCreated(usr);
                                     return result;
                                 }
                                 else{
