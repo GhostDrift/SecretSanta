@@ -197,8 +197,15 @@ public class CommandProtocol {
                             }
                             else{
 //                                na.sendMessage(new Message(null,"Password is fine"),false);
-                                result.message = "Password is fine";
-                                return result;
+                                if(Utilities.goodEmail(usr.getEmail())){
+                                    result.message = "success";
+                                    ch.getServer().getUserDatabase().addUser(usr);
+                                    return result;
+                                }
+                                else{
+                                    result.message = "Invalid Email. Must be of the format: example@test.com";
+                                    return result;
+                                }
                             }
                         }
                     }
