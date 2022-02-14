@@ -60,9 +60,14 @@ public class Utilities {
         Matcher hasSymbol = symbols.matcher(test);
         return hasSymbol.find();
     }
+    //method to check the format of the Email
+    public static boolean goodEmail(String email) throws ConfigNotInitializedException {
+       return Pattern.matches(Config.getValidEmailFormat(), email);
+    }
 
-    public static void main(String[] args) {
-        String test = "[";
-        System.out.println(containsSymbols(test));
+    public static void main(String[] args) throws ConfigNotInitializedException {
+        Config.initializeConfig("ServerConfiguration.conf");
+        String test = "jstojkovic@Callutheran";
+        System.out.println(goodEmail(test));
     }
 }

@@ -64,105 +64,7 @@ public class CommandProtocol {
             }
 
         } else if(cmd.message.equals("Register")){
-            User usr = cmd.user;
-            try {
-                if(Config.getMinUsernameLength() >usr.getUsername().length()){
-                    na.sendMessage(new Message(null,"Username must be at least " + Config.getMinUsernameLength() + " characters long"),false);
-                }
-                else if(Config.getMaxUsernameLength() < usr.getUsername().length()){
-                    na.sendMessage(new Message(null,"Username must be less than " + Config.getMaxUsernameLength() + " characters long"),false);
-                }
-                else {
-                    char[] illegalChars = Config.getIllegalUsernameCharacters();
-                    Boolean stop = Utilities.containsCharacters(usr.getUsername(),illegalChars);
-//                    int i = 0;
-//                    String testVal;
-////                    System.out.println(illegalChars.length);
-//                    while ((!stop) && (i < illegalChars.length)){
-//                        testVal = Character.toString(illegalChars[i]);
-////                        System.out.println(testVal);
-//                        if(usr.getUsername().contains(testVal)){
-////                            na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Converters.getStringFromArray(illegalChars)),false);
-//                            stop = true;
-//                        }
-//                        i++;
-//                    }
-                    if(stop){
-                        na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Utilities.getStringFromArray(illegalChars)),false);
-                    }
-                    else{
-                        User test = ch.getServer().getUserDatabase().getUser(usr.getUsername());
-                        if(test.getUsername() != null){
-                            na.sendMessage(new Message(null, "Username already exists"),false);
-                        }
-                        else if(usr.getPassword().length() > Config.getMaxPasswordLength()){
-                            na.sendMessage(new Message(null, "Password must be less than " + Config.getMaxPasswordLength() + " characters long"),false);
-                        }
-                        else if(usr.getPassword().length() < Config.getMinPasswordLength()){
-                            na.sendMessage(new Message(null, "Password must be at least " + Config.getMinPasswordLength() + " characters long"),false);
-                        }
-                        else{
-                            stop = Utilities.containsCharacters(usr.getPassword(),Config.getIllegalPasswordCharacters().toCharArray());
-                            if(stop){
-                                na.sendMessage(new Message(null, "Passwords cannot contain the following: " + Config.getIllegalPasswordCharacters()),false);
-                            }
-                            else {
-                                System.out.println("Testing password required sets");
-                                boolean[] requiredTypes = Config.getRequiredCharacterSets();
-                                stop = false;
-                                int i = 0;
-                                while((!stop) && (i < requiredTypes.length)){
-                                    if(requiredTypes[i]){
-                                        if(i ==0){
-                                            if(!Utilities.containsLowercase(usr.getPassword())){
-                                                stop = true;
-                                            }
-                                        }
-                                        else if(i == 1){
-                                            if(!Utilities.containsUppercase(usr.getPassword())){
-                                                stop = true;
-                                            }
-                                        }
-                                        else if(i == 2){
-                                            if(!Utilities.containsNumbers(usr.getPassword())){
-                                                stop = true;
-                                            }
-                                        }
-                                        else{
-                                            if(!Utilities.containsSymbols(usr.getPassword())){
-                                                stop = true;
-                                            }
-                                        }
-                                    }
-                                    i++;
-                                }
-                                if(stop){
-                                    String required = "";
-                                    if(requiredTypes[0]){
-                                        required += " A lowercase letter.";
-                                    }
-                                    if(requiredTypes[1]){
-                                        required += " An uppercase letter.";
-                                    }
-                                    if(requiredTypes[2]){
-                                        required += " A number.";
-                                    }
-                                    if(requiredTypes[3]){
-                                        required += " A special character.";
-                                    }
-                                    na.sendMessage(new Message(null,"Passwords must contain:" + required),false);
-                                }
-                                else{
-                                    na.sendMessage(new Message(null,"Password is fine"),false);
-                                }
-                            }
-                        }
-                    }
-
-                }
-            } catch (ConfigNotInitializedException | SQLException e) {
-                e.printStackTrace();
-            }
+            na.sendMessage(register(cmd.user,ch),false);
         }else {
 
             na.sendMessage(cmd, false);
@@ -199,4 +101,114 @@ public class CommandProtocol {
 
         return userDB.logout(usr);
     }
+    //method to register a user
+    public static Message register(User usr, ClientHandler ch){
+        Message result = new Message(null,"");
+        try {
+            if(Config.getMinUsernameLength() >usr.getUsername().length()){
+//                na.sendMessage(new Message(null,"Username must be at least " + Config.getMinUsernameLength() + " characters long"),false);
+                result.message = "Username must be at least " + Config.getMinUsernameLength() + " characters long";
+                return result;
+            }
+            else if(Config.getMaxUsernameLength() < usr.getUsername().length()){
+//                na.sendMessage(new Message(null,"Username must be less than or equal to " + Config.getMaxUsernameLength() + " characters long"),false);
+                result.message = "Username must be less than or equal to " + Config.getMaxUsernameLength() + " characters long";
+                return result;
+            }
+            else {
+                char[] illegalChars = Config.getIllegalUsernameCharacters();
+                Boolean stop = Utilities.containsCharacters(usr.getUsername(),illegalChars);
+                if(stop){
+//                    na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Utilities.getStringFromArray(illegalChars)),false);
+                    result.message = "Usernames cannot contain the following: " + Utilities.getStringFromArray(illegalChars);
+                    return result;
+                }
+                else{
+                    User test = ch.getServer().getUserDatabase().getUser(usr.getUsername());
+                    if(test.getUsername() != null){
+//                        na.sendMessage(new Message(null, "Username already exists"),false);
+                        result.message = "Username already exists";
+                        return result;
+                    }
+                    else if(usr.getPassword().length() > Config.getMaxPasswordLength()){
+//                        na.sendMessage(new Message(null, "Password must be less than " + Config.getMaxPasswordLength() + " characters long"),false);
+                        result.message = "Password must be less than or equal to " + Config.getMaxPasswordLength() + " characters long";
+                        return result;
+                    }
+                    else if(usr.getPassword().length() < Config.getMinPasswordLength()){
+//                        na.sendMessage(new Message(null, "Password must be at least " + Config.getMinPasswordLength() + " characters long"),false);
+                        result.message = "Password must be at least " + Config.getMinPasswordLength() + " characters long";
+                        return result;
+                    }
+                    else{
+                        stop = Utilities.containsCharacters(usr.getPassword(),Config.getIllegalPasswordCharacters().toCharArray());
+                        if(stop){
+//                            na.sendMessage(new Message(null, "Passwords cannot contain the following: " + Config.getIllegalPasswordCharacters()),false);
+                            result.message = "Passwords cannot contain the following: " + Config.getIllegalPasswordCharacters();
+                            return result;
+                        }
+                        else {
+                            System.out.println("Testing password required sets");
+                            boolean[] requiredTypes = Config.getRequiredCharacterSets();
+                            stop = false;
+                            int i = 0;
+                            while((!stop) && (i < requiredTypes.length)){
+                                if(requiredTypes[i]){
+                                    if(i ==0){
+                                        if(!Utilities.containsLowercase(usr.getPassword())){
+                                            stop = true;
+                                        }
+                                    }
+                                    else if(i == 1){
+                                        if(!Utilities.containsUppercase(usr.getPassword())){
+                                            stop = true;
+                                        }
+                                    }
+                                    else if(i == 2){
+                                        if(!Utilities.containsNumbers(usr.getPassword())){
+                                            stop = true;
+                                        }
+                                    }
+                                    else{
+                                        if(!Utilities.containsSymbols(usr.getPassword())){
+                                            stop = true;
+                                        }
+                                    }
+                                }
+                                i++;
+                            }
+                            if(stop){
+                                String required = "";
+                                if(requiredTypes[0]){
+                                    required += " A lowercase letter.";
+                                }
+                                if(requiredTypes[1]){
+                                    required += " An uppercase letter.";
+                                }
+                                if(requiredTypes[2]){
+                                    required += " A number.";
+                                }
+                                if(requiredTypes[3]){
+                                    required += " A special character.";
+                                }
+//                                na.sendMessage(new Message(null,"Passwords must contain:" + required),false);
+                                result.message = "Passwords must contain:" + required;
+                                return result;
+                            }
+                            else{
+//                                na.sendMessage(new Message(null,"Password is fine"),false);
+                                result.message = "Password is fine";
+                                return result;
+                            }
+                        }
+                    }
+                }
+
+            }
+        } catch (ConfigNotInitializedException | SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }
