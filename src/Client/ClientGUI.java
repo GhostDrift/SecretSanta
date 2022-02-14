@@ -325,6 +325,7 @@ public class ClientGUI extends JFrame {
         private JButton login;
         private JButton recover;
         private GridBagConstraints gbc = new GridBagConstraints();
+        private JLabel status;
 
          Login(){
             setLayout(new GridBagLayout());
@@ -337,6 +338,9 @@ public class ClientGUI extends JFrame {
              username.setFont(new Font("TimesRoman", Font.PLAIN, 15));
              password = new JLabel("Password");
              password.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+             status = new JLabel("");
+             status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+             status.setVisible(false);
              //create the JTextfields
              usrName = new JTextField("", 25);
              pasWord = new JTextField("", 25);
@@ -351,11 +355,15 @@ public class ClientGUI extends JFrame {
              gbc.ipadx = 10;
              gbc.ipady = 10;
              gbc.fill = GridBagConstraints.NONE;
+             gbc.gridwidth = 2;
+             this.add(status,gbc);
+             gbc.gridwidth = 1;
+             gbc.gridy = 1;
              this.add(username,gbc);
              gbc.gridx = 1;
              this.add(usrName,gbc);
              gbc.gridx = 0;
-             gbc.gridy = 1;
+             gbc.gridy = 2;
              this.add(password, gbc);
              gbc.gridx = 1;
              this.add(pasWord, gbc);
@@ -364,6 +372,56 @@ public class ClientGUI extends JFrame {
 
 
          }
+         //overloaded constructor
+         Login(Boolean display,String message){
+             setLayout(new GridBagLayout());
+             this.setPanelName("Login");
+             this.setSpaces("                                                                                                              ");
+             //Set windowTitle to the label of the datapanel
+             windowTitle.setText(this.getLabel());
+             //create the Jlabels
+             username = new JLabel("Username");
+             username.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+             password = new JLabel("Password");
+             password.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+             if (message == null){
+                 message = "";
+             }
+             status = new JLabel(message);
+             status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+             status.setVisible(display);
+             //create the JTextfields
+             usrName = new JTextField("", 25);
+             pasWord = new JTextField("", 25);
+             //create the JButtons for the control panel
+             disconnect = new JButton("Disconnect");
+             register = new JButton("Register");
+             login = new JButton("Login");
+             recover = new JButton("Recover");
+             //add components to the window
+             gbc.gridx = 0;
+             gbc.gridy = 0;
+             gbc.ipadx = 10;
+             gbc.ipady = 10;
+             gbc.fill = GridBagConstraints.NONE;
+             gbc.gridwidth = 2;
+             this.add(status,gbc);
+             gbc.gridwidth = 1;
+             gbc.gridy = 1;
+             this.add(username,gbc);
+             gbc.gridx = 1;
+             this.add(usrName,gbc);
+             gbc.gridx = 0;
+             gbc.gridy = 2;
+             this.add(password, gbc);
+             gbc.gridx = 1;
+             this.add(pasWord, gbc);
+
+             prepareButtonHandlers();
+
+
+         }
+
 
          private void prepareButtonHandlers(){
              disconnect.addActionListener(new ActionListener() {
@@ -520,7 +578,7 @@ public class ClientGUI extends JFrame {
         private JTextField rePassText;
         private JButton cancel;
         private JButton submit;
-        private JLabel error;
+        private JLabel status;
         private GridBagConstraints gbc = new GridBagConstraints();
 
         Register(){
@@ -542,9 +600,9 @@ public class ClientGUI extends JFrame {
             pasWord = new JTextField("", 25);
             eMailText = new JTextField("", 25);
             rePassText = new JTextField("", 25);
-            error = new JLabel("Errors will be displayed here");
-            error.setForeground(Color.RED);
-            error.setVisible(false);
+            status = new JLabel("Errors will be displayed here");
+//            status.setForeground(Color.RED);
+            status.setVisible(false);
             //prepare buttons
             cancel = new JButton("Cancel");
             submit = new JButton("Submit");
@@ -556,7 +614,7 @@ public class ClientGUI extends JFrame {
             gbc.ipady = 10;
             gbc.gridwidth = 2;
             gbc.fill = GridBagConstraints.NONE;
-            this.add(error,gbc);
+            this.add(status,gbc);
             gbc.gridy = 1;
             gbc.gridwidth = 1;
             this.add(username,gbc);
@@ -599,8 +657,9 @@ public class ClientGUI extends JFrame {
                                 updateData(new Login());
                             }
                             else{
-                                error.setText(result);
-                                error.setVisible(true);
+                                status.setForeground(Color.RED);
+                                status.setText(result);
+                                status.setVisible(true);
                                 repaint();
                             }
 
