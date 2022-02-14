@@ -654,7 +654,7 @@ public class ClientGUI extends JFrame {
                         if(client.networkaccess.testConnection()){
                             String result =client.register(usrName.getText().toLowerCase(),eMailText.getText(),pasWord.getText(),rePassText.getText());
                             if(result.equals("success")){
-                                updateData(new Login());
+                                updateData(new Login(true,"Account successfully created!"));
                             }
                             else{
                                 status.setForeground(Color.RED);
