@@ -478,6 +478,9 @@ public class ClientGUI extends JFrame {
             //Set windowTitle to the label of the datapanel
             windowTitle.setText(this.getLabel());
             //prepare components
+            JLabel status = new JLabel("status will be displayed here");
+            status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            status.setVisible(false);
             JLabel username = new JLabel("Username");
             username.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             JLabel instructions = new JLabel("Enter the username of the account you would like to recover, an email will be sent.");
@@ -492,7 +495,11 @@ public class ClientGUI extends JFrame {
             gbc.gridy = 0;
             gbc.ipadx = 10;
             gbc.ipady = 10;
+            gbc.gridwidth = 2;
             gbc.fill = GridBagConstraints.NONE;
+            this.add(status,gbc);
+            gbc.gridy = 1;
+            gbc.gridwidth = 1;
             this.add(username, gbc);
             gbc.gridx = 1;
             this.add(userText, gbc);
