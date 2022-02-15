@@ -218,5 +218,24 @@ public class CommandProtocol {
         }
         return result;
     }
+    private static Message accountRecovery(User usr, ClientHandler ch){
+        UserDatabase userDB = ch.getServer().getUserDatabase();
+        Message result = new Message(null,"");
+        try {
+            usr = userDB.getUser(usr.getUsername());
+            if(usr == null){
+                result.message = "User does not exsist";
+            }
+            else{
+                result.message = "success";
+                usr.setPassword("xxxx");
+                userDB.updateUser(usr);
+                Utilities.accountRecovery(usr);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 }
