@@ -85,4 +85,11 @@ public class Client {
         Message answer = networkaccess.sendMessage(new Message(usr,"Register"), true);
         return answer.message;
     }
+    //account recovery
+    public String recover(String username){
+        User usr = new User(username);
+        Message msg = new Message(usr,"recover");
+        Message result = networkaccess.sendMessage(msg,true);
+        return result.message;
+    }
 }
