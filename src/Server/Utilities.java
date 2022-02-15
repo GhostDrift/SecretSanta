@@ -71,6 +71,11 @@ public class Utilities {
         String message = "Dear " + usr.getUsername() + ",\n\n Thank you for creating an account with the secret santa management system. you will receive an email with your recipient when names are drawn.\n\n With regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Account Created",message);
     }
+    //method to send account recovery email
+    public static void accountRecovery(User usr){
+        String message = "Dear " + usr.getUsername() + ",\n\n Your account has been recovered.\nYour new password is:\n" + usr.getPassword() + "\n Please login and reset it as soon as possible.\n\n With regards,Stojkovic Technical Solutions.";
+        new SendEmailUsingGMailSMTP(usr.getEmail(),"Account Recovery",message);
+    }
 
     public static void main(String[] args) throws ConfigNotInitializedException {
         Config.initializeConfig("ServerConfiguration.conf");
