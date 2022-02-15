@@ -36,7 +36,7 @@ public class SendEmailUsingGMailSMTP extends Thread{
 //
 //				Regards,
 //				Team MERJ""");
-       new  SendEmailUsingGMailSMTP("Jrstojkovic123@gmail.com","Test Email", "Dear User,\n\n\nThis is a test Email.\n\n\nWith regards, Jessica Stojkovic").start();
+       new  SendEmailUsingGMailSMTP("Jrstojkovic123@gmail.com","Test Email", "Dear User,\n\n\nThis is a test Email.\n\n\nWith regards, Jessica Stojkovic");
 	}
 
 	//Constructor
