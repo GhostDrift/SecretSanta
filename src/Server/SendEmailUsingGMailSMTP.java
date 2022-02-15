@@ -13,7 +13,11 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class SendEmailUsingGMailSMTP {
+public class SendEmailUsingGMailSMTP extends Thread{
+    private String to;
+    private String subject;
+    private String _message;
+    private boolean go;
 
 	// -- set the gmail host URL
 	final static private String host = "smtp.gmail.com";
@@ -32,10 +36,29 @@ public class SendEmailUsingGMailSMTP {
 //
 //				Regards,
 //				Team MERJ""");
-        sendEmail("Jrstojkovic123@gmail.com","Test Email", "Dear User,\n\n\nThis is a test Email.\n\n\nWith regards, Jessica Stojkovic");
+       new  SendEmailUsingGMailSMTP("Jrstojkovic123@gmail.com","Test Email", "Dear User,\n\n\nThis is a test Email.\n\n\nWith regards, Jessica Stojkovic").start();
 	}
 
-	public static void sendEmail(String to, String subject, String _message) throws ConfigNotInitializedException
+	//Constructor
+    SendEmailUsingGMailSMTP(String to,String subject, String _message){
+	    this.go = true;
+	    this.to = to;
+	    this.subject = subject;
+	    this._message = _message;
+	    this.start();
+
+    }
+    public void run(){
+	    try{
+	        System.out.println("Sending Email....");
+	        while(go){
+	            this.sendEmail(to,subject,_message);
+            }
+        } catch (ConfigNotInitializedException e) {
+            e.printStackTrace();
+        }
+    }
+	public void sendEmail(String to, String subject, String _message) throws ConfigNotInitializedException
 	{
 		username = Config.getEmailUsername();
 		password = Config.getEmailPassword();
@@ -88,5 +111,6 @@ public class SendEmailUsingGMailSMTP {
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
+		this.go = false;
 	}
 }
