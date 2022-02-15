@@ -65,6 +65,9 @@ public class CommandProtocol {
 
         } else if(cmd.message.equals("Register")){
             na.sendMessage(register(cmd.user,ch),false);
+        }
+        else if(cmd.message.equals("recover")){
+            na.sendMessage(accountRecovery(cmd.user,ch),false);
         }else {
 
             na.sendMessage(cmd, false);
@@ -229,6 +232,7 @@ public class CommandProtocol {
             else{
                 result.message = "success";
                 usr.setPassword("xxxx");
+                usr.setLockCount(0);
                 userDB.updateUser(usr);
                 Utilities.accountRecovery(usr);
             }

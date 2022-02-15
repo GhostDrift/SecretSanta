@@ -470,6 +470,8 @@ public class ClientGUI extends JFrame {
     private class Recover extends displayPanel{
         private final JButton submit;
         private final JButton cancel;
+        private final JLabel status;
+        private final JTextField userText;
 
         Recover(){
             setPanelName("Recover");
@@ -478,14 +480,14 @@ public class ClientGUI extends JFrame {
             //Set windowTitle to the label of the datapanel
             windowTitle.setText(this.getLabel());
             //prepare components
-            JLabel status = new JLabel("status will be displayed here");
-            status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-            status.setVisible(false);
+            this.status = new JLabel("status will be displayed here");
+            this.status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            this.status.setVisible(false);
             JLabel username = new JLabel("Username");
             username.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             JLabel instructions = new JLabel("Enter the username of the account you would like to recover, an email will be sent.");
             instructions.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-            JTextField userText = new JTextField("", 25);
+            this.userText = new JTextField("", 25);
             this.submit = new JButton("Submit");
             this.cancel = new JButton("Cancel");
             prepareButtonHandlers();
@@ -506,13 +508,24 @@ public class ClientGUI extends JFrame {
 
 
         }
+        private void displayError(String error){
+            this.status.setVisible(true);
+            status.setForeground(Color.red);
+            status.setText(error);
+            repaint();
+        }
 
         private void prepareButtonHandlers() {
             this.submit.addActionListener(e -> {
                 System.out.println("submit");
                 if(client!= null){
                     if(client.networkaccess.testConnection()){
-                        updateData(new Login());
+                        String result = client.recover(userText.getText());
+                        if(result.equals("success")){
+                            updateData(new Login(true,"Recovery email has been sent"));
+                        }else{
+                            this.displayError(result);
+                        }
                     }
                     else{
                         updateData(new Connect(true));
