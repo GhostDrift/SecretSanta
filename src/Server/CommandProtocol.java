@@ -46,13 +46,14 @@ public class CommandProtocol {
 
         }else if(cmd.message.equals("login")){
 //                    login(cmd.user);
-            if(login(cmd.user,ch)){
-                na.sendMessage(new Message(null,"success"),false);
-                ch.setUser(cmd.user);
-            }
-            else {
-                na.sendMessage(new Message(null, "fail"),false);
-            }
+            na.sendMessage(login(cmd.user,ch),false);
+//            if(login(cmd.user,ch)){
+//                na.sendMessage(new Message(null,"success"),false);
+//
+//            }
+//            else {
+//                na.sendMessage(new Message(null, "fail"),false);
+//            }
         }else if(cmd.message.equals("logout")){
             System.out.println(cmd.user.getUsername());
             if(logout(cmd.user,ch)){
@@ -75,24 +76,31 @@ public class CommandProtocol {
         }
     }
     //method to login a user
-    public static boolean login(Common.User usr, ClientHandler ch){
+    public static Message login(Common.User usr, ClientHandler ch){
         UserDatabase userDB = ch.getServer().getUserDatabase();
         String username = usr.getUsername();
         String password = usr.getPassword();
+        Message msg = new Message(null,"");
         if(username.equals("")){
-            return false;
+            msg.message = "User does not exist";
+            return msg;
         }
         try {
             Common.User result = userDB.getUser(username);
             if(result.getPassword().equals(password)){
                 userDB.login(usr);
-                return true;
+                msg.message = "success";
+                ch.setUser(usr);
+                return msg;
             }
-            else return false;
+            else {
+                msg.message = "Invalid Password";
+                return msg;
+            }
         }
         catch (SQLException throwables) {
             throwables.printStackTrace();
-            return false;
+            return msg;
         }
     }
     //method to log out a user

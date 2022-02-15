@@ -57,13 +57,13 @@ public class Client {
     }
 
     //sends login message to the server
-    public boolean login(String username, String password){
+    public Message login(String username, String password){
         User usr = new User();
         usr.setUsername(username);
         usr.setPassword(password);
         Message msg = new Message(usr,"login");
         Message result = networkaccess.sendMessage(msg,true);
-        return result.message.equals("success");
+        return result;
 
     }
     //sends log out message to server
