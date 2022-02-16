@@ -1002,7 +1002,7 @@ public class ClientGUI extends JFrame {
         private JTextField emailText;
         private JButton cancel;
         private JButton apply;
-        private JTextField status;
+        private JLabel status;
         private GridBagConstraints gbc = new GridBagConstraints();
 
         //constructor
@@ -1019,7 +1019,7 @@ public class ClientGUI extends JFrame {
             emailText = new JTextField("Your email here", 25);
             cancel = new JButton("Cancel");
             apply = new JButton("Apply");
-            status = new JTextField("Status will be displayed here");
+            status = new JLabel("Status will be displayed here");
             status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             status.setForeground(Color.BLACK);
             prepareButtonHandlers();
@@ -1072,7 +1072,13 @@ public class ClientGUI extends JFrame {
                             usr.setEmail(emailText.getText());
                             String result = client.updateSettings(usr);
                             if(result.equals("success")) {
-
+                                status.setText("Account Updated");
+                                status.setVisible(true);
+                            }
+                            else{
+                                status.setText(result);
+                                status.setForeground(Color.red);
+                                status.setVisible(true);
                             }
                         }
                         else {
