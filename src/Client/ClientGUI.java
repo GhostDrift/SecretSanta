@@ -1002,6 +1002,7 @@ public class ClientGUI extends JFrame {
         private JTextField emailText;
         private JButton cancel;
         private JButton apply;
+        private JTextField status;
         private GridBagConstraints gbc = new GridBagConstraints();
 
         //constructor
@@ -1018,15 +1019,22 @@ public class ClientGUI extends JFrame {
             emailText = new JTextField("Your email here", 25);
             cancel = new JButton("Cancel");
             apply = new JButton("Apply");
+            status = new JTextField("Status will be displayed here");
+            status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            status.setForeground(Color.BLACK);
             prepareButtonHandlers();
             //add components to frame
             gbc.gridx = 0;
             gbc.gridy = 0;
+            gbc.gridwidth = 2;
+            this.add(status, gbc);
+            gbc.gridwidth = 1;
+            gbc.gridy = 1;
             this.add(password,gbc);
             gbc.gridx = 1;
             this.add(passText,gbc);
             gbc.gridx = 0;
-            gbc.gridy = 1;
+            gbc.gridy = 2;
             this.add(email,gbc);
             gbc.gridx = 1;
             this.add(emailText,gbc);
@@ -1059,7 +1067,13 @@ public class ClientGUI extends JFrame {
                     System.out.println("Apply");
                     if(client != null){
                         if(client.networkaccess.testConnection()){
-                            updateData(new Interaction());
+                            User usr = new User();
+                            usr.setPassword(passText.getText());
+                            usr.setEmail(emailText.getText());
+                            String result = client.updateSettings(usr);
+                            if(result.equals("success")) {
+
+                            }
                         }
                         else {
                             updateData(new Connect(true));

@@ -274,7 +274,7 @@ public class CommandProtocol {
         UserDatabase userDb = ch.getServer().getUserDatabase();
         Message msg = new Message(null,"");
         try {
-            User update = userDb.getUser(usr.getUsername());
+            User update = userDb.getUser(ch.getUser().getUsername());
             update.setEmail(usr.getEmail());
             update.setPassword(usr.getPassword());
             if(validatePasswordAndEmail(update,msg,ch)){
