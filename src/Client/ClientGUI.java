@@ -1,5 +1,6 @@
 package Client;
 import Common.ControlArea;
+import Common.Message;
 import Common.User;
 import Common.displayPanel;
 
@@ -426,15 +427,26 @@ public class ClientGUI extends JFrame {
                  String password = pasWord.getText();
                  try {
                      if (client.networkaccess.testConnection()) {
-                         if ((username != null) && (password != null)) {
-                             if (client.login(username.toLowerCase(), password)) {
+                         if ((!username.equals("")) && (!password.equals(""))) {
+                             Message msg = client.login(username.toLowerCase(),password);
+                             if(msg.message.equals("success")){
                                  usr = new User(username.toLowerCase());
                                  updateData(new Interaction());
-                             } else {
-                                 status.setVisible(true);
-                                 status.setText("Incorrect Username or Password");
-                                 status.setForeground(Color.RED);
                              }
+                             else{
+                                 status.setVisible(true);
+                                 status.setText(msg.message);
+                                 status.setForeground(Color.RED);
+                                 repaint();
+                             }
+//                             if (client.login(username.toLowerCase(), password)) {
+//                                 usr = new User(username.toLowerCase());
+//                                 updateData(new Interaction());
+//                             } else {
+//                                 status.setVisible(true);
+//                                 status.setText("Incorrect Username or Password");
+//                                 status.setForeground(Color.RED);
+//                             }
                          } else {
                              status.setVisible(true);
                              status.setText("Username and password cannot be empty");

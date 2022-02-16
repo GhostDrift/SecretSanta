@@ -81,22 +81,30 @@ public class CommandProtocol {
         String username = usr.getUsername();
         String password = usr.getPassword();
         Message msg = new Message(null,"");
-        if(username.equals("")){
-            msg.message = "User does not exist";
-            return msg;
-        }
-        try {
-            Common.User result = userDB.getUser(username);
-            if(result.getPassword().equals(password)){
-                userDB.login(usr);
-                msg.message = "success";
-                ch.setUser(usr);
+        try{
+        Common.User result = userDB.getUser(username);
+            if(username.equals("")){
+                msg.message = "User does not exist";
                 return msg;
             }
-            else {
-                msg.message = "Invalid Password";
+//            Common.User result = userDB.getUser(username);
+            if(result.getPassword() != null) {
+                if (result.getPassword().equals(password)) {
+                    userDB.login(usr);
+                    msg.message = "success";
+                    ch.setUser(usr);
+                    return msg;
+                }
+                else {
+                    msg.message = "Invalid Password";
+                    return msg;
+                }
+            }
+            else{
+                msg.message = "User does not exist";
                 return msg;
             }
+
         }
         catch (SQLException throwables) {
             throwables.printStackTrace();
