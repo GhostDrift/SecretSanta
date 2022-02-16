@@ -287,5 +287,16 @@ public class CommandProtocol {
         }
         return msg;
     }
+    //method to get a users information
+    protected static Message getUser(User usr, ClientHandler ch){
+        Message msg = new Message(null,"");
+        try {
+            usr = ch.getServer().getUserDatabase().getUser(usr.getUsername());
+            msg.user = usr;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return msg;
+    }
 
 }

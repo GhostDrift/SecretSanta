@@ -98,8 +98,8 @@ public class Client {
         return networkaccess.sendMessage(msg,true).message;
     }
     //method to get the details of a user
-    public Message getUser(User usr){
+    public User getUser(User usr){
         Message msg = new Message(usr, "getUser");
-        return networkaccess.sendMessage(msg,true);
+        return networkaccess.sendMessage(msg,true).user;
     }
 }
