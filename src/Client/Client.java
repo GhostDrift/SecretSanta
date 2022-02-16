@@ -92,4 +92,8 @@ public class Client {
         Message result = networkaccess.sendMessage(msg,true);
         return result.message;
     }
+    public String updateSettings(User usr){
+        Message msg = new Message(usr, "updateSettings");
+        return networkaccess.sendMessage(msg,true).message;
+    }
 }
