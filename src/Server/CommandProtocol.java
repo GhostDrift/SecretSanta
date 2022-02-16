@@ -342,8 +342,22 @@ public class CommandProtocol {
         return true;
     }
     //method to update a users settings
-    private Message updateAccountSettings(){
+    private Message updateAccountSettings(User usr, ClientHandler ch){
+        UserDatabase userDb = ch.getServer().getUserDatabase();
+        Message msg = new Message(null,"");
+        try {
+            User update = userDb.getUser(usr.getUsername());
+            update.setEmail(usr.getEmail());
+            update.setPassword(usr.getPassword());
+            if(validatePasswordAndEmail(update,msg,ch)){
+                userDb.updateUser(update);
+                return msg;
+            }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return msg;
     }
 
 }
