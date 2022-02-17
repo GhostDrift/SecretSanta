@@ -97,13 +97,21 @@ public class CommandProtocol {
 //            Common.User result = userDB.getUser(username);
             if(result.getPassword() != null) {
                 if (result.getPassword().equals(password)) {
-                    userDB.login(usr);
-                    msg.message = "success";
-                    ch.setUser(usr);
-                    return msg;
+                    if(result.getLockCount() >= Config.getLockoutThreshold()){
+                        msg.message = "Your account is locked, please recover it to continue";
+                        return msg;
+                    }
+                    else {
+                        userDB.login(usr);
+                        msg.message = "success";
+                        ch.setUser(usr);
+                        return msg;
+                    }
                 }
                 else {
                     msg.message = "Invalid Password";
+                    result.setLockCount(result.getLockCount()+1);
+                    userDB.updateUser(result);
                     return msg;
                 }
             }
@@ -113,7 +121,7 @@ public class CommandProtocol {
             }
 
         }
-        catch (SQLException throwables) {
+        catch (SQLException | ConfigNotInitializedException throwables) {
             throwables.printStackTrace();
             return msg;
         }
