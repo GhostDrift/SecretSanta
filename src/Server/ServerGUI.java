@@ -535,9 +535,9 @@ public class ServerGUI extends JFrame {
             this.add(symbols,gbc);
             gbc.gridx = 0;
             gbc.gridy = 9;
-            this.add(enforcePassHistory,gbc);
+//            this.add(enforcePassHistory,gbc);
             gbc.gridx = 1;
-            this.add(enforcePassHistoryValue,gbc);
+//            this.add(enforcePassHistoryValue,gbc);
             gbc.gridx = 0;
             gbc.gridy = 10;
             gbc.gridwidth = 5;
