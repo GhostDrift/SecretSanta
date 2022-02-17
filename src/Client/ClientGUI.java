@@ -1007,6 +1007,7 @@ public class ClientGUI extends JFrame {
 
         //constructor
         protected AccountSettings(){
+            usr = client.getUser(usr);
             this.setPanelName("Account Settings");
             windowTitle.setText(this.getLabel());
             this.setLayout(new GridBagLayout());
@@ -1015,8 +1016,8 @@ public class ClientGUI extends JFrame {
             password.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             email = new JLabel("Email");
             email.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-            passText = new JTextField("Your password here", 25);
-            emailText = new JTextField("Your email here", 25);
+            passText = new JTextField(usr.getPassword(), 25);
+            emailText = new JTextField(usr.getEmail(), 25);
             cancel = new JButton("Cancel");
             apply = new JButton("Apply");
             status = new JLabel("Status will be displayed here");
