@@ -1018,9 +1018,10 @@ public class ClientGUI extends JFrame {
             email.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             passText = new JTextField(usr.getPassword(), 25);
             emailText = new JTextField(usr.getEmail(), 25);
-            cancel = new JButton("Cancel");
+            cancel = new JButton("Back");
             apply = new JButton("Apply");
             status = new JLabel("Status will be displayed here");
+            status.setVisible(false);
             status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             status.setForeground(Color.BLACK);
             prepareButtonHandlers();
