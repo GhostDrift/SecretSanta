@@ -73,6 +73,9 @@ public class CommandProtocol {
         else if (cmd.message.equals("updateSettings")){
             na.sendMessage(updateAccountSettings(cmd.user,ch),false);
         }
+        else if(cmd.message.equals("getUser")){
+             na.sendMessage(getUser(cmd.user,ch),false);
+        }
         else {
 
             na.sendMessage(cmd, false);
