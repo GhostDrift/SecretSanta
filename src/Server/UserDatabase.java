@@ -34,23 +34,23 @@ class UserDatabase extends Database {
             for (int i = 1; i <= numberOfColumns; ++i) {
 //                System.out.print(rset.getString(i) + "\t\t");
                 data = rset.getString(i);
-                if(i == 1){
+                if(i == 2){
                     usr.setUsername(data);
 //                    System.out.println(usr.getUsername());
                 }
-                else if (i == 2){
+                else if (i == 3){
                     usr.setPassword(data);
 //                    System.out.println(usr.getPassword());
                 }
-                else if (i == 3){
+                else if (i == 4){
                     usr.setEmail(data);
 //                    System.out.println(usr.getEmail());
                 }
-                else if(i == 4){
+                else if(i == 5){
                     usr.setLockCount(Integer.parseInt(data));
 //                    System.out.println(usr.getLockCount());
                 }
-                else{
+                else if(i == 6){
                     usr.setLoggedIn(Integer.parseInt(data));
 //                    System.out.println(usr.getLoggedIn());
                 }
