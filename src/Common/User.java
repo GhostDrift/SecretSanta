@@ -12,18 +12,20 @@ public class User implements Serializable {
     private String email;
     private int lockCount;
     private int loggedIn;
+    private int id;
 
     //Default constructor
     public User() {
     }
 
     //Overloaded constructors
-    public User(String username, String password, String email, int lockCount, int loggedIn) {
+    public User(int id,String username, String password, String email, int lockCount, int loggedIn) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.lockCount = lockCount;
         this.loggedIn = loggedIn;
+        this.id = id;
     }
 
     public User(String username, String password, String email) {
@@ -74,6 +76,13 @@ public class User implements Serializable {
 
     public void setLoggedIn(int loggedIn) {
         this.loggedIn = loggedIn;
+    }
+
+    public int getId(){
+        return this.id;
+    }
+    public void setId(int id){
+        this.id = id;
     }
 
     public void print(){
