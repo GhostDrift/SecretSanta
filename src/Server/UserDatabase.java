@@ -185,19 +185,13 @@ class UserDatabase extends Database {
     //method that returns an arraylist containing all the user's previous passwords
     protected ArrayList<String> getPassHistory(User usr){
         ArrayList<String> history = new ArrayList<String>();
-        rset = this.query("SELECT * FROM passwordhistory WHERE username = '" + usr.getUsername() + "';");
+        rset = this.query("SELECT * FROM passwordhistory WHERE userid = '" + usr.getId() + "';");
         try {
             ResultSetMetaData rsmd = rset.getMetaData();
             int numberOfColumns = rsmd.getColumnCount();
-            String data = "";
             while (rset.next()) { // I don't know why this while loop has to be here but it does
-                // -- loop through the columns of the ResultSet
-                for (int i = 1; i <= numberOfColumns; ++i) {
-
-                    }
-
-                }
-
+                  history.add(rset.getString(3));
+            }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -210,7 +204,7 @@ class UserDatabase extends Database {
         UserDatabase usrDB = new UserDatabase(Config.getUserDatabaseServerAddress(), Config.getDatabaseUsername(), Config.getDatabasePassword());
 //        usrDB.printResultSet(usrDB.query("SELECT * FROM users;"));
         try {
-//            User usr = usrDB.getUser("Jessica");
+            User usr = usrDB.getUser("test");
 //            User usr = new User("Jessica", "test123", "someEmail@gmail.com");
 //            usrDB.logout(user);
 //            usrDB.addUser(usr);
@@ -226,7 +220,7 @@ class UserDatabase extends Database {
 //            System.out.println(usrDB.getNumberOfLoggedIn());
 //            System.out.println(usrDB.getWhoLoggedIn());
 //            usrDB.getNumRegistered();
-            System.out.println(usrDB.getWhoLockedOut());
+            System.out.println(usrDB.getPassHistory(usr));
         } catch (SQLException e) {
             e.printStackTrace();
         }
