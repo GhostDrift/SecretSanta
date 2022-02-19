@@ -34,7 +34,10 @@ class UserDatabase extends Database {
             for (int i = 1; i <= numberOfColumns; ++i) {
 //                System.out.print(rset.getString(i) + "\t\t");
                 data = rset.getString(i);
-                if(i == 2){
+                if(i == 1){
+                    usr.setId(Integer.parseInt(data));
+                }
+                else if(i == 2){
                     usr.setUsername(data);
 //                    System.out.println(usr.getUsername());
                 }
