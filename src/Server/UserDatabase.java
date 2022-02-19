@@ -197,6 +197,11 @@ class UserDatabase extends Database {
             }
         return history;
     }
+    //method to add an entry to the password history table
+    private void addPassHistoryEntry(User usr){
+//        "INSERT INTO `users` (`username`, `password`, `email`, `lockCount`, `loggedIn`) VALUES ('" + usr.getUsername() + "', '" + usr.getPassword() + "', '" + usr.getEmail() + "', '0', '0');"
+        this.update("INSERT INTO `passwordhistory` (`userId`, `password`) VALUES ('" + usr.getId() + "', '" + usr.getPassword() + "');");
+    }
 //main method used for testing class code
     public static void main(String[] args) throws ConfigNotInitializedException {
 //        ConfigPopulator.populate();
@@ -205,6 +210,7 @@ class UserDatabase extends Database {
 //        usrDB.printResultSet(usrDB.query("SELECT * FROM users;"));
         try {
             User usr = usrDB.getUser("test");
+            usrDB.addPassHistoryEntry(usr);
 //            User usr = new User("Jessica", "test123", "someEmail@gmail.com");
 //            usrDB.logout(user);
 //            usrDB.addUser(usr);
