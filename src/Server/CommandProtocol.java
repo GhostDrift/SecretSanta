@@ -166,6 +166,9 @@ public class CommandProtocol {
                     }
                     else{
                         validatePasswordAndEmail(usr,result,ch);
+                        if(result.message.equals("success")){
+                            ch.getServer().getUserDatabase().addUser(usr);
+                        }
                         return result;
                     }
                 }
