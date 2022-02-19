@@ -152,7 +152,7 @@ class UserDatabase extends Database {
 
     //method that returns an array of the usernames of the locked out accounts
     protected ArrayList<String> getWhoLockedOut() throws SQLException {
-        ArrayList lockedOutUsers = new ArrayList();
+        ArrayList<String> lockedOutUsers = new ArrayList<String>();
         rset = this.query("Select lockCount, username from users;");
         int lockCount = 0;
         while(rset.next()){
@@ -160,8 +160,12 @@ class UserDatabase extends Database {
             lockCount = Integer.parseInt(rset.getString(1));
 //            System.out.print(lockCount + " ");
 //            System.out.println(rset.getString(2));
-            if(lockCount >= 3){
-                lockedOutUsers.add(rset.getString(2));
+            try {
+                if(lockCount >= Config.getLockoutThreshold()){
+                    lockedOutUsers.add(rset.getString(2));
+                }
+            } catch (ConfigNotInitializedException e) {
+                e.printStackTrace();
             }
 //            System.out.println(rset.getString(2));
 
@@ -174,6 +178,27 @@ class UserDatabase extends Database {
     //method to reset a user's lock count
     protected void resetLockCount(User usr) {
 
+    }
+    //method that returns an arraylist containing all the user's previous passwords
+    protected ArrayList<String> getPassHistory(User usr){
+        ArrayList<String> history = new ArrayList<String>();
+        rset = this.query("SELECT * FROM passwordhistory WHERE username = '" + usr.getUsername() + "';");
+        try {
+            ResultSetMetaData rsmd = rset.getMetaData();
+            int numberOfColumns = rsmd.getColumnCount();
+            String data = "";
+            while (rset.next()) { // I don't know why this while loop has to be here but it does
+                // -- loop through the columns of the ResultSet
+                for (int i = 1; i <= numberOfColumns; ++i) {
+
+                    }
+
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        return history;
     }
 //main method used for testing class code
     public static void main(String[] args) throws ConfigNotInitializedException {
