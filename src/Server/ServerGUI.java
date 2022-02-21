@@ -366,6 +366,11 @@ public class ServerGUI extends JFrame {
         private JTextField lockoutThresholdValue;
         private final Font timesNewRoman = new Font("TimesRoman", Font.PLAIN, 15);
         private GridBagConstraints gbc = new GridBagConstraints();
+        private boolean uppercaseValue;
+        private boolean lowercaseValue;
+        private boolean numbersValue;
+        private boolean symbolsValue;
+        private boolean passHistoryValue;
 
         protected EditConfig() throws ConfigNotInitializedException {
 //            Config.initializeConfig("ServerConfiguration.conf");
@@ -535,9 +540,9 @@ public class ServerGUI extends JFrame {
             this.add(symbols,gbc);
             gbc.gridx = 0;
             gbc.gridy = 9;
-//            this.add(enforcePassHistory,gbc);
+            this.add(enforcePassHistory,gbc);
             gbc.gridx = 1;
-//            this.add(enforcePassHistoryValue,gbc);
+            this.add(enforcePassHistoryValue,gbc);
             gbc.gridx = 0;
             gbc.gridy = 10;
             gbc.gridwidth = 5;

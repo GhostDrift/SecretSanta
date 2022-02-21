@@ -198,7 +198,7 @@ class UserDatabase extends Database {
         return history;
     }
     //method to add an entry to the password history table
-    private void addPassHistoryEntry(User usr){
+    protected void addPassHistoryEntry(User usr){
 //        "INSERT INTO `users` (`username`, `password`, `email`, `lockCount`, `loggedIn`) VALUES ('" + usr.getUsername() + "', '" + usr.getPassword() + "', '" + usr.getEmail() + "', '0', '0');"
         this.update("INSERT INTO `passwordhistory` (`userId`, `password`) VALUES ('" + usr.getId() + "', '" + usr.getPassword() + "');");
     }
