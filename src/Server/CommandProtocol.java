@@ -1,6 +1,7 @@
 package Server;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import Common.Message;
@@ -287,16 +288,29 @@ public class CommandProtocol {
     private static Message updateAccountSettings(User usr, ClientHandler ch){
         UserDatabase userDb = ch.getServer().getUserDatabase();
         Message msg = new Message(null,"");
-        try {
+        try{
+            usr.setId(userDb.getUser(usr.getUsername()).getId());
+            ArrayList<String> passHistory = userDb.getPassHistory(usr);
+//            System.out.println(usr.getUsername() + ": " + passHistory);
             User update = userDb.getUser(ch.getUser().getUsername());
             update.setEmail(usr.getEmail());
             update.setPassword(usr.getPassword());
             if(validatePasswordAndEmail(update,msg,ch)){
-                userDb.updateUser(update);
-                return msg;
+                if(Config.getEnforcePasswordHistory()){
+                    if(passHistory.contains(usr.getPassword())){
+                        msg.message = "You cannot use a previous password";
+                    }
+                    else {
+                        userDb.updateUser(update);
+                        return msg;
+                    }
+                }else {
+                    userDb.updateUser(update);
+                    return msg;
+                }
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | ConfigNotInitializedException e) {
             e.printStackTrace();
         }
         return msg;

@@ -185,8 +185,9 @@ class UserDatabase extends Database {
     //method that returns an arraylist containing all the user's previous passwords
     protected ArrayList<String> getPassHistory(User usr){
         ArrayList<String> history = new ArrayList<String>();
+        try{
+        usr.setId(getUser(usr.getUsername()).getId());
         rset = this.query("SELECT * FROM passwordhistory WHERE userid = '" + usr.getId() + "';");
-        try {
             ResultSetMetaData rsmd = rset.getMetaData();
             int numberOfColumns = rsmd.getColumnCount();
             while (rset.next()) { // I don't know why this while loop has to be here but it does
@@ -195,7 +196,26 @@ class UserDatabase extends Database {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        System.out.println(history);
         return history;
+    }
+    //method to check if a password has already been used by a user
+    protected boolean checkPassHistory(User usr){
+        boolean result = false;
+        try {
+            usr.setId(getUser(usr.getUsername()).getId());
+            rset = this.query("SELECT password FROM passwordhistory WHERE userid = '" + usr.getId() + "' and password = '" +usr.getPassword() +"';");
+            ResultSetMetaData rsmd = rset.getMetaData();
+            while(rset.next()){
+                if(rset.getString(0) == null){
+                    result = true;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
     //method to add an entry to the password history table
     protected void addPassHistoryEntry(User usr){
@@ -210,7 +230,8 @@ class UserDatabase extends Database {
 //        usrDB.printResultSet(usrDB.query("SELECT * FROM users;"));
         try {
             User usr = usrDB.getUser("test");
-            usrDB.addPassHistoryEntry(usr);
+            usrDB.getPassHistory(usr);
+//            usrDB.addPassHistoryEntry(usr);
 //            User usr = new User("Jessica", "test123", "someEmail@gmail.com");
 //            usrDB.logout(user);
 //            usrDB.addUser(usr);
