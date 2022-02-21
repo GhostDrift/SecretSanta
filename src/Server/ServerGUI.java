@@ -736,6 +736,25 @@ public class ServerGUI extends JFrame {
                 lockoutThresholdValue.setText(lockoutThresholdValue.getText() + " Must be an integer");
                 flag = 1;
             }
+            Config.setEnforcePasswordHistory(passHistoryValue);
+            boolean[] requiredChars = Config.getRequiredCharacterSets();
+            boolean value;
+            for(int i = 0; i< requiredChars.length ; i ++){
+                if(i ==0){
+                    value = lowercaseValue;
+                }
+                else if( i ==1 ){
+                    value = uppercaseValue;
+                }
+                else if(i == 2){
+                    value = numbersValue;
+                }
+                else {
+                    value = symbolsValue;
+                }
+                requiredChars[i] = value;
+            }
+
             if(flag == 0) {
                 Config.saveConfig();
                 updateData(new ServerControl());
@@ -750,7 +769,7 @@ public class ServerGUI extends JFrame {
                 value = true;
             }
             else if(source == uppercaseLetters){
-                i = 0;
+                i = 1;
                 value = true;
             }
             else if(source == numbers){
@@ -769,21 +788,34 @@ public class ServerGUI extends JFrame {
                 value = false;
             }
             if(flag == 0) {
-                try {
-                    boolean[] reqChars = Config.getRequiredCharacterSets();
-                    reqChars[i] = value;
-                    System.out.println(Arrays.toString(Config.getRequiredCharacterSets()));
-                } catch (ConfigNotInitializedException ex) {
-                    ex.printStackTrace();
+                if(i == 0){
+                    lowercaseValue = value;
                 }
+                else if (i ==1){
+                    uppercaseValue = value;
+                }
+                else if( i == 2){
+                    numbersValue = value;
+                }
+                else{
+                    symbolsValue = value;
+                }
+//                try {
+//                    boolean[] reqChars = Config.getRequiredCharacterSets();
+//                    reqChars[i] = value;
+//                    System.out.println(Arrays.toString(Config.getRequiredCharacterSets()));
+//                } catch (ConfigNotInitializedException ex) {
+//                    ex.printStackTrace();
+//                }
             }
             else{
-                try {
-                    Config.setEnforcePasswordHistory(value);
-                    System.out.println("Enforce Password History: " + Config.getEnforcePasswordHistory());
-                } catch (ConfigNotInitializedException ex) {
-                    ex.printStackTrace();
-                }
+                passHistoryValue = value;
+//                try {
+//                    Config.setEnforcePasswordHistory(value);
+//                    System.out.println("Enforce Password History: " + Config.getEnforcePasswordHistory());
+//                } catch (ConfigNotInitializedException ex) {
+//                    ex.printStackTrace();
+//                }
             }
 
         }
