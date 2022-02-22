@@ -200,6 +200,7 @@ class UserDatabase extends Database {
         return history;
     }
     //method to check if a password has already been used by a user
+    //returns true if the password has not been used before
     protected boolean checkPassHistory(User usr){
         boolean result = false;
         try {

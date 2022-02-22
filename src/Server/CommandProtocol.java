@@ -290,19 +290,21 @@ public class CommandProtocol {
         Message msg = new Message(null,"");
         try{
             usr.setId(userDb.getUser(usr.getUsername()).getId());
-            ArrayList<String> passHistory = userDb.getPassHistory(usr);
+//            ArrayList<String> passHistory = userDb.getPassHistory(usr);
 //            System.out.println(usr.getUsername() + ": " + passHistory);
             User update = userDb.getUser(ch.getUser().getUsername());
             update.setEmail(usr.getEmail());
             update.setPassword(usr.getPassword());
             if(validatePasswordAndEmail(update,msg,ch)){
                 if(Config.getEnforcePasswordHistory()){
-                    if(passHistory.contains(usr.getPassword())){
-                        msg.message = "You cannot use a previous password";
-                    }
-                    else {
-                        userDb.updateUser(update);
-                        return msg;
+                    System.out.println(userDb.getUser(update.getUsername()).getPassword());
+                    if(!usr.getPassword().equals(update.getPassword())) {
+                        if (!userDb.checkPassHistory(usr)) {
+                            msg.message = "You cannot use a previous password";
+                        } else {
+                            userDb.updateUser(update);
+                            return msg;
+                        }
                     }
                 }else {
                     userDb.updateUser(update);
