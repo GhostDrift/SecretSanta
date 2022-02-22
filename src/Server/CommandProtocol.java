@@ -289,22 +289,28 @@ public class CommandProtocol {
         UserDatabase userDb = ch.getServer().getUserDatabase();
         Message msg = new Message(null,"");
         try{
-            usr.setId(userDb.getUser(usr.getUsername()).getId());
+            usr.setId(userDb.getUser(ch.getUser().getUsername()).getId());
 //            ArrayList<String> passHistory = userDb.getPassHistory(usr);
 //            System.out.println(usr.getUsername() + ": " + passHistory);
             User update = userDb.getUser(ch.getUser().getUsername());
             update.setEmail(usr.getEmail());
             update.setPassword(usr.getPassword());
+            System.out.println(update.getPassword());
             if(validatePasswordAndEmail(update,msg,ch)){
                 if(Config.getEnforcePasswordHistory()){
-                    System.out.println(userDb.getUser(update.getUsername()).getPassword());
-                    if(!usr.getPassword().equals(update.getPassword())) {
-                        if (!userDb.checkPassHistory(usr)) {
+//                    System.out.println("password to be checked: " + update.getPassword());
+//                    System.out.println("Current password: " + userDb.getUser(ch.getUser().getUsername()).getPassword());
+                    if(!usr.getPassword().equals(userDb.getUser(update.getUsername()).getPassword())) {
+                        if (userDb.checkPassHistory(update)) {
                             msg.message = "You cannot use a previous password";
                         } else {
                             userDb.updateUser(update);
+                            userDb.addPassHistoryEntry(update);
                             return msg;
                         }
+                    }
+                    else{
+                        userDb.updateUser(update);
                     }
                 }else {
                     userDb.updateUser(update);

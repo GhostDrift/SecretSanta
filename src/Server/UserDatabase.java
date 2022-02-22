@@ -200,18 +200,21 @@ class UserDatabase extends Database {
         return history;
     }
     //method to check if a password has already been used by a user
-    //returns true if the password has not been used before
+    //returns true if the password has been used before
     protected boolean checkPassHistory(User usr){
         boolean result = false;
         try {
             usr.setId(getUser(usr.getUsername()).getId());
+            System.out.println("Id: " + usr.getId() + "password to be checked: " + usr.getPassword());
             rset = this.query("SELECT password FROM passwordhistory WHERE userid = '" + usr.getId() + "' and password = '" +usr.getPassword() +"';");
             ResultSetMetaData rsmd = rset.getMetaData();
-            while(rset.next()){
-                if(rset.getString(0) == null){
-                    result = true;
-                }
+            String s;
+            if(rset.next()) {
+                result = true;
             }
+//            while(rset.next()){
+//
+//            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -231,7 +234,8 @@ class UserDatabase extends Database {
 //        usrDB.printResultSet(usrDB.query("SELECT * FROM users;"));
         try {
             User usr = usrDB.getUser("test");
-            usrDB.getPassHistory(usr);
+            usr.setPassword("Example");
+            usrDB.updateUser(usr);
 //            usrDB.addPassHistoryEntry(usr);
 //            User usr = new User("Jessica", "test123", "someEmail@gmail.com");
 //            usrDB.logout(user);
