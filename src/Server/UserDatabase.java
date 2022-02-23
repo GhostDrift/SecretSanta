@@ -228,6 +228,22 @@ class UserDatabase extends Database {
         }
         return result;
     }
+    //method to clear password history
+    public void clearPassHistory(){
+        ArrayList<Integer> ids = new ArrayList<Integer>();
+        try {
+            rset = query("select * from passwordhistory;");
+            while (rset.next()) {
+                ids.add(rset.getInt(1));
+//                update("delete from passwordhistory where id = '" + id + "';");
+            }
+            for(int i = 0; i < ids.size(); i++){
+                update("delete from passwordhistory where id = '" + ids.get(i) + "';");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
     //method to add an entry to the password history table
     protected void addPassHistoryEntry(User usr){
 //        "INSERT INTO `users` (`username`, `password`, `email`, `lockCount`, `loggedIn`) VALUES ('" + usr.getUsername() + "', '" + usr.getPassword() + "', '" + usr.getEmail() + "', '0', '0');"
@@ -239,10 +255,11 @@ class UserDatabase extends Database {
         Config.initializeConfig("ServerConfiguration.conf");
         UserDatabase usrDB = new UserDatabase(Config.getUserDatabaseServerAddress(), Config.getDatabaseUsername(), Config.getDatabasePassword());
 //        usrDB.printResultSet(usrDB.query("SELECT * FROM users;"));
-        try {
-            User usr = usrDB.getUser("test");
-            usr.setPassword("Example");
-            usrDB.updateUser(usr);
+//        try {
+             usrDB.clearPassHistory();
+//            User usr = usrDB.getUser("test");
+//            usr.setPassword("Example");
+//            usrDB.updateUser(usr);
 //            usrDB.addPassHistoryEntry(usr);
 //            User usr = new User("Jessica", "test123", "someEmail@gmail.com");
 //            usrDB.logout(user);
@@ -259,10 +276,10 @@ class UserDatabase extends Database {
 //            System.out.println(usrDB.getNumberOfLoggedIn());
 //            System.out.println(usrDB.getWhoLoggedIn());
 //            usrDB.getNumRegistered();
-            System.out.println(usrDB.getPassHistory(usr));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//            System.out.println(usrDB.getPassHistory(usr));
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
     }
 
 }
