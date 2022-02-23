@@ -740,6 +740,18 @@ public class ServerGUI extends JFrame {
                 lockoutThresholdValue.setText(lockoutThresholdValue.getText() + " Must be an integer");
                 flag = 1;
             }
+            if(Config.getEnforcePasswordHistory() != passHistoryValue){
+                UserDatabase usrDB = new UserDatabase(
+                        Config.getUserDatabaseServerAddress(),
+                        Config.getDatabaseUsername(),
+                        Config.getDatabasePassword());
+                if(passHistoryValue){
+                    usrDB.populatePassHistory();
+                }
+                else{
+                    usrDB.clearPassHistory();
+                }
+            }
             Config.setEnforcePasswordHistory(passHistoryValue);
             boolean[] requiredChars = Config.getRequiredCharacterSets();
             boolean value;
