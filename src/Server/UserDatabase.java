@@ -102,6 +102,13 @@ class UserDatabase extends Database {
     //method to add a new user to the database
     protected void addUser(User usr){
         this.update("INSERT INTO `users` (`username`, `password`, `email`, `lockCount`, `loggedIn`) VALUES ('" + usr.getUsername() + "', '" + usr.getPassword() + "', '" + usr.getEmail() + "', '0', '0');");
+        try {
+            if (Config.getEnforcePasswordHistory()){
+                this.addPassHistoryEntry(getUser(usr.getUsername()));
+            }
+        } catch (ConfigNotInitializedException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     //method to return the number of logged in clients
