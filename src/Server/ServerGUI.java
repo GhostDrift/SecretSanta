@@ -434,12 +434,16 @@ public class ServerGUI extends JFrame {
             this.requiredCharSets.setFont(timesNewRoman);
             boolean[] charSetRequirements = Config.getRequiredCharacterSets();
             this.lowercaseLetters = new JCheckBox("Lowercase",charSetRequirements[0]);
+            this.lowercaseValue = charSetRequirements[0];
             this.lowercaseLetters.setMnemonic(KeyEvent.VK_C);
             this.uppercaseLetters = new JCheckBox("Uppercase",charSetRequirements[1]);
+            this.uppercaseValue = charSetRequirements[1];
             this.uppercaseLetters.setMnemonic(KeyEvent.VK_G);
             this.numbers = new JCheckBox("Numbers", charSetRequirements[2]);
+            this.numbersValue = charSetRequirements[2];
             this.numbers.setMnemonic(KeyEvent.VK_H);
             this.symbols = new JCheckBox("Special", charSetRequirements[3]);
+            this.symbolsValue = charSetRequirements[3];
             this.symbols.setMnemonic(KeyEvent.VK_T);
             this.enforcePassHistoryValue = new JCheckBox("",Config.getEnforcePasswordHistory());
             this.enforcePassHistoryValue.setMnemonic(KeyEvent.VK_0);
