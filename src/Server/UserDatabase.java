@@ -244,6 +244,25 @@ class UserDatabase extends Database {
             throwables.printStackTrace();
         }
     }
+    //method to populate password history
+    public void populatePassHistory(){
+        ArrayList<User> users = new ArrayList<>();
+        User usr;
+        try{
+            rset = query("select id, password from users;");
+            while(rset.next()){
+                usr = new User();
+                usr.setId(rset.getInt(1));
+                usr.setPassword(rset.getString(2));
+                users.add(usr);
+            }
+            for(int i = 0; i< users.size(); i++){
+                addPassHistoryEntry(users.get(i));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
     //method to add an entry to the password history table
     protected void addPassHistoryEntry(User usr){
 //        "INSERT INTO `users` (`username`, `password`, `email`, `lockCount`, `loggedIn`) VALUES ('" + usr.getUsername() + "', '" + usr.getPassword() + "', '" + usr.getEmail() + "', '0', '0');"
@@ -256,7 +275,8 @@ class UserDatabase extends Database {
         UserDatabase usrDB = new UserDatabase(Config.getUserDatabaseServerAddress(), Config.getDatabaseUsername(), Config.getDatabasePassword());
 //        usrDB.printResultSet(usrDB.query("SELECT * FROM users;"));
 //        try {
-             usrDB.clearPassHistory();
+//             usrDB.clearPassHistory();
+//        usrDB.populatePassHistory();
 //            User usr = usrDB.getUser("test");
 //            usr.setPassword("Example");
 //            usrDB.updateUser(usr);
