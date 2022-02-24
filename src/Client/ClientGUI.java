@@ -7,6 +7,8 @@ import Common.displayPanel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -219,6 +221,7 @@ public class ClientGUI extends JFrame {
 //            gbc.anchor = GridBagConstraints.LAST_LINE_END;
 //            this.add(connect);
             PrepareButtons();
+            prepareKeyListener();
             if(error){
                 cannotConnect();
             }
@@ -289,6 +292,24 @@ public class ClientGUI extends JFrame {
 
             updateControl(Adv,connect);
 
+        }
+        private void prepareKeyListener(){
+            this.IP.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+                    System.out.println(keyEvent.getKeyCode());
+                }
+
+                @Override
+                public void keyPressed(KeyEvent keyEvent) {
+
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
         }
     }
     private class Login extends displayPanel{
