@@ -374,6 +374,7 @@ public class ClientGUI extends JFrame {
              this.add(pasWord, gbc);
 
              prepareButtonHandlers();
+             prepareKeyListener();
 
 
          }
@@ -423,6 +424,7 @@ public class ClientGUI extends JFrame {
              this.add(pasWord, gbc);
 
              prepareButtonHandlers();
+             prepareKeyListener();
 
 
          }
@@ -506,6 +508,28 @@ public class ClientGUI extends JFrame {
 
              updateControl(disconnect,register,recover,login);
          }
+        private void prepareKeyListener(){
+            this.pasWord.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+                    System.out.println(keyEvent.getKeyCode());
+                    if(keyEvent.getKeyCode() == 0){
+                        login.doClick();
+                    }
+                }
+
+                @Override
+                public void keyPressed(KeyEvent keyEvent) {
+
+
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
+        }
     }
 
     private class Recover extends displayPanel{
