@@ -529,6 +529,24 @@ public class ClientGUI extends JFrame {
 
                 }
             });
+            this.usrName.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+                    if(keyEvent.getKeyCode() == 0){
+                        pasWord.requestFocus();
+                    }
+                }
+
+                @Override
+                public void keyPressed(KeyEvent keyEvent) {
+
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
         }
     }
 
