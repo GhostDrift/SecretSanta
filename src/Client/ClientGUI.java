@@ -184,6 +184,9 @@ public class ClientGUI extends JFrame {
 
             Adv = new JButton("Advanced...");
             connect = new JButton("Connect");
+            this.errorMessage = new JLabel("Server is unreachable");
+            this.errorMessage.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            this.errorMessage.setForeground(Color.RED);
 
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
@@ -191,26 +194,28 @@ public class ClientGUI extends JFrame {
             gbc.ipadx = 10;
             gbc.ipady = 10;
             gbc.fill = GridBagConstraints.NONE;
+            gbc.gridwidth = 2;
+            this.add(errorMessage,gbc);
+            gbc.gridy = 1;
+            gbc.gridwidth = 1;
             this.add(i, gbc);
             gbc.gridx = 1;
-            gbc.gridy = 0;
+            gbc.gridy = 1;
             this.add(IP, gbc);
             gbc.gridx = 0;
-            gbc.gridy = 1;
+            gbc.gridy = 2;
             Portn.setVisible(t);
             this.add(Portn, gbc);
             gbc.gridx = 1;
-            gbc.gridy = 1;
+            gbc.gridy = 2;
 //            gbc.fill = GridBagConstraints.HORIZONTAL;
             portnum.setVisible(false);
             this.add(portnum, gbc);
-            this.errorMessage = new JLabel("Server is unreachable");
-            this.errorMessage.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-            this.errorMessage.setForeground(Color.RED);
+
             gbc.gridx = 0;
             gbc.gridy = 2;
             gbc.gridwidth = 2;
-            this.add(errorMessage, gbc);
+//            this.add(errorMessage, gbc);
             this.errorMessage.setVisible(false);
 //            gbc.gridx = 0;
 //            gbc.gridy = 3;
