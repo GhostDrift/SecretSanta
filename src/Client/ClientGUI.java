@@ -689,6 +689,7 @@ public class ClientGUI extends JFrame {
             cancel = new JButton("Cancel");
             submit = new JButton("Submit");
             prepareButtonHandlers();
+            prepareKeyListeners();
             //add components to the JPanel
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
@@ -720,6 +721,82 @@ public class ClientGUI extends JFrame {
             this.add(rePassText, gbc);
 
         }
+
+        private void prepareKeyListeners() {
+            this.usrName.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+                    if(keyEvent.getKeyCode() == 0){
+                        eMailText.requestFocus();
+                    }
+                }
+
+                @Override
+                public void keyPressed(KeyEvent keyEvent) {
+
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
+            this.pasWord.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+                    if(keyEvent.getKeyCode() == 0){
+                        rePassText.requestFocus();
+                    }
+                }
+
+                @Override
+                public void keyPressed(KeyEvent keyEvent) {
+
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
+            this.rePassText.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+                    if(keyEvent.getKeyCode() == 0){
+                        submit.doClick();
+                    }
+                }
+
+                @Override
+                public void keyPressed(KeyEvent keyEvent) {
+
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
+            this.eMailText.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+                    if(keyEvent.getKeyCode() == 0){
+                        pasWord.requestFocus();
+                    }
+                }
+
+                @Override
+                public void keyPressed(KeyEvent keyEvent) {
+
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
+        }
+
         private void prepareButtonHandlers(){
             cancel.addActionListener(e -> {
                 System.out.println("cancel");
