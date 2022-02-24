@@ -302,15 +302,15 @@ public class ClientGUI extends JFrame {
             this.IP.addKeyListener(new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent keyEvent) {
-                    System.out.println(keyEvent.getKeyCode());
-                    if(keyEvent.getKeyCode() == 0){
-                        connect.doClick();
-                    }
+
                 }
 
                 @Override
                 public void keyPressed(KeyEvent keyEvent) {
-
+                    System.out.println(keyEvent.getKeyCode());
+                    if(keyEvent.getKeyCode() == 10){
+                        connect.doClick();
+                    }
                 }
 
                 @Override
@@ -514,15 +514,15 @@ public class ClientGUI extends JFrame {
             this.pasWord.addKeyListener(new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent keyEvent) {
-                    System.out.println(keyEvent.getKeyCode());
-                    if(keyEvent.getKeyCode() == 0){
-                        login.doClick();
-                    }
+//                    System.out.println(keyEvent.getKeyCode());
+
                 }
 
                 @Override
                 public void keyPressed(KeyEvent keyEvent) {
-
+                    if(keyEvent.getKeyCode() == 10){
+                        login.doClick();
+                    }
 
                 }
 
@@ -534,14 +534,14 @@ public class ClientGUI extends JFrame {
             this.usrName.addKeyListener(new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent keyEvent) {
-                    if(keyEvent.getKeyCode() == 0){
-                        pasWord.requestFocus();
-                    }
+
                 }
 
                 @Override
                 public void keyPressed(KeyEvent keyEvent) {
-
+                    if(keyEvent.getKeyCode() == 10){
+                        pasWord.requestFocus();
+                    }
                 }
 
                 @Override
@@ -636,14 +636,14 @@ public class ClientGUI extends JFrame {
             this.userText.addKeyListener(new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent keyEvent) {
-                    if(keyEvent.getKeyCode() == 0){
-                        submit.doClick();
-                    }
+
                 }
 
                 @Override
                 public void keyPressed(KeyEvent keyEvent) {
-
+                    if(keyEvent.getKeyCode() == 10){
+                        submit.doClick();
+                    }
                 }
 
                 @Override
@@ -726,14 +726,14 @@ public class ClientGUI extends JFrame {
             this.usrName.addKeyListener(new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent keyEvent) {
-                    if(keyEvent.getKeyCode() == 0){
-                        eMailText.requestFocus();
-                    }
+
                 }
 
                 @Override
                 public void keyPressed(KeyEvent keyEvent) {
-
+                    if(keyEvent.getKeyCode() == 10){
+                        eMailText.requestFocus();
+                    }
                 }
 
                 @Override
@@ -744,14 +744,14 @@ public class ClientGUI extends JFrame {
             this.pasWord.addKeyListener(new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent keyEvent) {
-                    if(keyEvent.getKeyCode() == 0){
-                        rePassText.requestFocus();
-                    }
+
                 }
 
                 @Override
                 public void keyPressed(KeyEvent keyEvent) {
-
+                    if(keyEvent.getKeyCode() == 10){
+                        rePassText.requestFocus();
+                    }
                 }
 
                 @Override
@@ -762,14 +762,14 @@ public class ClientGUI extends JFrame {
             this.rePassText.addKeyListener(new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent keyEvent) {
-                    if(keyEvent.getKeyCode() == 0){
-                        submit.doClick();
-                    }
+
                 }
 
                 @Override
                 public void keyPressed(KeyEvent keyEvent) {
-
+                    if(keyEvent.getKeyCode() == 10){
+                        submit.doClick();
+                    }
                 }
 
                 @Override
@@ -780,14 +780,14 @@ public class ClientGUI extends JFrame {
             this.eMailText.addKeyListener(new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent keyEvent) {
-                    if(keyEvent.getKeyCode() == 0){
-                        pasWord.requestFocus();
-                    }
+
                 }
 
                 @Override
                 public void keyPressed(KeyEvent keyEvent) {
-
+                    if(keyEvent.getKeyCode() == 10){
+                        pasWord.requestFocus();
+                    }
                 }
 
                 @Override
@@ -1046,6 +1046,7 @@ public class ClientGUI extends JFrame {
     private class AddItem extends displayPanel{
         private final JButton add;
         private final JButton cancel;
+        private final JTextField itemEntry;
         private final GridBagConstraints gbc = new GridBagConstraints();
 
         //constructor
@@ -1057,8 +1058,9 @@ public class ClientGUI extends JFrame {
             cancel = new JButton("Cancel");
             JLabel addHere = new JLabel("Enter the item you would like to put on your wish list");
             addHere.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-            JTextField itemEntry = new JTextField("", 25);
+            itemEntry = new JTextField("", 25);
             prepareButtonHandlers();
+            prepareKeyListeners();
             //add components
             this.setLayout(new GridBagLayout());
             gbc.gridx = 0;
@@ -1066,6 +1068,27 @@ public class ClientGUI extends JFrame {
             this.add(addHere,gbc);
             gbc.gridy = 1;
             this.add(itemEntry,gbc);
+        }
+
+        private void prepareKeyListeners() {
+            this.itemEntry.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+
+                }
+
+                @Override
+                public void keyPressed(KeyEvent keyEvent) {
+                    if(keyEvent.getKeyCode() == 10){
+                        add.doClick();
+                    }
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
         }
 
         private void prepareButtonHandlers() {
