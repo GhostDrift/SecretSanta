@@ -372,6 +372,7 @@ public class ClientGUI extends JFrame {
              this.add(password, gbc);
              gbc.gridx = 1;
              this.add(pasWord, gbc);
+             this.usrName.requestFocus();
 
              prepareButtonHandlers();
              prepareKeyListener();
@@ -422,6 +423,7 @@ public class ClientGUI extends JFrame {
              this.add(password, gbc);
              gbc.gridx = 1;
              this.add(pasWord, gbc);
+             this.usrName.requestFocus();
 
              prepareButtonHandlers();
              prepareKeyListener();
@@ -568,12 +570,13 @@ public class ClientGUI extends JFrame {
             this.status.setVisible(false);
             JLabel username = new JLabel("Username");
             username.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-            JLabel instructions = new JLabel("Enter the username of the account you would like to recover, an email will be sent.");
+            JLabel instructions = new JLabel("Enter the username of the account you would like to recover");
             instructions.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             this.userText = new JTextField("", 25);
             this.submit = new JButton("Submit");
             this.cancel = new JButton("Cancel");
             prepareButtonHandlers();
+            prepareKeyListeners();
             //add components
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
@@ -584,10 +587,13 @@ public class ClientGUI extends JFrame {
             gbc.fill = GridBagConstraints.NONE;
             this.add(status,gbc);
             gbc.gridy = 1;
+            this.add(instructions,gbc);
+            gbc.gridy = 2;
             gbc.gridwidth = 1;
             this.add(username, gbc);
             gbc.gridx = 1;
             this.add(userText, gbc);
+            this.userText.requestFocus();
 
 
         }
@@ -625,6 +631,26 @@ public class ClientGUI extends JFrame {
 
             });
             updateControl(cancel,submit);
+        }
+        private void prepareKeyListeners(){
+            this.userText.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+                    if(keyEvent.getKeyCode() == 0){
+                        submit.doClick();
+                    }
+                }
+
+                @Override
+                public void keyPressed(KeyEvent keyEvent) {
+
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
         }
     }
 
