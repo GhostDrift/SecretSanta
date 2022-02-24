@@ -298,6 +298,9 @@ public class ClientGUI extends JFrame {
                 @Override
                 public void keyTyped(KeyEvent keyEvent) {
                     System.out.println(keyEvent.getKeyCode());
+                    if(keyEvent.getKeyCode() == 0){
+                        connect.doClick();
+                    }
                 }
 
                 @Override
