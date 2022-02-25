@@ -1,6 +1,7 @@
 package Common;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 //A class for holding all of a users records from the user database
 public class User implements Serializable {
@@ -13,19 +14,23 @@ public class User implements Serializable {
     private int lockCount;
     private int loggedIn;
     private int id;
+    private ArrayList<String> wishList;
+    private int ssrid;
 
     //Default constructor
     public User() {
     }
 
     //Overloaded constructors
-    public User(int id,String username, String password, String email, int lockCount, int loggedIn) {
+    public User(int id,String username, String password, String email, int lockCount, int loggedIn, int ssrid) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.lockCount = lockCount;
         this.loggedIn = loggedIn;
         this.id = id;
+        this.wishList = new ArrayList<>();
+        this.ssrid = ssrid;
     }
 
     public User(String username, String password, String email) {
@@ -83,6 +88,19 @@ public class User implements Serializable {
     }
     public void setId(int id){
         this.id = id;
+    }
+    public int getSsrid(){
+        return this.ssrid;
+    }
+    public void setSsrid(int id){
+        this.ssrid = id;
+    }
+    public ArrayList<String> getWishList(){
+        return this.wishList;
+    }
+
+    public void setWishList(ArrayList<String> wishList) {
+        this.wishList = wishList;
     }
 
     public void print(){
