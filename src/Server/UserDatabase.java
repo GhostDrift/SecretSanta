@@ -80,7 +80,7 @@ class UserDatabase extends Database {
 //        System.out.println(usr.getLoggedIn());
 //        this.update("UPDATE users SET `loggedIn` = '" + usr.getLoggedIn() + "' WHERE (`username` = '" + usr.getUsername() +"');");
 //        System.out.println(usr.getUsername());
-        this.update("UPDATE `users` SET `loggedIn` = '" + usr.getLoggedIn() + "' WHERE (`username` = '"+ usr.getUsername() + "');");
+        this.update("UPDATE `users` SET `loggedIn` = '" + usr.getLoggedIn() + "', `lockCount` = '" + 0 + "' WHERE (`username` = '"+ usr.getUsername() + "');");
     }
 
     //method to log out a user
