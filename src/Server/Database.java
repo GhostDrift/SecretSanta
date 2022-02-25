@@ -1,11 +1,14 @@
 package Server;
 
+import Common.User;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 //A class used to access a mysql database with the provided url, username and password.
 class Database {
@@ -159,10 +162,17 @@ class Database {
         }
     }
 
+
     public static void main(String[] args) throws ConfigNotInitializedException {
-//        ConfigPopulator.populate();
+        Config.initializeConfig("ServerConfiguration.conf");
         Database dbase = new Database(Config.getSystemDatabaseServerAddress(), Config.getDatabaseUsername(), Config.getDatabasePassword());
-        dbase.printResultSet(dbase.query("select * from data;"));
+        UserDatabase usrDB = new UserDatabase(Config.getUserDatabaseServerAddress(),Config.getDatabaseUsername(),Config.getDatabasePassword());
+        try {
+            User usr = usrDB.getUser("test");
+            //dbase.getWishList(usr);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }
