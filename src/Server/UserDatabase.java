@@ -71,7 +71,7 @@ class UserDatabase extends Database {
     //method to update a user
     protected void updateUser(User usr){
         String username = usr.getUsername();
-        this.update("UPDATE `users` SET `password` = '"+ usr.getPassword() + "', `email` = '" + usr.getEmail() + "', `lockCount` = '" + usr.getLockCount() + "', `loggedIn` = '" + usr.getLoggedIn() + "' WHERE (`username` = '" + username +"');");
+        this.update("UPDATE `users` SET `password` = '"+ usr.getPassword() + "', `email` = '" + usr.getEmail() + "', `lockCount` = '" + usr.getLockCount() + "', `loggedIn` = '" + usr.getLoggedIn() + "', `recipientId` = '" + usr.getSsrid() + "' WHERE (`username` = '" + username +"');");
     }
     //method to login a user
     protected void login(User usr) {
