@@ -57,6 +57,9 @@ class UserDatabase extends Database {
                     usr.setLoggedIn(Integer.parseInt(data));
 //                    System.out.println(usr.getLoggedIn());
                 }
+                else if(i == 7){
+                    usr.setSsrid(Integer.parseInt(data));
+                }
 
             }
 //            usr.print();
