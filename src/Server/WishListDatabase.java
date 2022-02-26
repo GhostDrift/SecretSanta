@@ -83,12 +83,26 @@ public class WishListDatabase extends Database{
     //method to confirm wishlist
     public void confirmWishList(User usr){
         int listId = getListID(usr);
-        update("UPDATE `wishlistindex` SET `confirmed` = '1' WHERE (`id` = '" + listId +"');");
+        update("UPDATE `wishlistindex` SET `confirmed` = '1' WHERE (`ownerId` = '" + usr.getId() +"');");
     }
     //method to unconfirm wish list
     public void unconfirmWishList(User usr){
-        int listId = getListID(usr);
-        update("UPDATE `wishlistindex` SET `confirmed` = '0' WHERE (`id` = '" + listId +"');");
+        update("UPDATE `wishlistindex` SET `confirmed` = '0' WHERE (`ownerId` = '" + usr.getId() +"');");
+    }
+    //method to get wishList conformation
+    public boolean getWishListConformation(User usr){
+        boolean confirmed = false;
+        try{
+            rset = query("Select confirmed from wishlistindex where ownerId = '" + usr.getId() + "';");
+            while(rset.next()){
+                if(rset.getInt(1) == 1){
+                    confirmed = true;
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return confirmed;
     }
     //main method for testing
     public static void main(String[] args) {
@@ -101,7 +115,8 @@ public class WishListDatabase extends Database{
 ////            wlDB.removeEntry(usr,1);
 //            ArrayList<String> wl = wlDB.getWishList(usr);
 //            System.out.println(wl);
-            wlDB.unconfirmWishList(usr);
+            wlDB.confirmWishList(usr);
+           System.out.println(wlDB.getWishListConformation(usr));
         } catch (ConfigNotInitializedException | SQLException e) {
             e.printStackTrace();
         }
