@@ -335,5 +335,12 @@ public class CommandProtocol {
         }
         return msg;
     }
+    //method to get a user's wish list
+    protected String getWishList(User usr, ClientHandler ch){
+        String result = "success";
+        WishListDatabase wldb = ch.getServer().getSystemDatabase();
+        usr.setWishList(wldb.getWishList(usr));
+        return result;
+    }
 
 }

@@ -108,6 +108,7 @@ public class WishListDatabase extends Database{
     public void clearWishList(User usr){
         int listId = getListID(usr);
         update("delete from wishlistentries where id = '" + listId + "';");
+        unconfirmWishList(usr);
     }
     //main method for testing
     public static void main(String[] args) {
@@ -120,8 +121,8 @@ public class WishListDatabase extends Database{
 ////            wlDB.removeEntry(usr,1);
 //            ArrayList<String> wl = wlDB.getWishList(usr);
 //            System.out.println(wl);
-            System.out.println(wlDB.getWishList(usr));
-            wlDB.clearWishList(usr);
+           wlDB.addEntry(usr,"This is an example entry");
+//            wlDB.clearWishList(usr);
             System.out.println(wlDB.getWishList(usr));
         } catch (ConfigNotInitializedException | SQLException e) {
             e.printStackTrace();

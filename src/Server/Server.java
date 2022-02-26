@@ -102,6 +102,10 @@ public class Server extends Thread {
     public UserDatabase getUserDatabase() {
         return userDatabase;
     }
+    //returns the systemDatabase object
+    public WishListDatabase getSystemDatabase(){
+	    return this.systemDatabase;
+    }
 
     //returns the value of running
     public boolean isRunning(){
