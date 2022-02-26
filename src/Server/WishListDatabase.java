@@ -80,6 +80,11 @@ public class WishListDatabase extends Database{
         }
         return listId;
     }
+    //method to confirm wishlist
+    public void confirmWishList(User usr){
+        int listId = getListID(usr);
+        update("UPDATE `wishlistindex` SET `confirmed` = '1' WHERE (`id` = '" + listId +"');");
+    }
     //main method for testing
     public static void main(String[] args) {
         Config.initializeConfig("ServerConfiguration.conf");
@@ -87,10 +92,11 @@ public class WishListDatabase extends Database{
             UserDatabase usrdb = new UserDatabase(Config.getUserDatabaseServerAddress(),Config.getDatabaseUsername(),Config.getDatabasePassword());
             WishListDatabase wlDB = new WishListDatabase(Config.getSystemDatabaseServerAddress(),Config.getDatabaseUsername(),Config.getDatabasePassword());
             User usr = usrdb.getUser("test");
-            System.out.println(wlDB.addEntry(usr, "This item should be removed"));
-//            wlDB.removeEntry(usr,1);
-            ArrayList<String> wl = wlDB.getWishList(usr);
-            System.out.println(wl);
+//            System.out.println(wlDB.addEntry(usr, "This item should be removed"));
+////            wlDB.removeEntry(usr,1);
+//            ArrayList<String> wl = wlDB.getWishList(usr);
+//            System.out.println(wl);
+            wlDB.confirmWishList(usr);
         } catch (ConfigNotInitializedException | SQLException e) {
             e.printStackTrace();
         }
