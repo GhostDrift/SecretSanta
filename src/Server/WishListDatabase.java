@@ -32,13 +32,25 @@ public class WishListDatabase extends Database{
         return wishList;
     }
     //method to add an entry into a wishlist; no duplicate items allowed
-    public void addEntry(User usr, String entry){
+    public String addEntry(User usr, String entry){
         int listId = getListID(usr);
+        String result = "sql error";
         //check to make sure the entry isn't already on the list
         try{
-            rset = query("select * from ")
+            rset = query("select description from wishlistentries where id = '" + listId + "' and description = '" + entry + "';");
+            if(rset.next()){
+                result = "Item already in list";
+                return result;
+            }
+            else{
+                update("INSERT INTO `wishlistentries` (`id`, `description`) VALUES ('" + listId + "', '" + entry + "');");
+                result = "success";
+                return result;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-        update("INSERT INTO `wishlistentries` (`id`, `description`) VALUES ('" + listId + "', '" + entry + "');");
+        return result;
     }
     //method to remove a given entry in a wishlist
     public void removeEntry(User usr, int index){
@@ -75,8 +87,8 @@ public class WishListDatabase extends Database{
             UserDatabase usrdb = new UserDatabase(Config.getUserDatabaseServerAddress(),Config.getDatabaseUsername(),Config.getDatabasePassword());
             WishListDatabase wlDB = new WishListDatabase(Config.getSystemDatabaseServerAddress(),Config.getDatabaseUsername(),Config.getDatabasePassword());
             User usr = usrdb.getUser("test");
-//            wlDB.addEntry(usr, "This item should be removed");
-            wlDB.removeEntry(usr,1);
+            System.out.println(wlDB.addEntry(usr, "This item should be removed"));
+//            wlDB.removeEntry(usr,1);
             ArrayList<String> wl = wlDB.getWishList(usr);
             System.out.println(wl);
         } catch (ConfigNotInitializedException | SQLException e) {
