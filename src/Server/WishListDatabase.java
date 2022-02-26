@@ -104,6 +104,11 @@ public class WishListDatabase extends Database{
         }
         return confirmed;
     }
+    //method to clear a wish list
+    public void clearWishList(User usr){
+        int listId = getListID(usr);
+        update("delete from wishlistentries where id = '" + listId + "';");
+    }
     //main method for testing
     public static void main(String[] args) {
         Config.initializeConfig("ServerConfiguration.conf");
@@ -115,8 +120,9 @@ public class WishListDatabase extends Database{
 ////            wlDB.removeEntry(usr,1);
 //            ArrayList<String> wl = wlDB.getWishList(usr);
 //            System.out.println(wl);
-            wlDB.confirmWishList(usr);
-           System.out.println(wlDB.getWishListConformation(usr));
+            System.out.println(wlDB.getWishList(usr));
+            wlDB.clearWishList(usr);
+            System.out.println(wlDB.getWishList(usr));
         } catch (ConfigNotInitializedException | SQLException e) {
             e.printStackTrace();
         }
