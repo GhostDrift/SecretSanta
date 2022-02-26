@@ -70,7 +70,7 @@ public class Server extends Thread {
 	 * the user and system databases
 	 */
 	private UserDatabase userDatabase;
-	private Database systemDatabase;
+	private WishListDatabase systemDatabase;
 	
 	public int getconnections ()
 	{
@@ -125,7 +125,7 @@ public class Server extends Thread {
 					Config.getUserDatabaseServerAddress(),
 					Config.getDatabaseUsername(),
 					Config.getDatabasePassword());
-			this.systemDatabase = new Database(
+			this.systemDatabase = new WishListDatabase(
 					Config.getSystemDatabaseServerAddress(),
 					Config.getDatabaseUsername(),
 					Config.getDatabasePassword());
