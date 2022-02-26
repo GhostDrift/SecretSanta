@@ -235,7 +235,13 @@ public class ClientGUI extends JFrame {
         }
 
         protected void cannotConnect(){
+            this.errorMessage.setText("Server is unreachable");
             this.errorMessage.setVisible(true);
+            this.repaint();
+        }
+        protected void invalidIP(){
+            cannotConnect();
+            this.errorMessage.setText("Invalid IP Address");
             this.repaint();
         }
 
@@ -286,6 +292,7 @@ public class ClientGUI extends JFrame {
                         else
                         {
                             System.out.println("Invalid IP address");
+                            invalidIP();
                         }
 
                     } catch (Exception m) {
