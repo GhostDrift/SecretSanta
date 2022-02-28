@@ -920,6 +920,7 @@ public class ClientGUI extends JFrame {
                             clear.setVisible(true);
                             status.setVisible(true);
                             confirmWishlist.setVisible(true);
+                            myWishList = client.getWishList(usr);
                         }
                         else{
                             updateData(new Connect(true));

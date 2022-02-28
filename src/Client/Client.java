@@ -107,6 +107,7 @@ public class Client {
     public ArrayList<String> getWishList(User usr){
         Message msg = new Message(usr,"getWishList");
         msg = networkaccess.sendMessage(msg,true);
+        System.out.println(msg.message);
         return msg.user.getWishList();
     }
 }
