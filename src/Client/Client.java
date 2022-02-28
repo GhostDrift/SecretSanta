@@ -5,6 +5,7 @@ import Common.NetworkAccess;
 import Common.User;
 
 import java.net.ConnectException;
+import java.util.ArrayList;
 
 public class Client {
 	
@@ -101,5 +102,11 @@ public class Client {
     public User getUser(User usr){
         Message msg = new Message(usr, "getUser");
         return networkaccess.sendMessage(msg,true).user;
+    }
+    //method to get the wish list of a user
+    public ArrayList<String> getWishList(User usr){
+        Message msg = new Message(usr,"getWishList");
+        msg = networkaccess.sendMessage(msg,true);
+        return msg.user.getWishList();
     }
 }
