@@ -78,7 +78,7 @@ public class CommandProtocol {
              na.sendMessage(getUser(cmd.user,ch),false);
         }
         else if(cmd.message.equals("getWishList")){
-
+            na.sendMessage(getWishList(cmd.user,ch),false);
         }
         else {
 
@@ -339,8 +339,8 @@ public class CommandProtocol {
         return msg;
     }
     //method to get a user's wish list
-    protected String getWishList(User usr, ClientHandler ch){
-        String result = "success";
+    protected static Message getWishList(User usr, ClientHandler ch){
+        Message result = new Message(usr,"success");
         UserDatabase usrDB = ch.getServer().getUserDatabase();
         try {
             usr = usrDB.getUser(usr.getUsername());
@@ -348,7 +348,7 @@ public class CommandProtocol {
             usr.setWishList(wldb.getWishList(usr));
         } catch (SQLException e) {
             e.printStackTrace();
-            result = "Error";
+            result.message = "error";
         }
 
         return result;
