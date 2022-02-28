@@ -855,6 +855,7 @@ public class ClientGUI extends JFrame {
         private final JButton logOut;
         private final JButton accountSettings;
         private final JButton confirmWishlist;
+        JTextArea wishlist;
         private ArrayList<String> myWishList;
         private ArrayList<String> recipientWishList;
 
@@ -870,7 +871,7 @@ public class ClientGUI extends JFrame {
             myWishListButton.setBackground(Color.WHITE);
             recipientWishListButton = new JButton("                    Recipient's Wish List                    ");
 //            recipientWishListButton.setSize(new Dimension(100,10));
-            JTextArea wishlist = new JTextArea(5, 40);
+            wishlist = new JTextArea(5, 40);
             JScrollPane wishListArea = new JScrollPane(wishlist);
             wishListArea.createVerticalScrollBar();
             add = new JButton("Add Item");
@@ -907,6 +908,20 @@ public class ClientGUI extends JFrame {
 
 
         }
+        //method to update the wishList area
+        private void updateWishList(ArrayList<String> list){
+            String s = "";
+            if(list == null){
+                s ="List is empty";
+            }
+            else {
+                for (int i = 0; i < list.size(); i++) {
+                    s += i + ". " + list.get(i) + "\n";
+                }
+            }
+//            System.out.println(s);
+            wishlist.setText(s);
+        }
 
         private void prepareButtonHandlers(){
                 myWishListButton.addActionListener(e -> {
@@ -921,6 +936,7 @@ public class ClientGUI extends JFrame {
                             status.setVisible(true);
                             confirmWishlist.setVisible(true);
                             myWishList = client.getWishList(usr);
+                            updateWishList(myWishList);
                         }
                         else{
                             updateData(new Connect(true));
