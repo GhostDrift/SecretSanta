@@ -118,4 +118,12 @@ public class Client {
         System.out.println(msg.message);
         return msg.message;
     }
+    //method to remove an item from a wish list
+    public String removeItem(User usr, String entry){
+        usr.setEntry(entry);
+        Message msg = new Message(usr,"remove");
+        msg = networkaccess.sendMessage(msg,true);
+        System.out.println(msg.message);
+        return msg.message;
+    }
 }
