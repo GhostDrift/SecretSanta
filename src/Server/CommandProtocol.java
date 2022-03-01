@@ -349,6 +349,7 @@ public class CommandProtocol {
             usr = usrDB.getUser(usr.getUsername());
             WishListDatabase wldb = ch.getServer().getSystemDatabase();
             usr.setWishList(wldb.getWishList(usr));
+            result.user = usr;
         } catch (SQLException e) {
             e.printStackTrace();
             result.message = "error";
