@@ -1073,12 +1073,16 @@ public class ClientGUI extends JFrame {
         private final JButton cancel;
         private final JTextField itemEntry;
         private final GridBagConstraints gbc = new GridBagConstraints();
+        private JLabel status;
 
         //constructor
         protected AddItem(){
             this.setPanelName("Add an Item");
             //prepare components
             windowTitle.setText(this.getLabel());
+            status = new JLabel("Status will be displayed here");
+            status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            status.setVisible(false);
             add = new JButton("Add Item");
             cancel = new JButton("Cancel");
             JLabel addHere = new JLabel("Enter the item you would like to put on your wish list");
@@ -1090,9 +1094,17 @@ public class ClientGUI extends JFrame {
             this.setLayout(new GridBagLayout());
             gbc.gridx = 0;
             gbc.gridy = 0;
-            this.add(addHere,gbc);
+            this.add(status,gbc);
             gbc.gridy = 1;
+            this.add(addHere,gbc);
+            gbc.gridy = 2;
             this.add(itemEntry,gbc);
+        }
+        private void error(String error){
+            this.status.setForeground(Color.RED);
+            this.status.setText(error);
+            this.status.setVisible(true);
+            this.repaint();
         }
 
         private void prepareKeyListeners() {
@@ -1123,7 +1135,13 @@ public class ClientGUI extends JFrame {
                     System.out.println("Add item");
                     if(client != null){
                         if(client.networkaccess.testConnection()){
+                            String result = client.addItem(usr,itemEntry.getText());
+                            if(result.equals("success")){
                             updateData(new Interaction());
+                            }
+                            else {
+                                error(result);
+                            }
                         }
                         else {
                             updateData(new Connect(true));
