@@ -1178,22 +1178,28 @@ public class ClientGUI extends JFrame {
         private JButton remove;
         private JButton cancel;
         private GridBagConstraints gbc = new GridBagConstraints();
+        private JLabel status;
         //Constructor
         protected RemoveItem(){
             this.setPanelName("Remove an Item");
             this.setLayout(new GridBagLayout());
             windowTitle.setText(this.getLabel());
+            usr.setWishList(client.getWishList(usr));
             //prepare components
             removeHere = new JLabel("Enter the number of the item on the list you would like to remove");
             removeHere.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            status = new JLabel("Status will be displayed here");
+            status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             itemToRemove = new JTextField(25);
             remove = new JButton("Remove");
             cancel = new JButton("Cancel");
             prepareButtonHandlers();
             gbc.gridy = 0;
             gbc.gridx = 0;
-            this.add(removeHere,gbc);
+            this.add(status,gbc);
             gbc.gridy = 1;
+            this.add(removeHere,gbc);
+            gbc.gridy = 2;
             this.add(itemToRemove,gbc);
         }
 
@@ -1204,7 +1210,24 @@ public class ClientGUI extends JFrame {
                     System.out.println("Remove Item");
                     if(client != null){
                         if(client.networkaccess.testConnection()){
-                            updateData(new Interaction());
+                            try{
+                                int index =  Integer.parseInt(itemToRemove.getText());
+                                String entry = usr.getWishList().get(index - 1);
+                                String result = client.removeItem(usr,entry);
+                                if(result.equals("success")){
+                                    updateData(new Interaction());
+                                }
+                                else {
+                                    System.out.println(result);
+                                }
+                            }
+                            catch(IndexOutOfBoundsException ex){
+//                                ex.printStackTrace();
+                                System.out.println("Index out of bounds");
+                            }
+
+
+
                         }
                         else {
                             updateData(new Connect(true));
