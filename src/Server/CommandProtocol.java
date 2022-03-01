@@ -80,6 +80,9 @@ public class CommandProtocol {
         else if(cmd.message.equals("getWishList")){
             na.sendMessage(getWishList(cmd.user,ch),false);
         }
+        else if(cmd.message.equals("add")){
+            na.sendMessage(addItem(cmd.user,ch), false);
+        }
         else {
 
             na.sendMessage(cmd, false);
