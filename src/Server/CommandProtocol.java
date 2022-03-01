@@ -376,6 +376,16 @@ public class CommandProtocol {
     //method to remove an item from a user's wish list
     private Message removeItem(User usr, ClientHandler ch){
         Message result = new Message(usr,"success");
+        UserDatabase usrDB = ch.getServer().getUserDatabase();
+        String entry = usr.getEntry();
+        try{
+            usr = usrDB.getUser(usr.getUsername());
+            WishListDatabase wldb = ch.getServer().getSystemDatabase();
+            wldb.removeEntry(usr,entry);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            result.message = "error";
+        }
         return result;
     }
 
