@@ -16,6 +16,8 @@ public class User implements Serializable {
     private int id;
     private ArrayList<String> wishList;
     private int ssrid;
+    private int removeID;
+    private String entry;
 
     //Default constructor
     public User() {
@@ -101,6 +103,18 @@ public class User implements Serializable {
 
     public void setWishList(ArrayList<String> wishList) {
         this.wishList = wishList;
+    }
+    public String getEntry(){
+        return this.entry;
+    }
+    public void setEntry(String entry){
+        this.entry = entry;
+    }
+    public int getRemoveID(){
+        return this.removeID;
+    }
+    public void setRemoveID(int rid){
+        this.removeID = rid;
     }
 
     public void print(){

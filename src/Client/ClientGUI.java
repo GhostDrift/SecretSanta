@@ -872,6 +872,7 @@ public class ClientGUI extends JFrame {
             recipientWishListButton = new JButton("                    Recipient's Wish List                    ");
 //            recipientWishListButton.setSize(new Dimension(100,10));
             wishlist = new JTextArea(5, 40);
+            wishlist.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             JScrollPane wishListArea = new JScrollPane(wishlist);
             wishListArea.createVerticalScrollBar();
             add = new JButton("Add Item");
