@@ -83,6 +83,9 @@ public class CommandProtocol {
         else if(cmd.message.equals("add")){
             na.sendMessage(addItem(cmd.user,ch), false);
         }
+        else if (cmd.message.equals("remove")){
+            na.sendMessage(removeItem(cmd.user,ch), false);
+        }
         else {
 
             na.sendMessage(cmd, false);
@@ -374,7 +377,7 @@ public class CommandProtocol {
 
     }
     //method to remove an item from a user's wish list
-    private Message removeItem(User usr, ClientHandler ch){
+    private static Message removeItem(User usr, ClientHandler ch){
         Message result = new Message(usr,"success");
         UserDatabase usrDB = ch.getServer().getUserDatabase();
         String entry = usr.getEntry();
