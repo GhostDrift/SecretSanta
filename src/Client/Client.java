@@ -112,6 +112,6 @@ public class Client {
     }
     //method to add an item to a wish list
     public String addItem(User usr, String entry){
-
+        return "";
     }
 }

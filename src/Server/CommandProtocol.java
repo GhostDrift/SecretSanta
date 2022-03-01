@@ -353,5 +353,21 @@ public class CommandProtocol {
 
         return result;
     }
+    //method to add an entry to a user's wish list
+    protected static Message addItem(User usr, ClientHandler ch){
+        Message result = new Message(usr,"success");
+        UserDatabase usrDB = ch.getServer().getUserDatabase();
+        String entry = usr.getEntry();
+        try{
+            usr = usrDB.getUser(usr.getUsername());
+            WishListDatabase wldb = ch.getServer().getSystemDatabase();
+            result.message = wldb.addEntry(usr,entry);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            result.message = "error";
+        }
+        return result;
+
+    }
 
 }
