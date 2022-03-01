@@ -110,4 +110,8 @@ public class Client {
         System.out.println(msg.message);
         return msg.user.getWishList();
     }
+    //method to add an item to a wish list
+    public String addItem(User usr, String entry){
+
+    }
 }
