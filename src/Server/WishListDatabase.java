@@ -53,19 +53,20 @@ public class WishListDatabase extends Database{
         return result;
     }
     //method to remove a given entry in a wishlist
-    public void removeEntry(User usr, int index){
+    public void removeEntry(User usr, String entry){
         int listId = getListID(usr);
         int entryId = 0;
         ArrayList<String> wl = getWishList(usr);
-        try{
-            rset = query("select pk from wishlistentries where id = '" + listId+"' and description = '" + wl.get(index) + "';");
-            while(rset.next()){
-                entryId = rset.getInt(1);
-            }
-            update("delete from wishlistentries where pk = '" + entryId + "';");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+//        try{
+//            rset = query("select pk from wishlistentries where id = '" + listId+"' and description = '" + entry + "';");
+//            while(rset.next()){
+//                entryId = rset.getInt(1);
+//            }
+//            update("delete from wishlistentries where pk = '" + entryId + "';");
+            update("delete from wishlistentries where id = '" + listId+"' and description = '" + entry + "';");
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
     }
     //method to obtain the wishlist Id
     private int getListID(User usr){
@@ -118,10 +119,10 @@ public class WishListDatabase extends Database{
             WishListDatabase wlDB = new WishListDatabase(Config.getSystemDatabaseServerAddress(),Config.getDatabaseUsername(),Config.getDatabasePassword());
             User usr = usrdb.getUser("test");
 //            System.out.println(wlDB.addEntry(usr, "This item should be removed"));
-////            wlDB.removeEntry(usr,1);
+            wlDB.removeEntry(usr,"This is an example entry");
 //            ArrayList<String> wl = wlDB.getWishList(usr);
 //            System.out.println(wl);
-           wlDB.addEntry(usr,"This is an example entry");
+//           wlDB.addEntry(usr,"This is an example entry");
 //            wlDB.clearWishList(usr);
             System.out.println(wlDB.getWishList(usr));
         } catch (ConfigNotInitializedException | SQLException e) {

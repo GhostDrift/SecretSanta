@@ -373,5 +373,10 @@ public class CommandProtocol {
         return result;
 
     }
+    //method to remove an item from a user's wish list
+    private Message removeItem(User usr, ClientHandler ch){
+        Message result = new Message(usr,"success");
+        return result;
+    }
 
 }
