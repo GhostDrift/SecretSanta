@@ -92,6 +92,9 @@ public class CommandProtocol {
         else if (cmd.message.equals("clear")){
             na.sendMessage(clearWishList(ch),false);
         }
+        else if (cmd.message.equals("confirmed?")){
+            na.sendMessage(getWishListConformation(ch),false);
+        }
         else {
 
             na.sendMessage(cmd, false);
