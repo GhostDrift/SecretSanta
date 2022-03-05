@@ -1345,7 +1345,13 @@ public class ClientGUI extends JFrame {
                     System.out.println("Clear list");
                     if(client != null){
                         if(client.networkaccess.testConnection()){
-                            updateData(new Interaction());
+                            String result = client.clearWishList();
+                            if(result.equals("success")) {
+                                updateData(new Interaction());
+                            }
+                            else {
+                                System.out.println(result);
+                            }
                         }
                         else {
                             updateData(new Connect(true));
