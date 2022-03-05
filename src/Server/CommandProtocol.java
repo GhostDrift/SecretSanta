@@ -88,6 +88,9 @@ public class CommandProtocol {
         else if (cmd.message.equals("remove")){
             na.sendMessage(removeItem(cmd.user,ch), false);
         }
+        else if (cmd.message.equals("clear")){
+            na.sendMessage(clearWishList(ch),false);
+        }
         else {
 
             na.sendMessage(cmd, false);
