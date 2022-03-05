@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import Client.Client;
 import Common.Message;
 import Common.NetworkAccess;
 import Common.User;
@@ -412,6 +413,23 @@ public class CommandProtocol {
         } catch (SQLException throwables) {
             result.message = "SQL error";
             throwables.printStackTrace();
+        }
+        return result;
+    }
+    //method to get the conformation status of a user's wish list
+    private static Message getWishListConformation(ClientHandler ch){
+        Message result = new Message(ch.getUser(),"success");
+        WishListDatabase wldb = ch.getServer().getSystemDatabase();
+        UserDatabase usrDB = ch.getServer().getUserDatabase();
+        User usr;
+        try{
+            usr = usrDB.getUser(ch.getUser().getUsername());
+            if(!wldb.getWishListConformation(usr)){
+                result.message ="false";
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            result.message = "SQL error";
         }
         return result;
     }
