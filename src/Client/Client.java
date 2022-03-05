@@ -143,4 +143,15 @@ public class Client {
         Message msg = new Message(null,"clear");
         return networkaccess.sendMessage(msg,true).message;
     }
+    //method to get a user's wish list conformation status
+    public boolean getWishListConformation(){
+        Message msg = new Message(null,"confirmed?");
+        msg = networkaccess.sendMessage(msg,true);
+        if(msg.message.equals("true")){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
