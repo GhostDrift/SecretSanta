@@ -34,6 +34,7 @@ public class WishListDatabase extends Database{
     //method to add an entry into a wishlist; no duplicate items allowed
     public String addEntry(User usr, String entry){
         int listId = getListID(usr);
+        System.out.println("Entry: " + entry);
         String result = "sql error";
         //check to make sure the entry isn't already on the list
         try{
@@ -55,8 +56,10 @@ public class WishListDatabase extends Database{
     //method to remove a given entry in a wishlist
     public void removeEntry(User usr, String entry){
         int listId = getListID(usr);
+        System.out.println(listId);
         int entryId = 0;
         ArrayList<String> wl = getWishList(usr);
+        System.out.println(wl.get(0));
 //        try{
 //            rset = query("select pk from wishlistentries where id = '" + listId+"' and description = '" + entry + "';");
 //            while(rset.next()){

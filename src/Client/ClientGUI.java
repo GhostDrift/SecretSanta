@@ -912,7 +912,7 @@ public class ClientGUI extends JFrame {
         //method to update the wishList area
         private void updateWishList(ArrayList<String> list){
             String s = "";
-            if(list == null){
+            if(list == null||list.size() == 0){
                 s ="List is empty";
             }
             else {
@@ -936,7 +936,10 @@ public class ClientGUI extends JFrame {
                             clear.setVisible(true);
                             status.setVisible(true);
                             confirmWishlist.setVisible(true);
+                            usr.setPassword("wishlist");
                             myWishList = client.getWishList(usr);
+                            usr.setEntry("null");
+                            System.out.println(usr);
                             updateWishList(myWishList);
                         }
                         else{
@@ -1135,7 +1138,11 @@ public class ClientGUI extends JFrame {
                     System.out.println("Add item");
                     if(client != null){
                         if(client.networkaccess.testConnection()){
-                            String result = client.addItem(usr,itemEntry.getText());
+                            User usr = new User();
+                            usr.setEntry(itemEntry.getText());
+                            System.out.println(usr.getEntry());
+                            String result = client.addItem(usr);
+                            System.out.println(usr);
                             if(result.equals("success")){
                             updateData(new Interaction());
                             }
@@ -1190,6 +1197,7 @@ public class ClientGUI extends JFrame {
             removeHere.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             status = new JLabel("Status will be displayed here");
             status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            status.setVisible(false);
             itemToRemove = new JTextField(25);
             remove = new JButton("Remove");
             cancel = new JButton("Cancel");
@@ -1202,17 +1210,25 @@ public class ClientGUI extends JFrame {
             gbc.gridy = 2;
             this.add(itemToRemove,gbc);
         }
+        private void error(String error){
+            this.status.setForeground(Color.RED);
+            this.status.setText(error);
+            this.status.setVisible(true);
+            this.repaint();
+        }
 
         private void prepareButtonHandlers() {
             remove.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("Remove Item");
+//                    System.out.println("Remove Item");
                     if(client != null){
                         if(client.networkaccess.testConnection()){
                             try{
+                                usr.setWishList(client.getWishList(usr));
                                 int index =  Integer.parseInt(itemToRemove.getText());
                                 String entry = usr.getWishList().get(index - 1);
+                                System.out.println(entry);
                                 String result = client.removeItem(usr,entry);
                                 if(result.equals("success")){
                                     updateData(new Interaction());
@@ -1223,7 +1239,10 @@ public class ClientGUI extends JFrame {
                             }
                             catch(IndexOutOfBoundsException ex){
 //                                ex.printStackTrace();
-                                System.out.println("Index out of bounds");
+                                error("You must enter the number of an item on your list");
+                            }
+                            catch(NumberFormatException ex){
+                                error("you must enter a number ex: 1");
                             }
 
 

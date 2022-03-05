@@ -34,6 +34,7 @@ public class CommandProtocol {
      * @return
      */
     public static void processCommand(Message cmd, NetworkAccess na, ClientHandler ch) {
+            System.out.println("CP user: " + cmd.user);
         if (cmd.message.equals("disconnect")) {
 
             // -- no response to the client is necessary
@@ -81,6 +82,7 @@ public class CommandProtocol {
             na.sendMessage(getWishList(cmd.user,ch),false);
         }
         else if(cmd.message.equals("add")){
+            System.out.println(cmd.user.getEntry());
             na.sendMessage(addItem(cmd.user,ch), false);
         }
         else if (cmd.message.equals("remove")){
@@ -352,6 +354,7 @@ public class CommandProtocol {
             usr = usrDB.getUser(usr.getUsername());
             WishListDatabase wldb = ch.getServer().getSystemDatabase();
             usr.setWishList(wldb.getWishList(usr));
+            System.out.println(usr.getWishList());
             result.user = usr;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -365,8 +368,9 @@ public class CommandProtocol {
         Message result = new Message(usr,"success");
         UserDatabase usrDB = ch.getServer().getUserDatabase();
         String entry = usr.getEntry();
+        System.out.println("CommandProtocol: " + entry);
         try{
-            usr = usrDB.getUser(usr.getUsername());
+            usr = usrDB.getUser(ch.getUser().getUsername());
             WishListDatabase wldb = ch.getServer().getSystemDatabase();
             result.message = wldb.addEntry(usr,entry);
         } catch (SQLException throwables) {
@@ -382,7 +386,7 @@ public class CommandProtocol {
         UserDatabase usrDB = ch.getServer().getUserDatabase();
         String entry = usr.getEntry();
         try{
-            usr = usrDB.getUser(usr.getUsername());
+            usr = usrDB.getUser(ch.getUser().getUsername());
             WishListDatabase wldb = ch.getServer().getSystemDatabase();
             wldb.removeEntry(usr,entry);
         } catch (SQLException throwables) {

@@ -90,7 +90,9 @@ public class NetworkAccess {
      */
     public Message readMessage() throws IOException {
         try {
-            return (Message) datain.readObject();
+            Message in = (Message) datain.readObject();
+            System.out.println("readMessage got: " + in);
+            return in;
         } catch (IOException e) {
             throw e;
         } catch (ClassNotFoundException e) {
@@ -133,7 +135,7 @@ public class NetworkAccess {
                 do {
                     // -- this is a non-blocking read
                     rtnmsg = (Message) datain.readObject();
-
+                    System.out.println("reply was " + rtnmsg );
                 } while (rtnmsg == null);
             }
         } catch (IOException e) {

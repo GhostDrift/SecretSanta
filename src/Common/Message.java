@@ -9,4 +9,12 @@ public class Message implements Serializable {
         this.user = user;
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "user=" + user +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

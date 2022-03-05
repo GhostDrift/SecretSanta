@@ -107,6 +107,7 @@ public class ClientHandler extends Thread {
                 //    The client adds it to the user's string but the BufferedReader
                 //    readLine() call strips it off
                 Message cmd = networkaccess.readMessage();
+                System.out.println("server got " + cmd);
                 //logic for login
 //                if(cmd.message.equals("login")){
 ////                    login(cmd.user);

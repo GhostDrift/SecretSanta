@@ -108,20 +108,29 @@ public class Client {
         Message msg = new Message(usr,"getWishList");
         msg = networkaccess.sendMessage(msg,true);
         System.out.println(msg.message);
+        System.out.println(msg.user.getWishList());
         return msg.user.getWishList();
     }
     //method to add an item to a wish list
-    public String addItem(User usr, String entry){
-        usr.setEntry(entry);
+    public String addItem(User usr){
         Message msg = new Message(usr,"add");
-        msg = networkaccess.sendMessage(msg,true);
-        System.out.println(msg.message);
-        return msg.message;
+        return networkaccess.sendMessage(msg,true).message;
+//        usr.setEntry(entry);
+//        System.out.println("Client: " + usr.getEntry());
+//        Message msg = new Message(usr,"add");
+//        System.out.println("client sent " + msg);
+//        msg = networkaccess.sendMessage(msg,true);
+//        usr.setEntry("");
+//        System.out.println(msg.message);
+//        return msg.message;
     }
     //method to remove an item from a wish list
     public String removeItem(User usr, String entry){
-        usr.setEntry(entry);
-        Message msg = new Message(usr,"remove");
+        User user = new User();
+        user.setUsername(usr.getUsername());
+        user.setEntry(usr.getEntry());
+        System.out.println(entry);
+        Message msg = new Message(user,"remove");
         msg = networkaccess.sendMessage(msg,true);
         System.out.println(msg.message);
         return msg.message;
