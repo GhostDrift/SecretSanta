@@ -138,4 +138,9 @@ public class Client {
 //        System.out.println(msg.message);
 //        return msg.message;
     }
+    //method to clear a users wish list
+    public String clearWishList(){
+        Message msg = new Message(null,"clear");
+        return networkaccess.sendMessage(msg,true).message;
+    }
 }
