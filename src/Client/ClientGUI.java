@@ -1221,15 +1221,18 @@ public class ClientGUI extends JFrame {
             remove.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-//                    System.out.println("Remove Item");
+                    System.out.println("Remove Item");
                     if(client != null){
                         if(client.networkaccess.testConnection()){
                             try{
-                                usr.setWishList(client.getWishList(usr));
-                                int index =  Integer.parseInt(itemToRemove.getText());
-                                String entry = usr.getWishList().get(index - 1);
-                                System.out.println(entry);
-                                String result = client.removeItem(usr,entry);
+                                User usr = new User();
+                                int index =  Integer.parseInt(itemToRemove.getText()) - 1;
+                                System.out.println("index of item to be removed: " + (index));
+                                System.out.println("Item to be removed: " + index);
+                                String entry = "" + index;
+                                usr.setEntry(entry);
+                                System.out.println("Entry in usr: " + usr.getEntry());
+                                String result = client.removeItem(usr);
                                 if(result.equals("success")){
                                     updateData(new Interaction());
                                 }

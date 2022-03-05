@@ -351,7 +351,7 @@ public class CommandProtocol {
         Message result = new Message(usr,"success");
         UserDatabase usrDB = ch.getServer().getUserDatabase();
         try {
-            usr = usrDB.getUser(usr.getUsername());
+            usr = usrDB.getUser(ch.getUser().getUsername());
             WishListDatabase wldb = ch.getServer().getSystemDatabase();
             usr.setWishList(wldb.getWishList(usr));
             System.out.println(usr.getWishList());
@@ -385,8 +385,10 @@ public class CommandProtocol {
         Message result = new Message(usr,"success");
         UserDatabase usrDB = ch.getServer().getUserDatabase();
         String entry = usr.getEntry();
+        System.out.println("index of item to be removed from the list: " + entry);
         try{
             usr = usrDB.getUser(ch.getUser().getUsername());
+            System.out.println("User to have item removed: " + usr.getUsername());
             WishListDatabase wldb = ch.getServer().getSystemDatabase();
             wldb.removeEntry(usr,entry);
         } catch (SQLException throwables) {

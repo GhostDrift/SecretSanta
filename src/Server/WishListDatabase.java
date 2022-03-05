@@ -59,7 +59,8 @@ public class WishListDatabase extends Database{
         System.out.println(listId);
         int entryId = 0;
         ArrayList<String> wl = getWishList(usr);
-        System.out.println(wl.get(0));
+//        System.out.println(wl.get(0));
+        entry = wl.get(Integer.parseInt(entry));
 //        try{
 //            rset = query("select pk from wishlistentries where id = '" + listId+"' and description = '" + entry + "';");
 //            while(rset.next()){
@@ -122,7 +123,7 @@ public class WishListDatabase extends Database{
             WishListDatabase wlDB = new WishListDatabase(Config.getSystemDatabaseServerAddress(),Config.getDatabaseUsername(),Config.getDatabasePassword());
             User usr = usrdb.getUser("test");
 //            System.out.println(wlDB.addEntry(usr, "This item should be removed"));
-            wlDB.removeEntry(usr,"This is an example entry");
+            wlDB.removeEntry(usr,"this item is to be removed");
 //            ArrayList<String> wl = wlDB.getWishList(usr);
 //            System.out.println(wl);
 //           wlDB.addEntry(usr,"This is an example entry");

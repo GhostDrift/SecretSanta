@@ -125,14 +125,17 @@ public class Client {
 //        return msg.message;
     }
     //method to remove an item from a wish list
-    public String removeItem(User usr, String entry){
-        User user = new User();
-        user.setUsername(usr.getUsername());
-        user.setEntry(usr.getEntry());
-        System.out.println(entry);
-        Message msg = new Message(user,"remove");
-        msg = networkaccess.sendMessage(msg,true);
-        System.out.println(msg.message);
-        return msg.message;
+    public String removeItem(User usr){
+        System.out.println("index of item to be removed from the wish list: " + usr.getEntry());
+        Message msg = new Message(usr,"remove");
+        return networkaccess.sendMessage(msg,true).message;
+//        User user = new User();
+//        user.setUsername(usr.getUsername());
+//        user.setEntry(usr.getEntry());
+//        System.out.println(entry);
+//        Message msg = new Message(user,"remove");
+//        msg = networkaccess.sendMessage(msg,true);
+//        System.out.println(msg.message);
+//        return msg.message;
     }
 }
