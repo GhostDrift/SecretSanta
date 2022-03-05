@@ -397,5 +397,20 @@ public class CommandProtocol {
         }
         return result;
     }
+    //method to clear a user's wish list
+    private static Message clearWishList(ClientHandler ch){
+        Message result = new Message(ch.getUser(),"success");
+        WishListDatabase wldb = ch.getServer().getSystemDatabase();
+        UserDatabase usrDB = ch.getServer().getUserDatabase();
+        User usr;
+        try{
+            usr = usrDB.getUser(ch.getUser().getUsername());
+            wldb.clearWishList(usr);
+        } catch (SQLException throwables) {
+            result.message = "SQL error";
+            throwables.printStackTrace();
+        }
+        return result;
+    }
 
 }
