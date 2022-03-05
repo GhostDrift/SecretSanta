@@ -932,6 +932,8 @@ public class ClientGUI extends JFrame {
                         if(client.networkaccess.testConnection()){
                             recipientWishListButton.setBackground(null);
                             myWishListButton.setBackground(Color.WHITE);
+//                            myWishListButton.setEnabled(false);
+//                            myWishListButton.setText("My Wish List");
                             add.setVisible(true);
                             remove.setVisible(true);
                             clear.setVisible(true);
@@ -1006,7 +1008,7 @@ public class ClientGUI extends JFrame {
                     System.out.println("Clear Wish List");
                     if(client != null){
                         if(client.networkaccess.testConnection()){
-                            System.out.println("wishlist cleared");
+                            updateData(new ClearWishList());
                         }
                         else {
                             updateData(new Connect(true));
@@ -1203,6 +1205,7 @@ public class ClientGUI extends JFrame {
             remove = new JButton("Remove");
             cancel = new JButton("Cancel");
             prepareButtonHandlers();
+            prepareKeyListeners();
             gbc.gridy = 0;
             gbc.gridx = 0;
             this.add(status,gbc);
@@ -1216,6 +1219,26 @@ public class ClientGUI extends JFrame {
             this.status.setText(error);
             this.status.setVisible(true);
             this.repaint();
+        }
+        private void prepareKeyListeners() {
+            this.itemToRemove.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+
+                }
+
+                @Override
+                public void keyPressed(KeyEvent keyEvent) {
+                    if(keyEvent.getKeyCode() == 10){
+                        remove.doClick();
+                    }
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
         }
 
         private void prepareButtonHandlers() {
@@ -1279,6 +1302,77 @@ public class ClientGUI extends JFrame {
                 }
             });
             updateControl(cancel,remove);
+        }
+    }
+    private class ClearWishList extends displayPanel{
+        private JLabel message;
+        private JButton confirm;
+        private JButton cancel;
+        private GridBagConstraints gbc = new GridBagConstraints();
+
+        //constructor
+        public ClearWishList(){
+            this.setPanelName("Clear Wish List");
+            windowTitle.setText(this.getLabel());
+            this.setLayout(new GridBagLayout());
+            message = new JLabel("Are you sure you want to clear your wish list?");
+            message.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+            message.setForeground(Color.RED);
+            confirm = new JButton("Yes");
+            confirm.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            cancel = new JButton("No");
+            cancel.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            prepareButtonHandlers();
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.gridwidth = 2;
+            this.add(message,gbc);
+            updateControl(cancel,confirm);
+//            gbc.gridwidth = 1;
+//            gbc.gridy = 1;
+//            this.add(cancel,gbc);
+//            gbc.gridx = 1;
+//            this.add(confirm,gbc);
+////            control = new ControlArea();
+//            this.setVisible(true);
+
+        }
+
+        private void prepareButtonHandlers() {
+            confirm.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    System.out.println("Clear list");
+                    if(client != null){
+                        if(client.networkaccess.testConnection()){
+                            updateData(new Interaction());
+                        }
+                        else {
+                            updateData(new Connect(true));
+                        }
+                    }
+                    else{
+                        updateData(new Connect(true));
+                    }
+                }
+            });
+            cancel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    System.out.println("Cancel");
+                    if(client != null){
+                        if(client.networkaccess.testConnection()){
+                            updateData(new Interaction());
+                        }
+                        else {
+                            updateData(new Connect(true));
+                        }
+                    }
+                    else{
+                        updateData(new Connect(true));
+                    }
+                }
+            });
         }
     }
     private class AccountSettings extends displayPanel{
