@@ -856,7 +856,7 @@ public class ClientGUI extends JFrame {
         private final JButton accountSettings;
         private final JButton confirmWishlist;
         JTextArea wishlist;
-        private ArrayList<String> myWishList;
+        private ArrayList<String> myWishList = client.getWishList(usr);
         private ArrayList<String> recipientWishList;
 
         //constructor
@@ -905,6 +905,7 @@ public class ClientGUI extends JFrame {
             gbc.gridy = 4;
 //            dataArea.add(confirmWishlist,gbc);
             this.add(dataArea,BorderLayout.CENTER);
+            updateWishList(myWishList);
 
 
 
@@ -917,7 +918,7 @@ public class ClientGUI extends JFrame {
             }
             else {
                 for (int i = 0; i < list.size(); i++) {
-                    s += i + ". " + list.get(i) + "\n";
+                    s += i+1 + ". " + list.get(i) + "\n";
                 }
             }
 //            System.out.println(s);
