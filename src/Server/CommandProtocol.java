@@ -482,5 +482,13 @@ public class CommandProtocol {
         }
         return result;
     }
+    //method to get a user's recipient's wish list
+    private static Message getRecipientWishList(ClientHandler ch){
+        Message result = new Message(ch.getUser(),"success");
+        WishListDatabase wldb = ch.getServer().getSystemDatabase();
+        UserDatabase usrDB = ch.getServer().getUserDatabase();
+        User usr;
+        return result;
+    }
 
 }
