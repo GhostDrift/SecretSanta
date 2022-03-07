@@ -883,7 +883,8 @@ public class ClientGUI extends JFrame {
             status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             logOut = new JButton("Log Out");
             accountSettings = new JButton("Account Settings");
-            confirmWishlist = new JButton("Confirm Wish List");
+//            confirmWishlist = new JButton("Confirm Wish List");
+            confirmWishlist = new JButton();
             JPanel dataArea = new JPanel();
             dataArea.setLayout(new GridBagLayout());
             prepareButtonHandlers();
@@ -909,9 +910,11 @@ public class ClientGUI extends JFrame {
             updateWishList(myWishList);
             if(client.getWishListConformation()){
                 status.setText("Status: Confirmed");
+                confirmWishlist.setText("Unconfirm Wish List");
             }
             else{
                 status.setText("Status: Unconfirmed");
+                confirmWishlist.setText("Confirm Wish List");
             }
 
 
