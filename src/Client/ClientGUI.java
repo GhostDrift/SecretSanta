@@ -858,6 +858,7 @@ public class ClientGUI extends JFrame {
         JTextArea wishlist;
         private ArrayList<String> myWishList = client.getWishList(usr);
         private ArrayList<String> recipientWishList;
+        private JLabel error;
 
         //constructor
         Interaction(){
@@ -887,6 +888,10 @@ public class ClientGUI extends JFrame {
             confirmWishlist = new JButton();
             JPanel dataArea = new JPanel();
             dataArea.setLayout(new GridBagLayout());
+            error = new JLabel("Errors will be displayed here");
+            error.setForeground(Color.RED);
+            error.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            error.setVisible(false);
             prepareButtonHandlers();
             //add components
             this.add(wishListSelect,BorderLayout.NORTH);
@@ -905,12 +910,24 @@ public class ClientGUI extends JFrame {
             gbc.gridy = 3;
             dataArea.add(status, gbc);
             gbc.gridy = 4;
+            dataArea.add(error,gbc);
 //            dataArea.add(confirmWishlist,gbc);
             this.add(dataArea,BorderLayout.CENTER);
             updateWishList(myWishList);
             updateWishListStatus();
 
 
+        }
+        //method to display error messages
+        private void updateError(String error){
+            this.error.setText(error);
+            this.error.setVisible(true);
+            this.repaint();
+        }
+        //method to clear an error message
+        private void clearError(){
+            this.error.setVisible(false);
+            this.repaint();
         }
         //method to update wishlist conformation status
         private void updateWishListStatus(){
@@ -1040,6 +1057,10 @@ public class ClientGUI extends JFrame {
                             if(confirmWishlist.getText().equals("Confirm Wish List")){
                                 if(client.confirmWishList()) {
                                     updateWishListStatus();
+                                    clearError();
+                                }
+                                else{
+                                    updateError("Cannot confirm an empty list");
                                 }
                             }
                             else{
@@ -1370,6 +1391,7 @@ public class ClientGUI extends JFrame {
                             String result = client.clearWishList();
                             if(result.equals("success")) {
                                 updateData(new Interaction());
+                                client.unconfirmWishList();
                             }
                             else {
                                 System.out.println(result);
