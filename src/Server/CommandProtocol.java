@@ -95,6 +95,9 @@ public class CommandProtocol {
         else if (cmd.message.equals("confirmed?")){
             na.sendMessage(getWishListConformation(ch),false);
         }
+        else if(cmd.message.equals("confirm")){
+            na.sendMessage(confirmWishList(ch),false);
+        }
         else {
 
             na.sendMessage(cmd, false);
@@ -438,6 +441,27 @@ public class CommandProtocol {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             result.message = "SQL error";
+        }
+        return result;
+    }
+    //method to confirm a user's wish list
+    private static Message confirmWishList(ClientHandler ch){
+        Message result = new Message(ch.getUser(),"success");
+        WishListDatabase wldb = ch.getServer().getSystemDatabase();
+        UserDatabase usrDB = ch.getServer().getUserDatabase();
+        User usr;
+        try{
+            usr = usrDB.getUser(ch.getUser().getUsername());
+            Message test = getWishList(usr,ch);
+            if(test.user.getWishList().size() == 0){
+//                System.out.println("Wish List: " + test.user.getWishList());
+                result.message = "Wish List is Empty";
+            }
+            else{
+                wldb.confirmWishList(usr);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return result;
     }

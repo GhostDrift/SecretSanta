@@ -908,6 +908,12 @@ public class ClientGUI extends JFrame {
 //            dataArea.add(confirmWishlist,gbc);
             this.add(dataArea,BorderLayout.CENTER);
             updateWishList(myWishList);
+            updateWishListStatus();
+
+
+        }
+        //method to update wishlist conformation status
+        private void updateWishListStatus(){
             if(client.getWishListConformation()){
                 status.setText("Status: Confirmed");
                 confirmWishlist.setText("Unconfirm Wish List");
@@ -916,8 +922,6 @@ public class ClientGUI extends JFrame {
                 status.setText("Status: Unconfirmed");
                 confirmWishlist.setText("Confirm Wish List");
             }
-
-
         }
         //method to update the wishList area
         private void updateWishList(ArrayList<String> list){
@@ -1032,7 +1036,14 @@ public class ClientGUI extends JFrame {
                     System.out.println("Confirm Wish List");
                     if(client != null){
                         if(client.networkaccess.testConnection()){
-                            System.out.println("Wishlist Confirmed");
+//                            System.out.println("Wishlist Confirmed");
+                            if(confirmWishlist.getText().equals("Confirm Wish List")){
+                                client.confirmWishList();
+                                updateWishListStatus();
+                            }
+                            else{
+                                System.out.println("Wish List unconfirmed");
+                            }
                         }
                         else {
                             updateData(new Connect(true));

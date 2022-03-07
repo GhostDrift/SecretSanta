@@ -154,4 +154,15 @@ public class Client {
             return false;
         }
     }
+    //method to confirm a user's wish list
+    public boolean confirmWishList(){
+        Message msg = new Message(null,"confirm");
+        msg = networkaccess.sendMessage(msg,true);
+        if(msg.message.equals("success")){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
