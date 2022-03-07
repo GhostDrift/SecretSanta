@@ -98,6 +98,9 @@ public class CommandProtocol {
         else if(cmd.message.equals("confirm")){
             na.sendMessage(confirmWishList(ch),false);
         }
+        else if (cmd.message.equals("unconfirm")){
+            na.sendMessage(unconfirmWishList(ch),false);
+        }
         else {
 
             na.sendMessage(cmd, false);
@@ -460,6 +463,20 @@ public class CommandProtocol {
             else{
                 wldb.confirmWishList(usr);
             }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return result;
+    }
+    //method to unconfirm a user's wish list
+    private static Message unconfirmWishList(ClientHandler ch){
+        Message result = new Message(ch.getUser(),"success");
+        WishListDatabase wldb = ch.getServer().getSystemDatabase();
+        UserDatabase usrDB = ch.getServer().getUserDatabase();
+        User usr;
+        try{
+            usr = usrDB.getUser(ch.getUser().getUsername());
+            wldb.unconfirmWishList(usr);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

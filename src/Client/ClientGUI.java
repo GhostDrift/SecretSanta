@@ -916,7 +916,7 @@ public class ClientGUI extends JFrame {
         private void updateWishListStatus(){
             if(client.getWishListConformation()){
                 status.setText("Status: Confirmed");
-                confirmWishlist.setText("Unconfirm Wish List");
+                confirmWishlist.setText("De-confirm Wish List");
             }
             else{
                 status.setText("Status: Unconfirmed");
@@ -1038,11 +1038,13 @@ public class ClientGUI extends JFrame {
                         if(client.networkaccess.testConnection()){
 //                            System.out.println("Wishlist Confirmed");
                             if(confirmWishlist.getText().equals("Confirm Wish List")){
-                                client.confirmWishList();
-                                updateWishListStatus();
+                                if(client.confirmWishList()) {
+                                    updateWishListStatus();
+                                }
                             }
                             else{
-                                System.out.println("Wish List unconfirmed");
+                                client.unconfirmWishList();
+                                updateWishListStatus();
                             }
                         }
                         else {

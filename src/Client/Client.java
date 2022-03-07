@@ -158,11 +158,11 @@ public class Client {
     public boolean confirmWishList(){
         Message msg = new Message(null,"confirm");
         msg = networkaccess.sendMessage(msg,true);
-        if(msg.message.equals("success")){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return msg.message.equals("success");
+    }
+    //method to unconfirm a user's wish list
+    public void unconfirmWishList(){
+        Message msg = new Message(null, "unconfirm");
+        networkaccess.sendMessage(msg,true);
     }
 }
