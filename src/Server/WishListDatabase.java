@@ -97,16 +97,26 @@ public class WishListDatabase extends Database{
     //method to get wishList conformation
     public boolean getWishListConformation(User usr){
         boolean confirmed = false;
+//        System.out.println("User who's list conformation is being checked: " + usr);
+        int result;
         try{
             rset = query("Select confirmed from wishlistindex where ownerId = '" + usr.getId() + "';");
             while(rset.next()){
-                if(rset.getInt(1) == 1){
+                result = rset.getInt(1);
+                System.out.println("Confomation number: " + result);
+                System.out.println("Does result == 1?: " + (result == 1));
+                if(result == 1){
                     confirmed = true;
                 }
+
+//                if(rset.getInt(1) == 1){
+//                    confirmed = true;
+//                }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        System.out.println("Status of Confirmed: " + confirmed);
         return confirmed;
     }
     //method to clear a wish list

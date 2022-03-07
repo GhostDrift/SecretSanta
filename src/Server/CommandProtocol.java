@@ -35,7 +35,7 @@ public class CommandProtocol {
      * @return
      */
     public static void processCommand(Message cmd, NetworkAccess na, ClientHandler ch) {
-            System.out.println("CP user: " + cmd.user);
+//            System.out.println("CP user: " + cmd.user);
         if (cmd.message.equals("disconnect")) {
 
             // -- no response to the client is necessary
@@ -421,14 +421,19 @@ public class CommandProtocol {
     }
     //method to get the conformation status of a user's wish list
     private static Message getWishListConformation(ClientHandler ch){
-        Message result = new Message(ch.getUser(),"success");
+        Message result = new Message(ch.getUser(),"false");
+        System.out.println(ch.getUser());
         WishListDatabase wldb = ch.getServer().getSystemDatabase();
         UserDatabase usrDB = ch.getServer().getUserDatabase();
+        System.out.println("User who's list conformation is being checked: " + ch.getUser());
         User usr;
         try{
             usr = usrDB.getUser(ch.getUser().getUsername());
-            if(!wldb.getWishListConformation(usr)){
-                result.message ="false";
+            if(wldb.getWishListConformation(usr)){
+                result.message ="true";
+            }
+            else{
+                result.message = "false";
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

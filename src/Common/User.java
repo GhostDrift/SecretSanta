@@ -120,17 +120,17 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-//        return "User{" +
-//                "username='" + username + '\'' +
-//                ", password='" + password + '\'' +
-//                ", email='" + email + '\'' +
-//                ", lockCount=" + lockCount +
-//                ", loggedIn=" + loggedIn +
-//                ", id=" + id +
-//                ", wishList=" + wishList +
-//                ", ssrid=" + ssrid +
-//                ", entry='" + entry + '\'' +
-//                '}';
-        return this.entry;
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", lockCount=" + lockCount +
+                ", loggedIn=" + loggedIn +
+                ", id=" + id +
+                ", wishList=" + wishList +
+                ", ssrid=" + ssrid +
+                ", entry='" + entry + '\'' +
+                '}';
+//        return this.entry;
     }
 }
