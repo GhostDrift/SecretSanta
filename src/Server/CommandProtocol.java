@@ -488,6 +488,19 @@ public class CommandProtocol {
         WishListDatabase wldb = ch.getServer().getSystemDatabase();
         UserDatabase usrDB = ch.getServer().getUserDatabase();
         User usr;
+        try{
+            usr = usrDB.getUser(ch.getUser().getUsername());
+            if(usr.getSsrid() == 0){
+                result.message = "Names have not been drawn";
+            }
+            else{
+                usr = usrDB.getUserById(usr.getSsrid());
+                ArrayList<String> list = getWishList(usr,ch).user.getWishList();
+                result.user.setWishList(list);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return result;
     }
 
