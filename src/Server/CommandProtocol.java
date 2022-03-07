@@ -447,6 +447,27 @@ public class CommandProtocol {
         }
         return result;
     }
+    private static Message getWishListConformation(User user,ClientHandler ch){
+        Message result = new Message(ch.getUser(),"false");
+        System.out.println(ch.getUser());
+        WishListDatabase wldb = ch.getServer().getSystemDatabase();
+        UserDatabase usrDB = ch.getServer().getUserDatabase();
+        System.out.println("User who's list conformation is being checked: " + ch.getUser());
+        User usr;
+        try{
+            usr = usrDB.getUser(user.getUsername());
+            if(wldb.getWishListConformation(usr)){
+                result.message ="true";
+            }
+            else{
+                result.message = "false";
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            result.message = "SQL error";
+        }
+        return result;
+    }
     //method to confirm a user's wish list
     private static Message confirmWishList(ClientHandler ch){
         Message result = new Message(ch.getUser(),"success");
@@ -495,8 +516,13 @@ public class CommandProtocol {
             }
             else{
                 usr = usrDB.getUserById(usr.getSsrid());
-                ArrayList<String> list = getWishList(usr,ch).user.getWishList();
-                result.user.setWishList(list);
+                if(getWishListConformation(usr,ch).message.equals("true")){
+                    ArrayList<String> list = getWishList(usr,ch).user.getWishList();
+                    result.user.setWishList(list);
+                }
+                else{
+                    result.message = "Recipient's wish list is unconfirmed";
+                }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
