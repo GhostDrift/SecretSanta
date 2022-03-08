@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Vector;
 
 /*
@@ -112,7 +113,39 @@ public class Server extends Thread {
 	    return this.running;
     }
     //Method to draw names and assign them to the users
-    public void drawNames(){
+    public String drawNames(){
+	    String result = "success";
+	    UserDatabase usrdb = getUserDatabase();
+	    ArrayList<Integer> ids = usrdb.getIds();
+	    if(ids.size() <=1){
+	        result = "there needs to be at least two registered users";
+        }else{
+            ArrayList<Integer> shuffled = usrdb.getIds();
+            Collections.shuffle(shuffled);
+            if(checkShuffle(ids,shuffled)){
+                User usr = new User();
+                for(int i = 0; i< ids.size(); i++){
+                    try {
+                        usr = usrdb.getUserById(ids.get(i));
+                        usr.setSsrid(shuffled.get(i));
+                        usrdb.updateUser(usr);
+                    } catch (SQLException e) {
+                        result = "Sql error";
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+    //method to check and see if each user doesn't have themselves when names are drawn; returns true if no user has themselves
+    private boolean checkShuffle(ArrayList<Integer> ids, ArrayList<Integer> shuffled){
+	    for(int i = 0; i< ids.size(); i++){
+	        if(ids.get(i)== shuffled.get(i)){
+	            return false;
+            }
+        }
+	    return true;
     }
 
     /**
