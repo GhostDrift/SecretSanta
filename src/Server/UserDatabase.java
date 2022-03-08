@@ -71,7 +71,7 @@ class UserDatabase extends Database {
     //method to get a user by their id
     protected User getUserById(int id) throws SQLException {
 //        username = username.toLowerCase(Locale.ROOT);
-        rset = this.query("SELECT * FROM users WHERE pk = '" + id + "';");
+        rset = this.query("SELECT * FROM users WHERE id = '" + id + "';");
 //        this.printResultSet(rset);
         ResultSetMetaData rsmd = rset.getMetaData();
         User usr = new User();

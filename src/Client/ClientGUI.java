@@ -996,6 +996,7 @@ public class ClientGUI extends JFrame {
                             confirmWishlist.setVisible(false);
                             Message msg = client.getRecipientWishList();
                             if(msg.message.equals("success")){
+                                System.out.println("wish list to be displayed: " + msg.user.getWishList());
                                 updateWishList(msg.user.getWishList());
                                 clearError();
                             }

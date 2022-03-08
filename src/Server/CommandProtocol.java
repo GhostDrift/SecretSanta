@@ -434,7 +434,7 @@ public class CommandProtocol {
         System.out.println(ch.getUser());
         WishListDatabase wldb = ch.getServer().getSystemDatabase();
         UserDatabase usrDB = ch.getServer().getUserDatabase();
-        System.out.println("User who's list conformation is being checked: " + ch.getUser());
+//        System.out.println("User who's list conformation is being checked: " + ch.getUser());
         User usr;
         try{
             usr = usrDB.getUser(ch.getUser().getUsername());
@@ -508,7 +508,8 @@ public class CommandProtocol {
     }
     //method to get a user's recipient's wish list
     private static Message getRecipientWishList(ClientHandler ch){
-        Message result = new Message(ch.getUser(),"success");
+        User user = new User();
+        Message result = new Message(user,"success");
         WishListDatabase wldb = ch.getServer().getSystemDatabase();
         UserDatabase usrDB = ch.getServer().getUserDatabase();
         User usr;
@@ -519,8 +520,10 @@ public class CommandProtocol {
             }
             else{
                 usr = usrDB.getUserById(usr.getSsrid());
+                System.out.println("Recipient: " + usr);
                 if(getWishListConformation(usr,ch).message.equals("true")){
-                    ArrayList<String> list = getWishList(usr,ch).user.getWishList();
+//                    ArrayList<String> list = getWishList(usr,ch).user.getWishList();
+                    ArrayList<String> list = wldb.getWishList(usr);
                     result.user.setWishList(list);
                 }
                 else{
@@ -530,6 +533,7 @@ public class CommandProtocol {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        System.out.println("User:" + result.user);
         return result;
     }
 
