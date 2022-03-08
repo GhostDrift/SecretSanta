@@ -994,6 +994,17 @@ public class ClientGUI extends JFrame {
                             clear.setVisible(false);
                             status.setVisible(false);
                             confirmWishlist.setVisible(false);
+                            Message msg = client.getRecipientWishList();
+                            if(msg.message.equals("success")){
+                                updateWishList(msg.user.getWishList());
+                                clearError();
+                            }
+                            else{
+                                wishlist.setText(msg.message);
+                                this.repaint();
+                            }
+
+
                         }
                         else{
                             updateData(new Connect(true));

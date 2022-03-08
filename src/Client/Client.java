@@ -165,4 +165,10 @@ public class Client {
         Message msg = new Message(null, "unconfirm");
         networkaccess.sendMessage(msg,true);
     }
+    //method to get a user's recipient's wish list
+    public Message getRecipientWishList(){
+        Message msg = new Message(null,"getRecipientWishList");
+        msg = networkaccess.sendMessage(msg,true);
+        return msg;
+    }
 }

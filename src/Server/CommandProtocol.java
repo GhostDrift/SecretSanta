@@ -101,6 +101,9 @@ public class CommandProtocol {
         else if (cmd.message.equals("unconfirm")){
             na.sendMessage(unconfirmWishList(ch),false);
         }
+        else if(cmd.message.equals("getRecipientWishList")){
+            na.sendMessage(getRecipientWishList(ch),false);
+        }
         else {
 
             na.sendMessage(cmd, false);
