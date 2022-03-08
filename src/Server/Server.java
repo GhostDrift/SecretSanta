@@ -111,6 +111,9 @@ public class Server extends Thread {
     public boolean isRunning(){
 	    return this.running;
     }
+    //Method to draw names and assign them to the users
+    public void drawNames(){
+    }
 
     /**
 	 * constructor creates the list of clients and

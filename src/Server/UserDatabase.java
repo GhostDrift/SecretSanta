@@ -116,6 +116,19 @@ class UserDatabase extends Database {
         }
         return usr;
     }
+    //method to get a list of all the user ids
+    protected ArrayList<Integer> getIds(){
+        ArrayList<Integer> ids = new ArrayList<>();
+        try{
+            rset = query("select id from users");
+            while(rset.next()){
+                ids.add(rset.getInt(1));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return ids;
+    }
     //method to update a user
     protected void updateUser(User usr){
         String username = usr.getUsername();
