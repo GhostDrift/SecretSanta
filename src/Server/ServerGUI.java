@@ -118,6 +118,7 @@ public class ServerGUI extends JFrame {
             //  JButton DeAct = new JButton("Deactivate Server");
             JButton Conf = new JButton("Edit Config");
             JButton AConnect = new JButton("Number of Active Connections");
+            JButton drawNames = new JButton("Draw Names");
 
 
             // MenBar.add(Menu1);
@@ -126,6 +127,23 @@ public class ServerGUI extends JFrame {
             MenBar.add(Conf);
             MenBar.add(AConnect);
             AConnect.setVisible(false);
+            MenBar.add(drawNames);
+            drawNames.setVisible(false);
+
+            drawNames.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    System.out.println("Draw Names");
+                    String result = server.drawNames();
+                    if(result.equals("success")){
+                        addToTextArea("Names have been drawn");
+                    }
+                    else{
+                        addToTextArea(result);
+                    }
+                }
+            });
+
             JMenuBar MenBar2 = new JMenuBar();
             JButton WhoLog = new JButton("Who is Logged in ");
             JButton NumLog = new JButton("Number Logged in ");
@@ -221,6 +239,7 @@ public class ServerGUI extends JFrame {
                         Conf.setVisible(false);
                         AConnect.setVisible(true);
                         MenBar2.setVisible(true);
+                        drawNames.setVisible(true);
                         addToTextArea("Server is running");
 
                     }
@@ -231,6 +250,7 @@ public class ServerGUI extends JFrame {
                         server.removeServersocket();
                         Act.setText("Activate Server");
                         Conf.setVisible(true);
+                        drawNames.setVisible(false);
                         addToTextArea("Server has stopped");
                         AConnect.setVisible(false);
                         MenBar2.setVisible(false);

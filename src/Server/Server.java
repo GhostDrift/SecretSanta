@@ -117,23 +117,32 @@ public class Server extends Thread {
 	    String result = "success";
 	    UserDatabase usrdb = getUserDatabase();
 	    ArrayList<Integer> ids = usrdb.getIds();
+	    System.out.println("List of ids: " + ids );
 	    if(ids.size() <=1){
 	        result = "there needs to be at least two registered users";
         }else{
             ArrayList<Integer> shuffled = usrdb.getIds();
             Collections.shuffle(shuffled);
-            if(checkShuffle(ids,shuffled)){
-                User usr = new User();
-                for(int i = 0; i< ids.size(); i++){
-                    try {
-                        usr = usrdb.getUserById(ids.get(i));
-                        usr.setSsrid(shuffled.get(i));
-                        usrdb.updateUser(usr);
-                    } catch (SQLException e) {
-                        result = "Sql error";
-                    }
+            System.out.println("list of shuffled ids: " + shuffled);
+            boolean reshuffle = true;
+            while(reshuffle){
+                if(checkShuffle(ids,shuffled)){
+                    reshuffle = false;
+                }
+                Collections.shuffle(shuffled);
+            }
+            User usr = new User();
+            for(int i = 0; i< ids.size(); i++){
+                try {
+                    usr = usrdb.getUserById(ids.get(i));
+                    usr.setSsrid(shuffled.get(i));
+                    System.out.println("User to be updated: " + usr);
+                    usrdb.updateUser(usr);
+                } catch (SQLException e) {
+                    result = "Sql error";
                 }
             }
+
         }
 
         return result;
