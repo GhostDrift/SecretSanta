@@ -53,6 +53,23 @@ public class WishListDatabase extends Database{
         }
         return result;
     }
+    //method to add an entry to the wishList index table
+    public String addIndex(User usr){
+        String result = "SQL error";
+        try{
+            rset = query("Select * from wishlistindex where ownerId = '" + usr.getId()+"';");
+            if(rset.next()){
+                result = "User already has a wish list";
+            }
+            else{
+                update("INSERT INTO `wishlistindex` (`ownerId`) VALUES ('"+ usr.getId() + "');");
+                result = "success";
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return result;
+    }
     //method to remove a given entry in a wishlist
     public void removeEntry(User usr, String entry){
         int listId = getListID(usr);
@@ -131,15 +148,17 @@ public class WishListDatabase extends Database{
         try {
             UserDatabase usrdb = new UserDatabase(Config.getUserDatabaseServerAddress(),Config.getDatabaseUsername(),Config.getDatabasePassword());
             WishListDatabase wlDB = new WishListDatabase(Config.getSystemDatabaseServerAddress(),Config.getDatabaseUsername(),Config.getDatabasePassword());
-            User usr = usrdb.getUser("test");
+            User usr = new User();
+            usr.setId(10);
 //            System.out.println(wlDB.addEntry(usr, "This item should be removed"));
-            wlDB.removeEntry(usr,"this item is to be removed");
+//            wlDB.removeEntry(usr,"this item is to be removed");
+            System.out.println(wlDB.addIndex(usr));
 //            ArrayList<String> wl = wlDB.getWishList(usr);
 //            System.out.println(wl);
 //           wlDB.addEntry(usr,"This is an example entry");
 //            wlDB.clearWishList(usr);
-            System.out.println(wlDB.getWishList(usr));
-        } catch (ConfigNotInitializedException | SQLException e) {
+//            System.out.println(wlDB.getWishList(usr));
+        } catch (ConfigNotInitializedException e) {
             e.printStackTrace();
         }
     }
