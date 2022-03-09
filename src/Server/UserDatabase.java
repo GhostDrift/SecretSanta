@@ -341,7 +341,7 @@ class UserDatabase extends Database {
 //        ConfigPopulator.populate();
         Config.initializeConfig("ServerConfiguration.conf");
         UserDatabase usrDB = new UserDatabase(Config.getUserDatabaseServerAddress(), Config.getDatabaseUsername(), Config.getDatabasePassword());
-        usrDB.clearRecipientIDS();
+//        usrDB.clearRecipientIDS();
 //        usrDB.printResultSet(usrDB.query("SELECT * FROM users;"));
 //        try {
 //             usrDB.clearPassHistory();

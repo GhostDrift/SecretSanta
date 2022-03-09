@@ -321,5 +321,9 @@ public class Server extends Thread {
 	    this.running = false;
 	    logoutAndDisconnectClients();
     }
+    //method to reset the recipient ID's
+    protected void resetRecipientIDS(){
+	    getUserDatabase().clearRecipientIDS();
+    }
 
 }
