@@ -116,6 +116,7 @@ public class Server extends Thread {
     public String drawNames(){
 	    String result = "success";
 	    UserDatabase usrdb = getUserDatabase();
+	    WishListDatabase wldb = getSystemDatabase();
 	    ArrayList<Integer> ids = usrdb.getIds();
 	    System.out.println("List of ids: " + ids );
 	    if(ids.size() <=1){
@@ -138,6 +139,7 @@ public class Server extends Thread {
                     usr.setSsrid(shuffled.get(i));
                     System.out.println("User to be updated: " + usr);
                     usrdb.updateUser(usr);
+                    wldb.unconfirmWishList(usr);
                 } catch (SQLException e) {
                     result = "Sql error";
                 }
