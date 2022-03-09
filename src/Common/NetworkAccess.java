@@ -3,6 +3,7 @@ package Common;
 import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class NetworkAccess {
@@ -138,7 +139,10 @@ public class NetworkAccess {
                     System.out.println("reply was " + rtnmsg );
                 } while (rtnmsg == null);
             }
-        } catch (IOException e) {
+        }
+        catch(SocketException e){
+            rtnmsg = new Message(null,"false");
+        }catch (IOException e) {
 
             e.printStackTrace();
             System.exit(1);
@@ -163,6 +167,7 @@ public class NetworkAccess {
         }
     }
     public boolean testConnection(){
+
         Message result = sendMessage(new Message(null,"hello"), true);
         return result.message.equals("world!");
     }
