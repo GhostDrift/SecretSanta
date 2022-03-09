@@ -332,11 +332,16 @@ class UserDatabase extends Database {
 //        "INSERT INTO `users` (`username`, `password`, `email`, `lockCount`, `loggedIn`) VALUES ('" + usr.getUsername() + "', '" + usr.getPassword() + "', '" + usr.getEmail() + "', '0', '0');"
         this.update("INSERT INTO `passwordhistory` (`userId`, `password`) VALUES ('" + usr.getId() + "', '" + usr.getPassword() + "');");
     }
+    //method to clear recipient id's
+    protected void clearRecipientIDS(){
+       this.update("update users set recipientId = 0");
+    }
 //main method used for testing class code
     public static void main(String[] args) throws ConfigNotInitializedException {
 //        ConfigPopulator.populate();
         Config.initializeConfig("ServerConfiguration.conf");
         UserDatabase usrDB = new UserDatabase(Config.getUserDatabaseServerAddress(), Config.getDatabaseUsername(), Config.getDatabasePassword());
+        usrDB.clearRecipientIDS();
 //        usrDB.printResultSet(usrDB.query("SELECT * FROM users;"));
 //        try {
 //             usrDB.clearPassHistory();
