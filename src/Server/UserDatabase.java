@@ -116,6 +116,52 @@ class UserDatabase extends Database {
         }
         return usr;
     }
+    //method to get a user by their recipient id
+    protected User getUserByRecipient(int ssrid) throws SQLException{
+        rset = query("select * from users where recipientId = '" + ssrid + "';");
+        ResultSetMetaData rsmd = rset.getMetaData();
+        User usr = new User();
+        int numberOfColumns = rsmd.getColumnCount(); // get the number of columns in the result set
+        String data;
+        while (rset.next()) { // I don't know why this while loop has to be here but it does
+            // -- loop through the columns of the ResultSet
+            for (int i = 1; i <= numberOfColumns; ++i) {
+//                System.out.print(rset.getString(i) + "\t\t");
+                data = rset.getString(i);
+                if(i == 1){
+                    usr.setId(Integer.parseInt(data));
+                }
+                else if(i == 2){
+                    usr.setUsername(data);
+//                    System.out.println(usr.getUsername());
+                }
+                else if (i == 3){
+                    usr.setPassword(data);
+//                    System.out.println(usr.getPassword());
+                }
+                else if (i == 4){
+                    usr.setEmail(data);
+//                    System.out.println(usr.getEmail());
+                }
+                else if(i == 5){
+                    usr.setLockCount(Integer.parseInt(data));
+//                    System.out.println(usr.getLockCount());
+                }
+                else if(i == 6){
+                    usr.setLoggedIn(Integer.parseInt(data));
+//                    System.out.println(usr.getLoggedIn());
+                }
+                else if(i == 7){
+                    usr.setSsrid(Integer.parseInt(data));
+                }
+
+            }
+//            usr.print();
+//            System.out.println(usr.getUsername());
+//            System.out.println(rset.getString(numberOfColumns));
+        }
+        return usr;
+    }
     //method to get a list of all the user ids
     protected ArrayList<Integer> getIds(){
         ArrayList<Integer> ids = new ArrayList<>();
@@ -341,6 +387,11 @@ class UserDatabase extends Database {
 //        ConfigPopulator.populate();
         Config.initializeConfig("ServerConfiguration.conf");
         UserDatabase usrDB = new UserDatabase(Config.getUserDatabaseServerAddress(), Config.getDatabaseUsername(), Config.getDatabasePassword());
+        try {
+            System.out.println(usrDB.getUserByRecipient(5));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 //        usrDB.clearRecipientIDS();
 //        usrDB.printResultSet(usrDB.query("SELECT * FROM users;"));
 //        try {
