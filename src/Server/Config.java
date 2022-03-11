@@ -35,6 +35,7 @@ public class Config implements Serializable {
 
     // Other information
     private int lockoutThreshold;
+    private boolean namesDrawn;
 
     private Config() {
     }
@@ -384,6 +385,18 @@ public class Config implements Serializable {
         if (threshold < 1)
             throw new InvalidAttributeValueException("The lockout threshold must be greater than 0.");
         config.lockoutThreshold = threshold;
+    }
+    public static void setNamesDrawn(boolean b) throws ConfigNotInitializedException{
+        if(config == null){
+            throw new ConfigNotInitializedException("The config file has not been initialized.");
+        }
+        config.namesDrawn = b;
+    }
+    public static boolean getNamesDrawn() throws ConfigNotInitializedException{
+        if(config == null){
+            throw new ConfigNotInitializedException("The config file has not been initialized.");
+        }
+        return config.namesDrawn;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
