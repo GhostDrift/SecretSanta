@@ -118,6 +118,7 @@ public class Config implements Serializable {
         config.databasePassword = null;
 
         config.lockoutThreshold = 3;
+        config.namesDrawn = false;
     }
 
     // Read in config file

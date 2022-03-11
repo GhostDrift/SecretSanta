@@ -119,6 +119,13 @@ public class ServerGUI extends JFrame {
             JButton Conf = new JButton("Edit Config");
             JButton AConnect = new JButton("Number of Active Connections");
             JButton drawNames = new JButton("Draw Names");
+            try {
+                if(Config.getNamesDrawn()){
+                    drawNames.setText("Clear Names");
+                }
+            } catch (ConfigNotInitializedException e) {
+                e.printStackTrace();
+            }
 
 
             // MenBar.add(Menu1);
@@ -134,12 +141,33 @@ public class ServerGUI extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     System.out.println("Draw Names");
-                    String result = server.drawNames();
-                    if(result.equals("success")){
-                        addToTextArea("Names have been drawn");
+                    if (drawNames.getText().equals("Draw Names")) {
+                        String result = server.drawNames();
+                        if (result.equals("success")) {
+                            addToTextArea("Names have been drawn");
+                        } else {
+                            addToTextArea(result);
+                        }
+                        drawNames.setText("Clear Names");
+                        try {
+                            Config.setNamesDrawn(true);
+                            Config.saveConfig();
+                        } catch (ConfigNotInitializedException e) {
+                            e.printStackTrace();
+                        }
+                        repaint();
                     }
                     else{
-                        addToTextArea(result);
+                        server.resetRecipientIDS();
+                        addToTextArea("Names have been reset");
+                        drawNames.setText("Draw Names");
+                        try {
+                            Config.setNamesDrawn(false);
+                            Config.saveConfig();
+                        } catch (ConfigNotInitializedException e) {
+                            e.printStackTrace();
+                        }
+                        repaint();
                     }
                 }
             });
