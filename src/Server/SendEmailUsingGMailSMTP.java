@@ -79,7 +79,8 @@ public class SendEmailUsingGMailSMTP extends Thread{
 				});
 
 		// -- Set up the sender's email account information
-		String from = username;//"TeamMERJ@gmail.com";
+		String from = "Secret Santa Management System <"+ username +">";
+		// from https://stackoverflow.com/questions/1567467/setting-the-from-name-in-a-javax-mail-mimemessage
 
 		try {
 			// -- Create a default MimeMessage object.
