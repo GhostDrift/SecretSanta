@@ -76,6 +76,12 @@ public class Utilities {
         String message = "Dear " + usr.getUsername() + ",\n\n Your account has been recovered.\nYour new password is:\n" + usr.getPassword() + "\n Please login and reset it as soon as possible.\n\n With regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Account Recovery",message);
     }
+    //method to send email with recipient username
+    public static void sendRecipient(User usr,String recipient){
+        String message = "Dear " + usr.getUsername() + ",\n\n Names have been drawn.\nYour recipient is:\n" + recipient + "\n We will notify you when they have confirmed their wish list.\n\n With regards,Stojkovic Technical Solutions.";
+        new SendEmailUsingGMailSMTP(usr.getEmail(),"Your recipient is.....",message);
+    }
+
 
     public static void main(String[] args) throws ConfigNotInitializedException {
         Config.initializeConfig("ServerConfiguration.conf");
