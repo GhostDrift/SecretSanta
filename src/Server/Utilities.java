@@ -91,6 +91,11 @@ public class Utilities {
         String message = "Dear " + usr.getUsername() + ",\n\n" + recipient + "has confirmed their wish list!\n Come check it out!.\n\n With regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Recipient Wish list",message);
     }
+    //method to notify user that they have been locked out
+    public static void lockedOutNotification(User usr){
+        String message = "Dear " + usr.getUsername() + ",\n\n Your account has been locked.\nYou must recover your account in order to use the system.\n\n With regards,Stojkovic Technical Solutions.";
+        new SendEmailUsingGMailSMTP(usr.getEmail(),"Account locked",message);
+    }
 
     public static void main(String[] args) throws ConfigNotInitializedException {
         Config.initializeConfig("ServerConfiguration.conf");
