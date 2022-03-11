@@ -8,6 +8,7 @@ import Client.Client;
 import Common.Message;
 import Common.NetworkAccess;
 import Common.User;
+import com.mysql.cj.util.Util;
 
 
 /**
@@ -140,6 +141,9 @@ public class CommandProtocol {
                     msg.message = "Invalid Password";
                     result.setLockCount(result.getLockCount()+1);
                     userDB.updateUser(result);
+                    if(result.getLockCount() == Config.getLockoutThreshold()){
+                        Utilities.lockedOutNotification(result);
+                    }
                     return msg;
                 }
             }
