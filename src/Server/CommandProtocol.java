@@ -491,6 +491,10 @@ public class CommandProtocol {
             }
             else{
                 wldb.confirmWishList(usr);
+                String recipient = usr.getUsername();
+                int id = usr.getId();
+                usr = usrDB.getUserByRecipient(id);
+                Utilities.ssrWishListConfirmed(usr, recipient);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

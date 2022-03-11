@@ -88,7 +88,7 @@ public class Utilities {
     }
     //method to notify user that their recipient has confirmed their wish list
     public static void ssrWishListConfirmed(User usr, String recipient){
-        String message = "Dear " + usr.getUsername() + ",\n\n" + recipient + "has confirmed their wish list!\n Come check it out!.\n\nWith regards,Stojkovic Technical Solutions.";
+        String message = "Dear " + usr.getUsername() + ",\n\n" + recipient + " has confirmed their wish list!\nCome check it out!.\n\nWith regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Recipient Wish list",message);
     }
     //method to notify user that they have been locked out
