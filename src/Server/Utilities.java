@@ -78,22 +78,22 @@ public class Utilities {
     }
     //method to send email with recipient username
     public static void sendRecipient(User usr,String recipient){
-        String message = "Dear " + usr.getUsername() + ",\n\n Names have been drawn.\nYour recipient is:\n" + recipient + "\n We will notify you when they have confirmed their wish list.\n\n With regards,Stojkovic Technical Solutions.";
+        String message = "Dear " + usr.getUsername() + ",\n\n Names have been drawn.\nYour recipient is:\n" + recipient + "\n We will notify you when they have confirmed their wish list.\n\nWith regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Your recipient is.....",message);
     }
     //method to notify user of account settings update
     public static void accountUpdate(User usr){
-        String message = "Dear " + usr.getUsername() + ",\n\n Your account settings have been updated.\nIf this was not you, please recover your account and change your password.\n\n With regards,Stojkovic Technical Solutions.";
+        String message = "Dear " + usr.getUsername() + ",\n\nYour account settings have been updated.\nIf this was not you, please recover your account and change your password.\n\nWith regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Account has been updated",message);
     }
     //method to notify user that their recipient has confirmed their wish list
     public static void ssrWishListConfirmed(User usr, String recipient){
-        String message = "Dear " + usr.getUsername() + ",\n\n" + recipient + "has confirmed their wish list!\n Come check it out!.\n\n With regards,Stojkovic Technical Solutions.";
+        String message = "Dear " + usr.getUsername() + ",\n\n" + recipient + "has confirmed their wish list!\n Come check it out!.\n\nWith regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Recipient Wish list",message);
     }
     //method to notify user that they have been locked out
     public static void lockedOutNotification(User usr){
-        String message = "Dear " + usr.getUsername() + ",\n\n Your account has been locked.\nYou must recover your account in order to use the system.\n\n With regards,Stojkovic Technical Solutions.";
+        String message = "Dear " + usr.getUsername() + ",\n\n Your account has been locked.\nYou must recover your account in order to use the system.\n\nWith regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Account locked",message);
     }
 

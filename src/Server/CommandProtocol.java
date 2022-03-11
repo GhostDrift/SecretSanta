@@ -336,14 +336,17 @@ public class CommandProtocol {
                         } else {
                             userDb.updateUser(update);
                             userDb.addPassHistoryEntry(update);
+                            Utilities.accountUpdate(update);
                             return msg;
                         }
                     }
                     else{
                         userDb.updateUser(update);
+                        Utilities.accountUpdate(update);
                     }
                 }else {
                     userDb.updateUser(update);
+                    Utilities.accountUpdate(update);
                     return msg;
                 }
             }
