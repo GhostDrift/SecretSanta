@@ -81,7 +81,11 @@ public class Utilities {
         String message = "Dear " + usr.getUsername() + ",\n\n Names have been drawn.\nYour recipient is:\n" + recipient + "\n We will notify you when they have confirmed their wish list.\n\n With regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Your recipient is.....",message);
     }
-
+    //method to notify user of account settings update
+    public static void accountUpdate(User usr){
+        String message = "Dear " + usr.getUsername() + ",\n\n Your account settings have been updated.\nIf this was not you, please recover your account and change your password.\n\n With regards,Stojkovic Technical Solutions.";
+        new SendEmailUsingGMailSMTP(usr.getEmail(),"Account has been updated",message);
+    }
 
     public static void main(String[] args) throws ConfigNotInitializedException {
         Config.initializeConfig("ServerConfiguration.conf");
