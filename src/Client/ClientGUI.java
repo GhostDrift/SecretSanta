@@ -1467,6 +1467,7 @@ public class ClientGUI extends JFrame {
             status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             status.setForeground(Color.BLACK);
             prepareButtonHandlers();
+            prepareKeyListeners();
             //add components to frame
             gbc.gridx = 0;
             gbc.gridy = 0;
@@ -1484,6 +1485,45 @@ public class ClientGUI extends JFrame {
             this.add(emailText,gbc);
 
 
+        }
+
+        //method to add key listeners
+        private void prepareKeyListeners(){
+            passText.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+
+                }
+
+                @Override
+                public void keyPressed(KeyEvent keyEvent) {
+                    if(keyEvent.getKeyCode() == 10){
+                        apply.doClick();
+                    }
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
+            emailText.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+
+                }
+
+                public void keyPressed(KeyEvent keyEvent) {
+                    if(keyEvent.getKeyCode() == 10){
+                        apply.doClick();
+                    }
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
         }
 
         private void prepareButtonHandlers() {
