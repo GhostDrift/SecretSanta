@@ -142,12 +142,13 @@ public class ServerGUI extends JFrame {
                 public void actionPerformed(ActionEvent actionEvent) {
                     System.out.println("Draw Names");
                     if (drawNames.getText().equals("Draw Names")) {
-                        String result = server.drawNames();
-                        if (result.equals("success")) {
-                            addToTextArea("Names have been drawn");
-                        } else {
-                            addToTextArea(result);
-                        }
+                        server.drawNames(con,drawNames);
+//                        String result = server.drawNames();
+//                        if (result.equals("success")) {
+//                            addToTextArea("Names have been drawn");
+//                        } else {
+//                            addToTextArea(result);
+//                        }
                         drawNames.setText("Clear Names");
                         try {
                             Config.setNamesDrawn(true);

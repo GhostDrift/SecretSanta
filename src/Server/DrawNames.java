@@ -10,11 +10,11 @@ public class DrawNames extends Thread{
     //variables
     private UserDatabase usrdb;
     private WishListDatabase wldb;
-    private Server.ServerGUI.FieldPanel textArea;
+    private ServerGUI.FieldPanel textArea;
     private boolean go;
 
     //constructor
-    public DrawNames(UserDatabase usrdb, WishListDatabase wldb, Server.ServerGUI.FieldPanel textArea){
+    public DrawNames(UserDatabase usrdb, WishListDatabase wldb, ServerGUI.FieldPanel textArea){
         this.usrdb = usrdb;
         this.wldb = wldb;
         this.textArea = textArea;
@@ -51,6 +51,7 @@ public class DrawNames extends Thread{
                 Collections.shuffle(shuffled);
             }
             User usr = new User();
+            User recipient;
             for(int i = 0; i< ids.size(); i++){
                 try {
                     usr = usrdb.getUserById(ids.get(i));
@@ -58,12 +59,15 @@ public class DrawNames extends Thread{
                     System.out.println("User to be updated: " + usr);
                     usrdb.updateUser(usr);
                     wldb.unconfirmWishList(usr);
+                    recipient = usrdb.getUserByRecipient(usr.getSsrid());
+                    Utilities.sendRecipient(usr,recipient.getUsername());
                 } catch (SQLException e) {
                     result = "Sql error";
                 }
             }
 
         }
+        this.textArea.addToTextArea("Names have been drawn.");
         this.go = false;
         return result;
 

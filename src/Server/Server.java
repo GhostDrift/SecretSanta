@@ -4,6 +4,7 @@ import Common.Message;
 import Common.NetworkAccess;
 import Common.User;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -112,52 +113,56 @@ public class Server extends Thread {
     public boolean isRunning(){
 	    return this.running;
     }
-    //Method to draw names and assign them to the users
-    public String drawNames(){
-	    String result = "success";
-	    UserDatabase usrdb = getUserDatabase();
-	    WishListDatabase wldb = getSystemDatabase();
-	    ArrayList<Integer> ids = usrdb.getIds();
-	    System.out.println("List of ids: " + ids );
-	    if(ids.size() <=1){
-	        result = "there needs to be at least two registered users";
-        }else{
-            ArrayList<Integer> shuffled = usrdb.getIds();
-            Collections.shuffle(shuffled);
-            System.out.println("list of shuffled ids: " + shuffled);
-            boolean reshuffle = true;
-            while(reshuffle){
-                if(checkShuffle(ids,shuffled)){
-                    reshuffle = false;
-                }
-                Collections.shuffle(shuffled);
-            }
-            User usr = new User();
-            for(int i = 0; i< ids.size(); i++){
-                try {
-                    usr = usrdb.getUserById(ids.get(i));
-                    usr.setSsrid(shuffled.get(i));
-                    System.out.println("User to be updated: " + usr);
-                    usrdb.updateUser(usr);
-                    wldb.unconfirmWishList(usr);
-                } catch (SQLException e) {
-                    result = "Sql error";
-                }
-            }
-
-        }
-
-        return result;
+    //method to draw names
+    public void drawNames(ServerGUI.FieldPanel textArea, JButton button){
+	    new DrawNames(getUserDatabase(),getSystemDatabase(),textArea);
     }
-    //method to check and see if each user doesn't have themselves when names are drawn; returns true if no user has themselves
-    private boolean checkShuffle(ArrayList<Integer> ids, ArrayList<Integer> shuffled){
-	    for(int i = 0; i< ids.size(); i++){
-	        if(ids.get(i)== shuffled.get(i)){
-	            return false;
-            }
-        }
-	    return true;
-    }
+//    //Method to draw names and assign them to the users
+//    public String drawNames(){
+//	    String result = "success";
+//	    UserDatabase usrdb = getUserDatabase();
+//	    WishListDatabase wldb = getSystemDatabase();
+//	    ArrayList<Integer> ids = usrdb.getIds();
+//	    System.out.println("List of ids: " + ids );
+//	    if(ids.size() <=1){
+//	        result = "there needs to be at least two registered users";
+//        }else{
+//            ArrayList<Integer> shuffled = usrdb.getIds();
+//            Collections.shuffle(shuffled);
+//            System.out.println("list of shuffled ids: " + shuffled);
+//            boolean reshuffle = true;
+//            while(reshuffle){
+//                if(checkShuffle(ids,shuffled)){
+//                    reshuffle = false;
+//                }
+//                Collections.shuffle(shuffled);
+//            }
+//            User usr = new User();
+//            for(int i = 0; i< ids.size(); i++){
+//                try {
+//                    usr = usrdb.getUserById(ids.get(i));
+//                    usr.setSsrid(shuffled.get(i));
+//                    System.out.println("User to be updated: " + usr);
+//                    usrdb.updateUser(usr);
+//                    wldb.unconfirmWishList(usr);
+//                } catch (SQLException e) {
+//                    result = "Sql error";
+//                }
+//            }
+//
+//        }
+//
+//        return result;
+//    }
+//    //method to check and see if each user doesn't have themselves when names are drawn; returns true if no user has themselves
+//    private boolean checkShuffle(ArrayList<Integer> ids, ArrayList<Integer> shuffled){
+//	    for(int i = 0; i< ids.size(); i++){
+//	        if(ids.get(i)== shuffled.get(i)){
+//	            return false;
+//            }
+//        }
+//	    return true;
+//    }
 
     /**
 	 * constructor creates the list of clients and
