@@ -123,26 +123,25 @@ public class CommandProtocol {
                 msg.message = "User does not exist";
                 return msg;
             }
-//            Common.User result = userDB.getUser(username);
             if(result.getPassword() != null) {
-                if (result.getPassword().equals(password)) {
-                    if(result.getLockCount() >= Config.getLockoutThreshold()){
-                        msg.message = "Your account is locked, please recover it to continue";
-                        return msg;
-                    }
-                    else {
+                if (result.getLockCount() >= Config.getLockoutThreshold()) {
+                    msg.message = "Your account is locked, please recover it to continue";
+                    return msg;
+                }
+                else {
+                    if(result.getPassword().equals(password)){
                         userDB.login(usr);
                         msg.message = "success";
                         ch.setUser(usr);
                         return msg;
                     }
-                }
-                else {
-                    msg.message = "Invalid Password";
-                    result.setLockCount(result.getLockCount()+1);
-                    userDB.updateUser(result);
-                    if(result.getLockCount() == Config.getLockoutThreshold()){
-                        Utilities.lockedOutNotification(result);
+                    else {
+                        msg.message = "Invalid Password";
+                        result.setLockCount(result.getLockCount() + 1);
+                        userDB.updateUser(result);
+                        if (result.getLockCount() == Config.getLockoutThreshold()) {
+                            Utilities.lockedOutNotification(result);
+                        }
                     }
                     return msg;
                 }
