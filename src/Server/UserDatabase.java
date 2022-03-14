@@ -187,7 +187,7 @@ class UserDatabase extends Database {
     //method to update a user
     protected void updateUser(User usr){
         String username = usr.getUsername();
-        this.update("UPDATE `users` SET `password` = '"+ usr.getPassword() + "', `email` = '" + usr.getEmail() + "', `lockCount` = '" + usr.getLockCount() + "', `loggedIn` = '" + usr.getLoggedIn() + "', `recipientId` = '" + usr.getSsrid() + "' WHERE (`username` = '" + username +"');");
+        this.update("UPDATE `users` SET `password` = '"+ usr.getPassword() + "', `email` = '" + usr.getEmail() + "', `lockCount` = '" + usr.getLockCount() + "', `loggedIn` = '" + usr.getLoggedIn() + "', `recipientId` = '" + usr.getSsrid() + "', `name` = '" + usr.getName() + "' WHERE (`username` = '" + username +"');");
     }
     //method to login a user
     protected void login(User usr) {
@@ -403,10 +403,13 @@ class UserDatabase extends Database {
         }
 //        usrDB.clearRecipientIDS();
 //        usrDB.printResultSet(usrDB.query("SELECT * FROM users;"));
-//        try {
+        try {
 //             usrDB.clearPassHistory();
 //        usrDB.populatePassHistory();
-//            User usr = usrDB.getUser("test");
+            User usr = usrDB.getUser("test");
+            usr.setName("test name");
+            usrDB.updateUser(usr);
+            System.out.println(usr);
 //            usr.setPassword("Example");
 //            usrDB.updateUser(usr);
 //            usrDB.addPassHistoryEntry(usr);
@@ -426,9 +429,9 @@ class UserDatabase extends Database {
 //            System.out.println(usrDB.getWhoLoggedIn());
 //            usrDB.getNumRegistered();
 //            System.out.println(usrDB.getPassHistory(usr));
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

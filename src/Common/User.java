@@ -42,6 +42,11 @@ public class User implements Serializable {
         this.email = email;
         this.name = name;
     }
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
     public User(String username){
         this.username = username;
     }
@@ -139,7 +144,7 @@ public class User implements Serializable {
                 ", wishList=" + wishList +
                 ", ssrid=" + ssrid +
                 ", entry='" + entry + '\'' +
+                ", name='" + name + '\'' +
                 '}';
-//        return this.entry;
     }
 }
