@@ -149,7 +149,7 @@ public class ServerGUI extends JFrame {
 //                        } else {
 //                            addToTextArea(result);
 //                        }
-                        drawNames.setText("Clear Names");
+//                        drawNames.setText("Clear Names");
                         try {
                             Config.setNamesDrawn(true);
                             Config.saveConfig();

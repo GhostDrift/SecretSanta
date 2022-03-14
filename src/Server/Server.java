@@ -115,7 +115,7 @@ public class Server extends Thread {
     }
     //method to draw names
     public void drawNames(ServerGUI.FieldPanel textArea, JButton button){
-	    new DrawNames(getUserDatabase(),getSystemDatabase(),textArea);
+	    new DrawNames(getUserDatabase(),getSystemDatabase(),textArea,button);
     }
 //    //Method to draw names and assign them to the users
 //    public String drawNames(){

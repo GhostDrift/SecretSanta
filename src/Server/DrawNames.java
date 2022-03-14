@@ -2,6 +2,7 @@ package Server;
 
 import Common.User;
 
+import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,13 +13,16 @@ public class DrawNames extends Thread{
     private WishListDatabase wldb;
     private ServerGUI.FieldPanel textArea;
     private boolean go;
+    private JButton button;
 
     //constructor
-    public DrawNames(UserDatabase usrdb, WishListDatabase wldb, ServerGUI.FieldPanel textArea){
+    public DrawNames(UserDatabase usrdb, WishListDatabase wldb, ServerGUI.FieldPanel textArea, JButton button){
         this.usrdb = usrdb;
         this.wldb = wldb;
         this.textArea = textArea;
         this.go = true;
+        this.button = button;
+        this.button.setEnabled(false);
         this.start();
     }
     //run method
@@ -28,6 +32,8 @@ public class DrawNames extends Thread{
         while(go){
             this.drawNames();
         }
+        this.button.setEnabled(true);
+        this.button.setText("Clear Names");
     }
 
     //Method to draw names and assign them to the users
