@@ -29,7 +29,7 @@ class UserDatabase extends Database {
         User usr = new User();
         int numberOfColumns = rsmd.getColumnCount(); // get the number of columns in the result set
         String data;
-        while (rset.next()) { // I don't know why this while loop has to be here but it does
+        while (rset.next()) { // I don't know why this while loop has to be here, but it does
             // -- loop through the columns of the ResultSet
             for (int i = 1; i <= numberOfColumns; ++i) {
 //                System.out.print(rset.getString(i) + "\t\t");
@@ -59,6 +59,9 @@ class UserDatabase extends Database {
                 }
                 else if(i == 7){
                     usr.setSsrid(Integer.parseInt(data));
+                }
+                else if(i == 8){
+                    usr.setName(data);
                 }
 
             }
@@ -108,6 +111,9 @@ class UserDatabase extends Database {
                 else if(i == 7){
                     usr.setSsrid(Integer.parseInt(data));
                 }
+                else if(i == 8){
+                    usr.setName(data);
+                }
 
             }
 //            usr.print();
@@ -153,6 +159,9 @@ class UserDatabase extends Database {
                 }
                 else if(i == 7){
                     usr.setSsrid(Integer.parseInt(data));
+                }
+                else if(i == 8){
+                    usr.setName(data);
                 }
 
             }
