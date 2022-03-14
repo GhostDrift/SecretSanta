@@ -48,7 +48,9 @@ public class DrawNames extends Thread{
                 if(checkShuffle(ids,shuffled)){
                     reshuffle = false;
                 }
-                Collections.shuffle(shuffled);
+                else {
+                    Collections.shuffle(shuffled);
+                }
             }
             User usr = new User();
             User recipient;
@@ -59,7 +61,7 @@ public class DrawNames extends Thread{
                     System.out.println("User to be updated: " + usr);
                     usrdb.updateUser(usr);
                     wldb.unconfirmWishList(usr);
-                    recipient = usrdb.getUserByRecipient(usr.getSsrid());
+                    recipient = usrdb.getUserById(usr.getSsrid());
                     Utilities.sendRecipient(usr,recipient.getUsername());
                 } catch (SQLException e) {
                     result = "Sql error";
@@ -75,7 +77,10 @@ public class DrawNames extends Thread{
     //method to check and see if each user doesn't have themselves when names are drawn; returns true if no user has themselves
     private boolean checkShuffle(ArrayList<Integer> ids, ArrayList<Integer> shuffled){
         for(int i = 0; i< ids.size(); i++){
+            System.out.println("ids: " + ids.get(i));
+            System.out.println("shuffled: " + shuffled.get(i));
             if(ids.get(i) == shuffled.get(i)){
+                System.out.println("Shuffled: " + false);
                 return false;
             }
         }
