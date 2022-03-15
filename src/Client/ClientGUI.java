@@ -1005,7 +1005,7 @@ public class ClientGUI extends JFrame {
 //                            myWishListButton.setEnabled(false);
 //                            myWishListButton.setText("My Wish List");
                             add.setVisible(true);
-                            remove.setVisible(true);
+                            remove.setVisible(false);
                             clear.setVisible(true);
                             status.setVisible(true);
                             confirmWishlist.setVisible(true);
@@ -1036,7 +1036,7 @@ public class ClientGUI extends JFrame {
                             confirmWishlist.setVisible(false);
                             Message msg = client.getRecipientWishList();
                             if(msg.message.equals("success")){
-                                System.out.println("wish list to be displayed: " + msg.user.getWishList());
+//                                System.out.println("wish list to be displayed: " + msg.user.getWishList());
                                 updateWishList(msg.user.getWishList());
                                 clearError();
                             }

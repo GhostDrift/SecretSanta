@@ -172,4 +172,10 @@ public class Client {
         msg = networkaccess.sendMessage(msg,true);
         return msg;
     }
+    //method to get a user's recipient
+    public Message getRecipient(){
+        Message msg = new Message(null,"getRecipient");
+        msg = networkaccess.sendMessage(msg,true);
+        return msg;
+    }
 }

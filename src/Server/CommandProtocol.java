@@ -105,6 +105,9 @@ public class CommandProtocol {
         else if(cmd.message.equals("getRecipientWishList")){
             na.sendMessage(getRecipientWishList(ch),false);
         }
+        else if(cmd.message.equals("getRecipient")){
+            na.sendMessage(getRecipient(ch),false);
+        }
         else {
 
             na.sendMessage(cmd, false);
@@ -547,6 +550,27 @@ public class CommandProtocol {
             throwables.printStackTrace();
         }
         System.out.println("User:" + result.user);
+        return result;
+    }
+    //method to get a user's recpient
+    private static Message getRecipient(ClientHandler ch){
+        User user = new User();
+        Message result = new Message(user,"success");
+        WishListDatabase wldb = ch.getServer().getSystemDatabase();
+        UserDatabase usrDB = ch.getServer().getUserDatabase();
+        User usr;
+        try{
+            usr = usrDB.getUser(ch.getUser().getUsername());
+            if(usr.getSsrid() == 0){
+                result.message = "Names have not been drawn";
+            }
+            else{
+                usr = usrDB.getUserById(usr.getSsrid());
+                result.user = usr;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return result;
     }
 
