@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -844,12 +845,18 @@ public class ClientGUI extends JFrame {
                     status.setVisible(true);
                     repaint();
                     if(client.networkaccess.testConnection()){
-                        if(nameText.getText().equals("")){
+                        if(nameText.getText().equals("") ){
+                            status.setForeground(Color.RED);
+                            status.setText("You must enter a name");
+                            status.setVisible(true);
+                            repaint();
+                        }else if(nameText.getText().toLowerCase(Locale.ROOT).equals("null")){
                             status.setForeground(Color.RED);
                             status.setText("Name cannot be null");
                             status.setVisible(true);
                             repaint();
-                        }else {
+                        }
+                        else {
                             String result = client.register(usrName.getText().toLowerCase(), eMailText.getText(), pasWord.getText(), rePassText.getText(),nameText.getText());
                             if (result.equals("success")) {
                                 updateData(new Login(true, "Account successfully created!"));
