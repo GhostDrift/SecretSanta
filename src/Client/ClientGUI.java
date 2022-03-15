@@ -666,6 +666,7 @@ public class ClientGUI extends JFrame {
         private final JTextField eMailText;
         private final JTextField pasWord;
         private final JTextField rePassText;
+        private final JTextField nameText;
         private final JButton cancel;
         private final JButton submit;
         private final JLabel status;
@@ -685,10 +686,13 @@ public class ClientGUI extends JFrame {
             password.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             JLabel rePassword = new JLabel("Re-enter Password");
             rePassword.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            JLabel name = new JLabel("Your name");
+            name.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             usrName = new JTextField("",25);
             pasWord = new JTextField("", 25);
             eMailText = new JTextField("", 25);
             rePassText = new JTextField("", 25);
+            nameText = new JTextField("",25);
             status = new JLabel("Errors will be displayed here");
 //            status.setForeground(Color.RED);
             status.setVisible(false);
@@ -726,6 +730,11 @@ public class ClientGUI extends JFrame {
             this.add(rePassword, gbc);
             gbc.gridx = 1;
             this.add(rePassText, gbc);
+            gbc.gridy = 5;
+            gbc.gridx = 0;
+            this.add(name,gbc);
+            gbc.gridx = 1;
+            this.add(nameText,gbc);
 
         }
 
@@ -775,7 +784,7 @@ public class ClientGUI extends JFrame {
                 @Override
                 public void keyPressed(KeyEvent keyEvent) {
                     if(keyEvent.getKeyCode() == 10){
-                        submit.doClick();
+                        nameText.requestFocus();
                     }
                 }
 
@@ -802,6 +811,24 @@ public class ClientGUI extends JFrame {
 
                 }
             });
+            nameText.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+
+                }
+
+                @Override
+                public void keyPressed(KeyEvent keyEvent) {
+                    if(keyEvent.getKeyCode() == 10){
+                        submit.doClick();
+                    }
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
         }
 
         private void prepareButtonHandlers(){
@@ -817,15 +844,21 @@ public class ClientGUI extends JFrame {
                     status.setVisible(true);
                     repaint();
                     if(client.networkaccess.testConnection()){
-                        String result =client.register(usrName.getText().toLowerCase(),eMailText.getText(),pasWord.getText(),rePassText.getText());
-                        if(result.equals("success")){
-                            updateData(new Login(true,"Account successfully created!"));
-                        }
-                        else{
+                        if(nameText.getText().equals("")){
                             status.setForeground(Color.RED);
-                            status.setText(result);
+                            status.setText("Name cannot be null");
                             status.setVisible(true);
                             repaint();
+                        }else {
+                            String result = client.register(usrName.getText().toLowerCase(), eMailText.getText(), pasWord.getText(), rePassText.getText(),nameText.getText());
+                            if (result.equals("success")) {
+                                updateData(new Login(true, "Account successfully created!"));
+                            } else {
+                                status.setForeground(Color.RED);
+                                status.setText(result);
+                                status.setVisible(true);
+                                repaint();
+                            }
                         }
 
                     }

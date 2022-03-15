@@ -77,12 +77,13 @@ public class Client {
         return result.message.equals("success");
     }
     //registers a new user
-    public String register(String username, String email, String password, String rePassword){
+    public String register(String username, String email, String password, String rePassword,String name){
         if(!password.equals(rePassword)){
             return "Passwords do not match";
 
         }
         User usr = new User(username,password,email);
+        usr.setName(name);
         Message answer = networkaccess.sendMessage(new Message(usr,"Register"), true);
         return answer.message;
     }
