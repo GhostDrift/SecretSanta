@@ -328,6 +328,7 @@ public class CommandProtocol {
             User update = userDb.getUser(ch.getUser().getUsername());
             update.setEmail(usr.getEmail());
             update.setPassword(usr.getPassword());
+            update.setName(usr.getName());
             System.out.println(update.getPassword());
             if(validatePasswordAndEmail(update,msg,ch)){
                 if(Config.getEnforcePasswordHistory()){
