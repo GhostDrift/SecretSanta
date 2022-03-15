@@ -220,7 +220,7 @@ class UserDatabase extends Database {
     }
     //method to add a new user to the database
     protected void addUser(User usr){
-        this.update("INSERT INTO `users` (`username`, `password`, `email`, `lockCount`, `loggedIn`) VALUES ('" + usr.getUsername() + "', '" + usr.getPassword() + "', '" + usr.getEmail() + "', '0', '0');");
+        this.update("INSERT INTO `users` (`username`, `password`, `email`, `lockCount`, `loggedIn`,`name`) VALUES ('" + usr.getUsername() + "', '" + usr.getPassword() + "', '" + usr.getEmail() + "', '0', '0','" + usr.getName() + "');");
         try {
             if (Config.getEnforcePasswordHistory()){
                 this.addPassHistoryEntry(getUser(usr.getUsername()));
@@ -403,13 +403,16 @@ class UserDatabase extends Database {
         }
 //        usrDB.clearRecipientIDS();
 //        usrDB.printResultSet(usrDB.query("SELECT * FROM users;"));
-        try {
-//             usrDB.clearPassHistory();
+        //             usrDB.clearPassHistory();
 //        usrDB.populatePassHistory();
-            User usr = usrDB.getUser("test");
-            usr.setName("test name");
-            usrDB.updateUser(usr);
-            System.out.println(usr);
+//            User usr = usrDB.getUser("test");
+        User usr = new User();
+        usr.setName("test name");
+        usr.setEmail("testEmail");
+        usr.setUsername("Bacon");
+//            usrDB.updateUser(usr);
+        usrDB.addUser(usr);
+        System.out.println(usr);
 //            usr.setPassword("Example");
 //            usrDB.updateUser(usr);
 //            usrDB.addPassHistoryEntry(usr);
@@ -429,9 +432,6 @@ class UserDatabase extends Database {
 //            System.out.println(usrDB.getWhoLoggedIn());
 //            usrDB.getNumRegistered();
 //            System.out.println(usrDB.getPassHistory(usr));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 }
