@@ -1440,8 +1440,10 @@ public class ClientGUI extends JFrame {
     private class AccountSettings extends displayPanel{
         private JLabel password;
         private JLabel email;
+        private JLabel name;
         private JTextField passText;
         private JTextField emailText;
+        private JTextField nameText;
         private JButton cancel;
         private JButton apply;
         private JLabel status;
@@ -1458,8 +1460,11 @@ public class ClientGUI extends JFrame {
             password.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             email = new JLabel("Email");
             email.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            name = new JLabel("Your name");
+            name.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             passText = new JTextField(usr.getPassword(), 25);
             emailText = new JTextField(usr.getEmail(), 25);
+            nameText = new JTextField(usr.getName(), 25);
             cancel = new JButton("Back");
             apply = new JButton("Apply");
             status = new JLabel("Status will be displayed here");
@@ -1483,8 +1488,11 @@ public class ClientGUI extends JFrame {
             this.add(email,gbc);
             gbc.gridx = 1;
             this.add(emailText,gbc);
-
-
+            gbc.gridx = 0;
+            gbc.gridy = 3;
+            this.add(name,gbc);
+            gbc.gridx = 1;
+            this.add(nameText,gbc);
         }
 
         //method to add key listeners
@@ -1513,6 +1521,24 @@ public class ClientGUI extends JFrame {
 
                 }
 
+                public void keyPressed(KeyEvent keyEvent) {
+                    if(keyEvent.getKeyCode() == 10){
+                        apply.doClick();
+                    }
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
+            nameText.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+
+                }
+
+                @Override
                 public void keyPressed(KeyEvent keyEvent) {
                     if(keyEvent.getKeyCode() == 10){
                         apply.doClick();
@@ -1554,6 +1580,7 @@ public class ClientGUI extends JFrame {
                             User usr = new User();
                             usr.setPassword(passText.getText());
                             usr.setEmail(emailText.getText());
+                            usr.setName(nameText.getText());
                             String result = client.updateSettings(usr);
                             if(result.equals("success")) {
                                 status.setText("Account Updated");
