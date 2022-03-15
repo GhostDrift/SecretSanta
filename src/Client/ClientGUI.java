@@ -892,6 +892,7 @@ public class ClientGUI extends JFrame {
         private final JButton remove;
         private final JButton clear;
         private final JLabel status;
+        private final JLabel recipient = new JLabel("recipient's name");
         private final JButton logOut;
         private final JButton accountSettings;
         private final JButton confirmWishlist;
@@ -932,6 +933,8 @@ public class ClientGUI extends JFrame {
             error.setForeground(Color.RED);
             error.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             error.setVisible(false);
+            recipient.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            recipient.setVisible(false);
             prepareButtonHandlers();
             //add components
             this.add(wishListSelect,BorderLayout.NORTH);
@@ -951,6 +954,8 @@ public class ClientGUI extends JFrame {
             dataArea.add(status, gbc);
             gbc.gridy = 4;
             dataArea.add(error,gbc);
+            gbc.gridy = 5;
+            dataArea.add(recipient,gbc);
 //            dataArea.add(confirmWishlist,gbc);
             this.add(dataArea,BorderLayout.CENTER);
             updateWishList(myWishList);
@@ -1004,8 +1009,9 @@ public class ClientGUI extends JFrame {
                             myWishListButton.setBackground(Color.WHITE);
 //                            myWishListButton.setEnabled(false);
 //                            myWishListButton.setText("My Wish List");
+                            recipient.setVisible(false);
                             add.setVisible(true);
-                            remove.setVisible(false);
+                            remove.setVisible(true);
                             clear.setVisible(true);
                             status.setVisible(true);
                             confirmWishlist.setVisible(true);
@@ -1037,10 +1043,15 @@ public class ClientGUI extends JFrame {
                             Message msg = client.getRecipientWishList();
                             if(msg.message.equals("success")){
 //                                System.out.println("wish list to be displayed: " + msg.user.getWishList());
+                                recipient.setVisible(true);
+                                recipient.setText(client.getRecipient().user.getName() + "'s wish list");
                                 updateWishList(msg.user.getWishList());
                                 clearError();
                             }
                             else{
+                                if(!msg.message.equals("Names have not been drawn")){
+                                    recipient.setText(client.getRecipient().user.getName() + "'s wish list");
+                                }
                                 wishlist.setText(msg.message);
                                 this.repaint();
                             }
