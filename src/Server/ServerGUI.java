@@ -1054,7 +1054,7 @@ public class ServerGUI extends JFrame {
 
         public void addToTextArea(String x) {
             Text.setText("");
-            Text.append("SERVER receive: " + x + "\n");
+            Text.append(x + "\n");
         }
 
 
