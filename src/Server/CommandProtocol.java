@@ -498,7 +498,7 @@ public class CommandProtocol {
             }
             else{
                 wldb.confirmWishList(usr);
-                String recipient = usr.getUsername();
+                String recipient = usr.getName();
                 int id = usr.getId();
                 usr = usrDB.getUserByRecipient(id);
                 Utilities.ssrWishListConfirmed(usr, recipient);

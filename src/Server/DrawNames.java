@@ -59,7 +59,7 @@ public class DrawNames extends Thread{
                 }
             }
             User usr = new User();
-            User recipient;
+            String recipient;
             for(int i = 0; i< ids.size(); i++){
                 try {
                     usr = usrdb.getUserById(ids.get(i));
@@ -67,8 +67,8 @@ public class DrawNames extends Thread{
                     System.out.println("User to be updated: " + usr);
                     usrdb.updateUser(usr);
                     wldb.unconfirmWishList(usr);
-                    recipient = usrdb.getUserById(usr.getSsrid());
-                    Utilities.sendRecipient(usr,recipient.getUsername());
+                    recipient = usrdb.getUserById(usr.getSsrid()).getName();
+                    Utilities.sendRecipient(usr,recipient);
                 } catch (SQLException e) {
                     result = "Sql error";
                 }

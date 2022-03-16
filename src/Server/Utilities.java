@@ -68,17 +68,17 @@ public class Utilities {
     }
     //method to send account creation conformation email
     public static void accountCreated(User usr) throws ConfigNotInitializedException {
-        String message = "Dear " + usr.getUsername() + ",\n\n Thank you for creating an account with the secret santa management system. you will receive an email with your recipient when names are drawn.\n\nWith regards,Stojkovic Technical Solutions.";
+        String message = "Dear " + usr.getUsername() + ",\n\nThank you for creating an account with the secret santa management system. you will receive an email with your recipient when names are drawn.\n\nWith regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Account Created",message);
     }
     //method to send account recovery email
     public static void accountRecovery(User usr){
-        String message = "Dear " + usr.getUsername() + ",\n\n Your account has been recovered.\nYour new password is:\n" + usr.getPassword() + "\n Please login and reset it as soon as possible.\n\nWith regards,Stojkovic Technical Solutions.";
+        String message = "Dear " + usr.getUsername() + ",\n\nYour account has been recovered.\nYour new password is:\n" + usr.getPassword() + "\n Please login and reset it as soon as possible.\n\nWith regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Account Recovery",message);
     }
     //method to send email with recipient username
     public static void sendRecipient(User usr,String recipient){
-        String message = "Dear " + usr.getUsername() + ",\n\n Names have been drawn.\nYour recipient is:\n" + recipient + "\n We will notify you when they have confirmed their wish list.\n\nWith regards,Stojkovic Technical Solutions.";
+        String message = "Dear " + usr.getUsername() + ",\n\nNames have been drawn.\nYour recipient is:\n" + recipient + "\nWe will notify you when they have confirmed their wish list.\n\nWith regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Your recipient is.....",message);
     }
     //method to notify user of account settings update
@@ -88,12 +88,12 @@ public class Utilities {
     }
     //method to notify user that their recipient has confirmed their wish list
     public static void ssrWishListConfirmed(User usr, String recipient){
-        String message = "Dear " + usr.getUsername() + ",\n\n" + recipient + " has confirmed their wish list!\nCome check it out!.\n\nWith regards,Stojkovic Technical Solutions.";
+        String message = "Dear " + usr.getUsername() + ",\n\n" + recipient + " has confirmed their wish list!\nCome check it out!\n\nWith regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Recipient Wish list",message);
     }
     //method to notify user that they have been locked out
     public static void lockedOutNotification(User usr){
-        String message = "Dear " + usr.getUsername() + ",\n\n Your account has been locked.\nYou must recover your account in order to use the system.\n\nWith regards,Stojkovic Technical Solutions.";
+        String message = "Dear " + usr.getUsername() + ",\n\nYour account has been locked.\nYou must recover your account in order to use the system.\n\nWith regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Account locked",message);
     }
 
