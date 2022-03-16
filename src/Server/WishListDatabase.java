@@ -84,6 +84,10 @@ public class WishListDatabase extends Database{
         ArrayList<String> wl = getWishList(usr);
 //        System.out.println(wl.get(0));
         entry = wl.get(Integer.parseInt(entry));
+        if(entry.contains("'")){
+            entry = doubleApostrophes(entry);
+        }
+        System.out.println("Entry to be removed: " + entry);
 //        try{
 //            rset = query("select pk from wishlistentries where id = '" + listId+"' and description = '" + entry + "';");
 //            while(rset.next()){
