@@ -36,8 +36,14 @@ public class WishListDatabase extends Database{
         int listId = getListID(usr);
         System.out.println("Entry: " + entry);
         String result = "sql error";
-        //check to make sure the entry isn't already on the list
+        //check to see if the entry contains an apostrophe
+        if(entry.contains("'")){
+            //double's the apostrophes in the entry to avoid sql errors
+            entry = doubleApostrophes(entry);
+        }
+        System.out.println("Entry: " + entry);
         try{
+            //check to make sure the entry isn't already on the list
             rset = query("select description from wishlistentries where id = '" + listId + "' and description = '" + entry + "';");
             if(rset.next()){
                 result = "Item already in list";
@@ -141,6 +147,26 @@ public class WishListDatabase extends Database{
         int listId = getListID(usr);
         update("delete from wishlistentries where id = '" + listId + "';");
         unconfirmWishList(usr);
+    }
+    //method for dealing with apostrophes
+    private static String doubleApostrophes(String test){
+        String[] split = test.split("'");
+        String s = "";
+        for(int i = 0; i< split.length; i++){
+            if(i == split.length-1) {
+//                if(split[i].contains("'"))
+                s += split[i];
+            }
+            else{
+                s += split[i] + "''";
+            }
+
+        }
+        String check = "" + test.charAt(test.length()-1);
+        if(check.equals("'")){
+            s += "'";
+        }
+        return s;
     }
     //main method for testing
     public static void main(String[] args) {
