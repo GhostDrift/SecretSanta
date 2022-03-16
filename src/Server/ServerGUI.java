@@ -319,7 +319,7 @@ public class ServerGUI extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println(server);
-                    int p = server.getconnections();
+                    String p = "Number of active connections: " + server.getconnections();
                     addToTextArea(p + "");
                     requestFocus();
                 }
