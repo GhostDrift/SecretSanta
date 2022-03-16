@@ -543,7 +543,7 @@ public class CommandProtocol {
                     result.user.setWishList(list);
                 }
                 else{
-                    result.message = "Recipient's wish list is unconfirmed";
+                    result.message = "Unconfirmed";
                 }
             }
         } catch (SQLException throwables) {

@@ -958,7 +958,7 @@ public class ClientGUI extends JFrame {
             dataArea.add(recipient,gbc);
 //            dataArea.add(confirmWishlist,gbc);
             this.add(dataArea,BorderLayout.CENTER);
-            updateWishList(myWishList);
+            updateWishList(myWishList,false);
             updateWishListStatus();
 
 
@@ -986,10 +986,13 @@ public class ClientGUI extends JFrame {
             }
         }
         //method to update the wishList area
-        private void updateWishList(ArrayList<String> list){
+        private void updateWishList(ArrayList<String> list,boolean rl){
             String s = "";
+            if(rl){
+                s = client.getRecipient().user.getName() + "'s wish list\n";
+            }
             if(list == null||list.size() == 0){
-                s ="List is empty";
+                s +="List is empty";
             }
             else {
                 for (int i = 0; i < list.size(); i++) {
@@ -1019,7 +1022,7 @@ public class ClientGUI extends JFrame {
                             myWishList = client.getWishList(usr);
                             usr.setEntry("null");
                             System.out.println(usr);
-                            updateWishList(myWishList);
+                            updateWishList(myWishList,false);
                         }
                         else{
                             updateData(new Connect(true));
@@ -1043,10 +1046,13 @@ public class ClientGUI extends JFrame {
                             Message msg = client.getRecipientWishList();
                             if(msg.message.equals("success")){
 //                                System.out.println("wish list to be displayed: " + msg.user.getWishList());
-                                recipient.setVisible(true);
-                                recipient.setText(client.getRecipient().user.getName() + "'s wish list");
-                                updateWishList(msg.user.getWishList());
+//                                recipient.setVisible(true);
+//                                recipient.setText(client.getRecipient().user.getName() + "'s wish list");
+                                updateWishList(msg.user.getWishList(),true);
                                 clearError();
+                            }
+                            else if(msg.message.equals("Unconfirmed")){
+                                wishlist.setText(client.getRecipient().user.getName() + "'s wish list is unconfirmed");
                             }
                             else{
                                 if(!msg.message.equals("Names have not been drawn")){
