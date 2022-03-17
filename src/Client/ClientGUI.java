@@ -618,10 +618,11 @@ public class ClientGUI extends JFrame {
                 if(client!= null){
                     if(client.networkaccess.testConnection()){
                         String result = client.recover(userText.getText());
+                        System.out.println("result: " + result);
                         if(result.equals("success")){
                             updateData(new Login(true,"Recovery email has been sent"));
                         }else{
-                            this.displayError(result);
+                            displayError(result);
                         }
                     }
                     else{

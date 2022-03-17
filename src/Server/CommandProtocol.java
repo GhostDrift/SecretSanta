@@ -221,7 +221,8 @@ public class CommandProtocol {
         Message result = new Message(null,"");
         try {
             usr = userDB.getUser(usr.getUsername());
-            if(usr == null){
+//            System.out.println("User: " + usr);
+            if(usr.getUsername() == null){
                 result.message = "User does not exist";
             }
             else{
