@@ -96,6 +96,11 @@ public class Utilities {
         String message = "Dear " + usr.getUsername() + ",\n\nYour account has been locked.\nYou must recover your account in order to use the system.\n\nWith regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Account locked",message);
     }
+    //method to notify a user that names have been reset
+    private static void namesClearedNotification(User usr){
+        String message = "Dear " + usr.getUsername() + ",\n\nNames have been reset.\nYou will be notified when you have received a new recipient.\n\nWith regards,Stojkovic Technical Solutions.";
+        new SendEmailUsingGMailSMTP(usr.getEmail(),"Names reset",message);
+    }
 
     public static void main(String[] args) throws ConfigNotInitializedException {
         Config.initializeConfig("ServerConfiguration.conf");
