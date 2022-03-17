@@ -6,15 +6,16 @@ import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class DrawNames extends Thread{
     //variables
-    private UserDatabase usrdb;
+    private final UserDatabase usrdb;
     private WishListDatabase wldb;
     private ServerGUI.FieldPanel textArea;
     private boolean go;
     private JButton button;
-    private boolean cleared;
+    private final boolean cleared;
 
     //constructor
     public DrawNames(UserDatabase usrdb, WishListDatabase wldb, ServerGUI.FieldPanel textArea, JButton button){
@@ -58,8 +59,8 @@ public class DrawNames extends Thread{
         if(ids.size() >= 2) {
             try {
                 User usr;
-                for (int i = 0; i < ids.size(); i++) {
-                    usr = usrdb.getUserById(ids.get(i));
+                for (Integer id : ids) {
+                    usr = usrdb.getUserById(id);
                     Utilities.namesClearedNotification(usr);
                 }
             } catch (SQLException throwables) {
@@ -70,15 +71,10 @@ public class DrawNames extends Thread{
     }
 
     //Method to draw names and assign them to the users
-    public String drawNames(){
-        String result = "success";
-//        UserDatabase usrdb = getUserDatabase();
-//        WishListDatabase wldb = getSystemDatabase();
+    public void drawNames(){
         ArrayList<Integer> ids = usrdb.getIds();
         System.out.println("List of ids: " + ids );
-        if(ids.size() <=1){
-            result = "there needs to be at least two registered users";
-        }else{
+        if(ids.size() >=1){
             ArrayList<Integer> shuffled = usrdb.getIds();
             Collections.shuffle(shuffled);
             System.out.println("list of shuffled ids: " + shuffled);
@@ -91,7 +87,7 @@ public class DrawNames extends Thread{
                     Collections.shuffle(shuffled);
                 }
             }
-            User usr = new User();
+            User usr;
             String recipient;
             for(int i = 0; i< ids.size(); i++){
                 try {
@@ -103,14 +99,13 @@ public class DrawNames extends Thread{
                     recipient = usrdb.getUserById(usr.getSsrid()).getName();
                     Utilities.sendRecipient(usr,recipient);
                 } catch (SQLException e) {
-                    result = "Sql error";
+                    e.printStackTrace();
                 }
             }
 
         }
         this.textArea.addToTextArea("Names have been drawn.");
         this.go = false;
-        return result;
 
     }
     //method to check and see if each user doesn't have themselves when names are drawn; returns true if no user has themselves
@@ -118,7 +113,7 @@ public class DrawNames extends Thread{
         for(int i = 0; i< ids.size(); i++){
             System.out.println("ids: " + ids.get(i));
             System.out.println("shuffled: " + shuffled.get(i));
-            if(ids.get(i) == shuffled.get(i)){
+            if(Objects.equals(ids.get(i), shuffled.get(i))){
                 System.out.println("Shuffled: " + false);
                 return false;
             }
