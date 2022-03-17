@@ -7,14 +7,14 @@ import java.util.regex.Pattern;
 
 public class Utilities {
     public static String getStringFromArray(char[] chars){
-        String str = "";
-        for(int i = 0; i < chars.length; i ++){
-            str = str + chars[i];
+        StringBuilder str = new StringBuilder();
+        for (char aChar : chars) {
+            str.append(aChar);
         }
-        return str;
+        return str.toString();
     }
     public static Boolean containsCharacters(String test, char[] characters){
-        Boolean stop = false;
+        boolean stop = false;
         int i = 0;
         String testVal;
         while ((!stop) && (i < characters.length)){
