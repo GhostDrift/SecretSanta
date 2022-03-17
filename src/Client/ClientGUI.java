@@ -1,22 +1,19 @@
 package Client;
+
 import Common.ControlArea;
 import Common.Message;
 import Common.User;
 import Common.displayPanel;
 
+import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-
-import javax.swing.*;
-import javax.swing.border.Border;
 
 public class ClientGUI extends JFrame {
     Client client = null;
@@ -58,8 +55,6 @@ public class ClientGUI extends JFrame {
         this.add(Data, BorderLayout.CENTER);
         this.add(control,BorderLayout.SOUTH);
 
-//        Bot = new Client.ConnectGUI.BottomPanel();
-//        this.add(Bot, BorderLayout.SOUTH);
         setVisible(true);
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             //modified code from
@@ -78,12 +73,6 @@ public class ClientGUI extends JFrame {
         this.Data = dataNew;
         this.add(Data,BorderLayout.CENTER);
 
-//        System.out.println( "Login " +Data.getLabel());
-//        this.remove(windowTitle);
-//        this.windowTitle = new Label(Data.getLabel());
-//        this.add(windowTitle, BorderLayout.NORTH);
-//        this.windowTitle.repaint();
-//        System.out.println("Label " + windowTitle.getText());
         this.repaint();
 //        shutDown();
     }
@@ -111,7 +100,7 @@ public class ClientGUI extends JFrame {
         this.remove(control);
         this.control = new ControlArea();
         JPanel center = new JPanel();
-        center.setLayout(new FlowLayout(1,10,0));
+        center.setLayout(new FlowLayout(FlowLayout.CENTER,10,0));
         center.add(centerLeft);
         center.add(centerRight);
         this.control.setLeft(left);
@@ -126,7 +115,7 @@ public class ClientGUI extends JFrame {
 
 
         Label(){
-            setLayout(new FlowLayout(1, 10,10));
+            setLayout(new FlowLayout(FlowLayout.CENTER, 10,10));
             Border labelBorder = BorderFactory.createLineBorder(Color.black);
             String text = "";
             title = new JLabel(text);
@@ -144,23 +133,7 @@ public class ClientGUI extends JFrame {
             System.out.println("Label new text: " + newText);
         }
     }
-//    private abstract class displayPanel extends JPanel{
-//        private  String panelName;
-//        private  String spaces = "                                                                                                              ";
-//
-//        public void setPanelName(String panelName){
-//            this.panelName = panelName;
-//        }
-//        public void setSpaces(String spaces){
-//            this.spaces = spaces;
-//        }
-//        public String getLabel(){
-//            return spaces + panelName + spaces;
-//        }
-//
-//
-//    }
-    private class Connect extends displayPanel {
+private class Connect extends displayPanel {
     private final JTextField IP;
         private final JButton Adv;
         private final JLabel Portn;
@@ -218,14 +191,6 @@ public class ClientGUI extends JFrame {
             gbc.gridwidth = 2;
 //            this.add(errorMessage, gbc);
             this.errorMessage.setVisible(false);
-//            gbc.gridx = 0;
-//            gbc.gridy = 3;
-//            gbc.anchor = GridBagConstraints.LAST_LINE_START;
-//            this.add(Adv);
-//            gbc.gridx = 1;
-//            gbc.gridy = 3;
-//            gbc.anchor = GridBagConstraints.LAST_LINE_END;
-//            this.add(connect);
             PrepareButtons();
             prepareKeyListener();
             if(error){
@@ -266,8 +231,6 @@ public class ClientGUI extends JFrame {
                         Pattern ippattern = Pattern.compile(ipformat);
                         String portformat = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
                         Pattern portpattern = Pattern.compile(portformat);
-//                            String host = "127.0.0.1";
-//                            int port = 8000;
                         String host;
                         //checks to see if host box is empty
                         if(!IP.getText().equals("")) {
@@ -283,8 +246,6 @@ public class ClientGUI extends JFrame {
                         if (matcher.find()) {
                             matcher = portpattern.matcher(portnum.getText());
                             if (matcher.find()) {
-//                                    Visibility = false;
-//                                    SetVis();
                                 client = new Client(host, port);
                                 updateData(new Login());
 //                                    Log = new LoginGUI();
@@ -297,7 +258,7 @@ public class ClientGUI extends JFrame {
                         }
 
                     } catch (Exception m) {
-                        System.out.println(m);
+                        m.printStackTrace();
                         cannotConnect();
                     }
                 }
@@ -480,14 +441,6 @@ public class ClientGUI extends JFrame {
                                  status.setForeground(Color.RED);
                                  repaint();
                              }
-//                             if (client.login(username.toLowerCase(), password)) {
-//                                 usr = new User(username.toLowerCase());
-//                                 updateData(new Interaction());
-//                             } else {
-//                                 status.setVisible(true);
-//                                 status.setText("Incorrect Username or Password");
-//                                 status.setForeground(Color.RED);
-//                             }
                          } else {
                              status.setVisible(true);
                              status.setText("Username and password cannot be empty");
@@ -899,8 +852,7 @@ public class ClientGUI extends JFrame {
         private final JButton confirmWishlist;
         JTextArea wishlist;
         private ArrayList<String> myWishList = client.getWishList(usr);
-        private ArrayList<String> recipientWishList;
-        private JLabel error;
+        private final JLabel error;
 
         //constructor
         Interaction(){
@@ -965,8 +917,8 @@ public class ClientGUI extends JFrame {
 
         }
         //method to display error messages
-        private void updateError(String error){
-            this.error.setText(error);
+        private void updateError(){
+            this.error.setText("Cannot confirm an empty list");
             this.error.setVisible(true);
             this.repaint();
         }
@@ -988,20 +940,20 @@ public class ClientGUI extends JFrame {
         }
         //method to update the wishList area
         private void updateWishList(ArrayList<String> list,boolean rl){
-            String s = "";
+            StringBuilder s = new StringBuilder();
             if(rl){
-                s = client.getRecipient().user.getName() + "'s wish list\n";
+                s = new StringBuilder(client.getRecipient().user.getName() + "'s wish list\n");
             }
             if(list == null||list.size() == 0){
-                s +="List is empty";
+                s.append("List is empty");
             }
             else {
                 for (int i = 0; i < list.size(); i++) {
-                    s += i+1 + ". " + list.get(i) + "\n";
+                    s.append(i).append(1).append(". ").append(list.get(i)).append("\n");
                 }
             }
 //            System.out.println(s);
-            wishlist.setText(s);
+            wishlist.setText(s.toString());
         }
 
         private void prepareButtonHandlers(){
@@ -1011,8 +963,6 @@ public class ClientGUI extends JFrame {
                         if(client.networkaccess.testConnection()){
                             recipientWishListButton.setBackground(null);
                             myWishListButton.setBackground(Color.WHITE);
-//                            myWishListButton.setEnabled(false);
-//                            myWishListButton.setText("My Wish List");
                             recipient.setVisible(false);
                             add.setVisible(true);
                             remove.setVisible(true);
@@ -1046,9 +996,6 @@ public class ClientGUI extends JFrame {
                             confirmWishlist.setVisible(false);
                             Message msg = client.getRecipientWishList();
                             if(msg.message.equals("success")){
-//                                System.out.println("wish list to be displayed: " + msg.user.getWishList());
-//                                recipient.setVisible(true);
-//                                recipient.setText(client.getRecipient().user.getName() + "'s wish list");
                                 updateWishList(msg.user.getWishList(),true);
                                 clearError();
                             }
@@ -1130,7 +1077,7 @@ public class ClientGUI extends JFrame {
                                     clearError();
                                 }
                                 else{
-                                    updateError("Cannot confirm an empty list");
+                                    updateError();
                                 }
                             }
                             else{
@@ -1191,8 +1138,7 @@ public class ClientGUI extends JFrame {
         private final JButton add;
         private final JButton cancel;
         private final JTextField itemEntry;
-        private final GridBagConstraints gbc = new GridBagConstraints();
-        private JLabel status;
+        private final JLabel status;
 
         //constructor
         protected AddItem(){
@@ -1211,13 +1157,14 @@ public class ClientGUI extends JFrame {
             prepareKeyListeners();
             //add components
             this.setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
-            this.add(status,gbc);
+            this.add(status, gbc);
             gbc.gridy = 1;
-            this.add(addHere,gbc);
+            this.add(addHere, gbc);
             gbc.gridy = 2;
-            this.add(itemEntry,gbc);
+            this.add(itemEntry, gbc);
         }
         private void error(String error){
             this.status.setForeground(Color.RED);
@@ -1248,60 +1195,52 @@ public class ClientGUI extends JFrame {
         }
 
         private void prepareButtonHandlers() {
-            add.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("Add item");
-                    if(client != null){
-                        if(client.networkaccess.testConnection()){
-                            User usr = new User();
-                            usr.setEntry(itemEntry.getText());
-                            System.out.println(usr.getEntry());
-                            String result = client.addItem(usr);
-                            System.out.println(usr);
-                            if(result.equals("success")){
-                            updateData(new Interaction());
-                            }
-                            else {
-                                error(result);
-                            }
+            add.addActionListener(e -> {
+                System.out.println("Add item");
+                if(client != null){
+                    if(client.networkaccess.testConnection()){
+                        User usr = new User();
+                        usr.setEntry(itemEntry.getText());
+                        System.out.println(usr.getEntry());
+                        String result = client.addItem(usr);
+                        System.out.println(usr);
+                        if(result.equals("success")){
+                        updateData(new Interaction());
                         }
                         else {
-                            updateData(new Connect(true));
+                            error(result);
                         }
                     }
-                    else{
+                    else {
                         updateData(new Connect(true));
                     }
                 }
+                else{
+                    updateData(new Connect(true));
+                }
             });
-            cancel.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("Cancel");
-                    if(client != null){
-                        if(client.networkaccess.testConnection()){
-                            updateData(new Interaction());
-                        }
-                        else {
-                            updateData(new Connect(true));
-                        }
+            cancel.addActionListener(e -> {
+                System.out.println("Cancel");
+                if(client != null){
+                    if(client.networkaccess.testConnection()){
+                        updateData(new Interaction());
                     }
-                    else{
+                    else {
                         updateData(new Connect(true));
                     }
+                }
+                else{
+                    updateData(new Connect(true));
                 }
             });
             updateControl(cancel,add);
         }
     }
     private class RemoveItem extends displayPanel{
-        private JLabel removeHere;
-        private JTextField itemToRemove;
-        private JButton remove;
-        private JButton cancel;
-        private GridBagConstraints gbc = new GridBagConstraints();
-        private JLabel status;
+        private final JTextField itemToRemove;
+        private final JButton remove;
+        private final JButton cancel;
+        private final JLabel status;
         //Constructor
         protected RemoveItem(){
             this.setPanelName("Remove an Item");
@@ -1309,7 +1248,7 @@ public class ClientGUI extends JFrame {
             windowTitle.setText(this.getLabel());
             usr.setWishList(client.getWishList(usr));
             //prepare components
-            removeHere = new JLabel("Enter the number of the item on the list you would like to remove");
+            JLabel removeHere = new JLabel("Enter the number of the item on the list you would like to remove");
             removeHere.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             status = new JLabel("Status will be displayed here");
             status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
@@ -1319,13 +1258,14 @@ public class ClientGUI extends JFrame {
             cancel = new JButton("Cancel");
             prepareButtonHandlers();
             prepareKeyListeners();
+            GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridy = 0;
             gbc.gridx = 0;
-            this.add(status,gbc);
+            this.add(status, gbc);
             gbc.gridy = 1;
-            this.add(removeHere,gbc);
+            this.add(removeHere, gbc);
             gbc.gridy = 2;
-            this.add(itemToRemove,gbc);
+            this.add(itemToRemove, gbc);
         }
         private void error(String error){
             this.status.setForeground(Color.RED);
@@ -1355,80 +1295,72 @@ public class ClientGUI extends JFrame {
         }
 
         private void prepareButtonHandlers() {
-            remove.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("Remove Item");
-                    if(client != null){
-                        if(client.networkaccess.testConnection()){
-                            try{
-                                User usr = new User();
-                                int index =  Integer.parseInt(itemToRemove.getText()) - 1;
-                                System.out.println("index of item to be removed: " + (index));
-                                System.out.println("Item to be removed: " + index);
-                                String entry = "" + index;
-                                usr.setEntry(entry);
-                                System.out.println("Entry in usr: " + usr.getEntry());
-                                String result = client.removeItem(usr);
-                                if(result.equals("success")){
-                                    updateData(new Interaction());
-                                }
-                                else {
-                                    System.out.println(result);
-                                }
+            remove.addActionListener(e -> {
+                System.out.println("Remove Item");
+                if(client != null){
+                    if(client.networkaccess.testConnection()){
+                        try{
+                            User usr = new User();
+                            int index =  Integer.parseInt(itemToRemove.getText()) - 1;
+                            System.out.println("index of item to be removed: " + (index));
+                            System.out.println("Item to be removed: " + index);
+                            String entry = "" + index;
+                            usr.setEntry(entry);
+                            System.out.println("Entry in usr: " + usr.getEntry());
+                            String result = client.removeItem(usr);
+                            if(result.equals("success")){
+                                updateData(new Interaction());
                             }
-                            catch(IndexOutOfBoundsException ex){
+                            else {
+                                System.out.println(result);
+                            }
+                        }
+                        catch(IndexOutOfBoundsException ex){
 //                                ex.printStackTrace();
-                                error("You must enter the number of an item on your list");
-                            }
-                            catch(NumberFormatException ex){
-                                error("you must enter a number ex: 1");
-                            }
-
-
-
+                            error("You must enter the number of an item on your list");
                         }
-                        else {
-                            updateData(new Connect(true));
+                        catch(NumberFormatException ex){
+                            error("you must enter a number ex: 1");
                         }
+
+
+
                     }
-                    else{
+                    else {
                         updateData(new Connect(true));
                     }
                 }
+                else{
+                    updateData(new Connect(true));
+                }
             });
-            cancel.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("Cancel");
-                    if(client != null){
-                        if(client.networkaccess.testConnection()){
-                            updateData(new Interaction());
-                        }
-                        else {
-                            updateData(new Connect(true));
-                        }
+            cancel.addActionListener(e -> {
+                System.out.println("Cancel");
+                if(client != null){
+                    if(client.networkaccess.testConnection()){
+                        updateData(new Interaction());
                     }
-                    else{
+                    else {
                         updateData(new Connect(true));
                     }
+                }
+                else{
+                    updateData(new Connect(true));
                 }
             });
             updateControl(cancel,remove);
         }
     }
     private class ClearWishList extends displayPanel{
-        private JLabel message;
-        private JButton confirm;
-        private JButton cancel;
-        private GridBagConstraints gbc = new GridBagConstraints();
+        private final JButton confirm;
+        private final JButton cancel;
 
         //constructor
         public ClearWishList(){
             this.setPanelName("Clear Wish List");
             windowTitle.setText(this.getLabel());
             this.setLayout(new GridBagLayout());
-            message = new JLabel("Are you sure you want to clear your wish list?");
+            JLabel message = new JLabel("Are you sure you want to clear your wish list?");
             message.setFont(new Font("TimesRoman", Font.PLAIN, 20));
             message.setForeground(Color.RED);
             confirm = new JButton("Yes");
@@ -1436,76 +1368,60 @@ public class ClientGUI extends JFrame {
             cancel = new JButton("No");
             cancel.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             prepareButtonHandlers();
+            GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
             gbc.gridwidth = 2;
-            this.add(message,gbc);
+            this.add(message, gbc);
             updateControl(cancel,confirm);
-//            gbc.gridwidth = 1;
-//            gbc.gridy = 1;
-//            this.add(cancel,gbc);
-//            gbc.gridx = 1;
-//            this.add(confirm,gbc);
-////            control = new ControlArea();
-//            this.setVisible(true);
 
         }
 
         private void prepareButtonHandlers() {
-            confirm.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    System.out.println("Clear list");
-                    if(client != null){
-                        if(client.networkaccess.testConnection()){
-                            String result = client.clearWishList();
-                            if(result.equals("success")) {
-                                updateData(new Interaction());
-                                client.unconfirmWishList();
-                            }
-                            else {
-                                System.out.println(result);
-                            }
+            confirm.addActionListener(actionEvent -> {
+                System.out.println("Clear list");
+                if(client != null){
+                    if(client.networkaccess.testConnection()){
+                        String result = client.clearWishList();
+                        if(result.equals("success")) {
+                            updateData(new Interaction());
+                            client.unconfirmWishList();
                         }
                         else {
-                            updateData(new Connect(true));
+                            System.out.println(result);
                         }
                     }
-                    else{
+                    else {
                         updateData(new Connect(true));
                     }
                 }
+                else{
+                    updateData(new Connect(true));
+                }
             });
-            cancel.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    System.out.println("Cancel");
-                    if(client != null){
-                        if(client.networkaccess.testConnection()){
-                            updateData(new Interaction());
-                        }
-                        else {
-                            updateData(new Connect(true));
-                        }
+            cancel.addActionListener(actionEvent -> {
+                System.out.println("Cancel");
+                if(client != null){
+                    if(client.networkaccess.testConnection()){
+                        updateData(new Interaction());
                     }
-                    else{
+                    else {
                         updateData(new Connect(true));
                     }
+                }
+                else{
+                    updateData(new Connect(true));
                 }
             });
         }
     }
     private class AccountSettings extends displayPanel{
-        private JLabel password;
-        private JLabel email;
-        private JLabel name;
-        private JTextField passText;
-        private JTextField emailText;
-        private JTextField nameText;
-        private JButton cancel;
-        private JButton apply;
-        private JLabel status;
-        private GridBagConstraints gbc = new GridBagConstraints();
+        private final JTextField passText;
+        private final JTextField emailText;
+        private final JTextField nameText;
+        private final JButton cancel;
+        private final JButton apply;
+        private final JLabel status;
 
         //constructor
         protected AccountSettings(){
@@ -1514,11 +1430,11 @@ public class ClientGUI extends JFrame {
             windowTitle.setText(this.getLabel());
             this.setLayout(new GridBagLayout());
             //prepare components
-            password = new JLabel("Password");
+            JLabel password = new JLabel("Password");
             password.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-            email = new JLabel("Email");
+            JLabel email = new JLabel("Email");
             email.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-            name = new JLabel("Your name");
+            JLabel name = new JLabel("Your name");
             name.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             passText = new JTextField(usr.getPassword(), 25);
             emailText = new JTextField(usr.getEmail(), 25);
@@ -1532,25 +1448,26 @@ public class ClientGUI extends JFrame {
             prepareButtonHandlers();
             prepareKeyListeners();
             //add components to frame
+            GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
             gbc.gridwidth = 2;
             this.add(status, gbc);
             gbc.gridwidth = 1;
             gbc.gridy = 1;
-            this.add(password,gbc);
+            this.add(password, gbc);
             gbc.gridx = 1;
-            this.add(passText,gbc);
+            this.add(passText, gbc);
             gbc.gridx = 0;
             gbc.gridy = 2;
-            this.add(email,gbc);
+            this.add(email, gbc);
             gbc.gridx = 1;
-            this.add(emailText,gbc);
+            this.add(emailText, gbc);
             gbc.gridx = 0;
             gbc.gridy = 3;
-            this.add(name,gbc);
+            this.add(name, gbc);
             gbc.gridx = 1;
-            this.add(nameText,gbc);
+            this.add(nameText, gbc);
         }
 
         //method to add key listeners
@@ -1620,104 +1537,50 @@ public class ClientGUI extends JFrame {
         }
 
         private void prepareButtonHandlers() {
-            cancel.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("Cancel");
-                    if(client != null){
-                        if(client.networkaccess.testConnection()){
-                            updateData(new Interaction());
-                        }
-                        else {
-                            updateData(new Connect(true));
-                        }
+            cancel.addActionListener(e -> {
+                System.out.println("Cancel");
+                if(client != null){
+                    if(client.networkaccess.testConnection()){
+                        updateData(new Interaction());
                     }
-                    else{
+                    else {
                         updateData(new Connect(true));
                     }
-
                 }
+                else{
+                    updateData(new Connect(true));
+                }
+
             });
-            apply.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("Apply");
-                    if(client != null){
-                        if(client.networkaccess.testConnection()){
-                            User usr = new User();
-                            usr.setPassword(passText.getText());
-                            usr.setEmail(emailText.getText());
-                            usr.setName(nameText.getText());
-                            String result = client.updateSettings(usr);
-                            if(result.equals("success")) {
-                                status.setText("Account Updated");
-                                status.setVisible(true);
-                            }
-                            else{
-                                status.setText(result);
-                                status.setForeground(Color.red);
-                                status.setVisible(true);
-                            }
+            apply.addActionListener(e -> {
+                System.out.println("Apply");
+                if(client != null){
+                    if(client.networkaccess.testConnection()){
+                        User usr = new User();
+                        usr.setPassword(passText.getText());
+                        usr.setEmail(emailText.getText());
+                        usr.setName(nameText.getText());
+                        String result = client.updateSettings(usr);
+                        if(result.equals("success")) {
+                            status.setText("Account Updated");
                         }
-                        else {
-                            updateData(new Connect(true));
+                        else{
+                            status.setText(result);
+                            status.setForeground(Color.red);
                         }
+                        status.setVisible(true);
                     }
-                    else{
+                    else {
                         updateData(new Connect(true));
                     }
+                }
+                else{
+                    updateData(new Connect(true));
                 }
             });
             updateControl(cancel,apply);
         }
     }
-//    private class ControlArea extends JPanel{
-//        private JButton left;
-//        private JButton right;
-//        private JButton center;
-//        protected ControlArea(){
-//            setLayout(new BorderLayout(5, 10));
-//        }
-//        protected void setLeft(JButton newLeft){
-//            if(this.left != null) {
-//                this.remove(left);
-//            }
-//            this.left = newLeft;
-//            this.add(newLeft, BorderLayout.WEST);
-//            this.repaint();
-//        }
-//        protected void setRight(JButton newRight){
-//            if(this.right != null){
-//                this.remove(right);
-//            }
-//            this.right = newRight;
-//            this.add(newRight,BorderLayout.EAST);
-//            this.repaint();
-//        }
-//        protected void setCenter(JButton newCenter){
-//            if(this.center != null){
-//                this.remove(center);
-//            }
-//            this.center = newCenter;
-//            this.add(newCenter,BorderLayout.CENTER);
-//            this.repaint();
-//        }
-//        protected void delButton(int i){
-//            if(i == 0){
-//                this.remove(left);
-//            }
-//            else if(i == 1){
-//                this.remove(center);
-//            }
-//            else{
-//                this.remove(right);
-//            }
-//        }
-//
-//        public void setCenter(JPanel center) {
-//            this.add(center, BorderLayout.CENTER);
-//        }
-//    }
 
     //method to shut off client properly
     private void shutDown(){
@@ -1743,6 +1606,6 @@ public class ClientGUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        ClientGUI client = new ClientGUI();
+        new ClientGUI();
     }
 }
