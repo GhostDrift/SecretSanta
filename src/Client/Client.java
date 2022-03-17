@@ -33,10 +33,6 @@ public class Client {
      */
     final NetworkAccess networkaccess;
 
-    public NetworkAccess getNetworkAccess() {
-        return networkaccess;
-    }
-
     /**
      * Creates a peer-to-peer connection to the server
      *
@@ -63,8 +59,7 @@ public class Client {
         usr.setUsername(username);
         usr.setPassword(password);
         Message msg = new Message(usr,"login");
-        Message result = networkaccess.sendMessage(msg,true);
-        return result;
+        return networkaccess.sendMessage(msg,true);
 
     }
     //sends log out message to server
@@ -116,28 +111,12 @@ public class Client {
     public String addItem(User usr){
         Message msg = new Message(usr,"add");
         return networkaccess.sendMessage(msg,true).message;
-//        usr.setEntry(entry);
-//        System.out.println("Client: " + usr.getEntry());
-//        Message msg = new Message(usr,"add");
-//        System.out.println("client sent " + msg);
-//        msg = networkaccess.sendMessage(msg,true);
-//        usr.setEntry("");
-//        System.out.println(msg.message);
-//        return msg.message;
     }
     //method to remove an item from a wish list
     public String removeItem(User usr){
         System.out.println("index of item to be removed from the wish list: " + usr.getEntry());
         Message msg = new Message(usr,"remove");
         return networkaccess.sendMessage(msg,true).message;
-//        User user = new User();
-//        user.setUsername(usr.getUsername());
-//        user.setEntry(usr.getEntry());
-//        System.out.println(entry);
-//        Message msg = new Message(user,"remove");
-//        msg = networkaccess.sendMessage(msg,true);
-//        System.out.println(msg.message);
-//        return msg.message;
     }
     //method to clear a users wish list
     public String clearWishList(){
@@ -148,12 +127,7 @@ public class Client {
     public boolean getWishListConformation(){
         Message msg = new Message(null,"confirmed?");
         msg = networkaccess.sendMessage(msg,true);
-        if(msg.message.equals("true")){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return msg.message.equals("true");
     }
     //method to confirm a user's wish list
     public boolean confirmWishList(){
