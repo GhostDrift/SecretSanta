@@ -1566,6 +1566,9 @@ public class ClientGUI extends JFrame {
                     if(keyEvent.getKeyCode() == 10){
                         apply.doClick();
                     }
+                    else{
+                        status.setVisible(false);
+                    }
                 }
 
                 @Override
@@ -1582,6 +1585,9 @@ public class ClientGUI extends JFrame {
                 public void keyPressed(KeyEvent keyEvent) {
                     if(keyEvent.getKeyCode() == 10){
                         apply.doClick();
+                    }
+                    else{
+                        status.setVisible(false);
                     }
                 }
 
@@ -1600,6 +1606,9 @@ public class ClientGUI extends JFrame {
                 public void keyPressed(KeyEvent keyEvent) {
                     if(keyEvent.getKeyCode() == 10){
                         apply.doClick();
+                    }
+                    else{
+                        status.setVisible(false);
                     }
                 }
 
