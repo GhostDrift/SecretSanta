@@ -329,6 +329,8 @@ public class Server extends Thread {
     //method to reset the recipient ID's
     protected void resetRecipientIDS(){
 	    getUserDatabase().clearRecipientIDS();
+	    //notifies the users that names have been cleared
+	    new DrawNames(getUserDatabase());
     }
 
 }

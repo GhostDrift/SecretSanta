@@ -14,6 +14,7 @@ public class DrawNames extends Thread{
     private ServerGUI.FieldPanel textArea;
     private boolean go;
     private JButton button;
+    private boolean cleared;
 
     //constructor
     public DrawNames(UserDatabase usrdb, WishListDatabase wldb, ServerGUI.FieldPanel textArea, JButton button){
@@ -23,17 +24,49 @@ public class DrawNames extends Thread{
         this.go = true;
         this.button = button;
         this.button.setEnabled(false);
+        this.cleared = false;
+        textArea.addToTextArea("Drawing Names.....");
+        this.start();
+    }
+    //constructor that sends the names reset email out to users
+    public DrawNames(UserDatabase usrdb){
+        this.cleared = true;
+        this.usrdb = usrdb;
+        this.go = true;
         this.start();
     }
     //run method
     public void run(){
-        System.out.println("Drawing Names");
-        textArea.addToTextArea("Drawing Names.....");
-        while(go){
-            this.drawNames();
+        if(cleared){
+            System.out.println("Names have been cleared");
+            while(go){
+                this.clearNotificaion();
+            }
         }
-        this.button.setEnabled(true);
-        this.button.setText("Clear Names");
+        else{
+            System.out.println("Drawing Names");
+            while(go){
+                this.drawNames();
+            }
+            this.button.setEnabled(true);
+            this.button.setText("Clear Names");
+        }
+    }
+
+    private void clearNotificaion() {
+        ArrayList<Integer> ids = usrdb.getIds();
+        if(ids.size() >= 2) {
+            try {
+                User usr;
+                for (int i = 0; i < ids.size(); i++) {
+                    usr = usrdb.getUserById(ids.get(i));
+                    Utilities.namesClearedNotification(usr);
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        this.go = false;
     }
 
     //Method to draw names and assign them to the users
