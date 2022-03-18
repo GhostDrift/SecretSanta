@@ -58,46 +58,51 @@ class Connections implements Serializable {
     }
 
     //////////// Getters and Setters ////////////
-    protected static ArrayList<String> getNames() throws ConnectionsNotInilizedException {
+    protected static ArrayList<String> getNames() throws Connections.ConnectionsNotInitialized {
         if(connections == null){
-            throw new ConnectionsNotInilizedException();
+            throw new Connections.ConnectionsNotInitialized();
         }
         return names;
     }
-    protected static void setNames(ArrayList<String> newNames) throws ConnectionsNotInilizedException {
+    protected static void setNames(ArrayList<String> newNames) throws Connections.ConnectionsNotInitialized {
         if(connections == null){
-            throw new ConnectionsNotInilizedException();
+            throw new Connections.ConnectionsNotInitialized();
         }
         names = newNames;
     }
-    protected static ArrayList<String> getIps() throws ConnectionsNotInilizedException {
+    protected static ArrayList<String> getIps() throws Connections.ConnectionsNotInitialized {
         if(connections == null){
-            throw new ConnectionsNotInilizedException();
+            throw new Connections.ConnectionsNotInitialized();
         }
         return ips;
     }
-    protected static void setIps(ArrayList<String> newIps) throws ConnectionsNotInilizedException {
+    protected static void setIps(ArrayList<String> newIps) throws Connections.ConnectionsNotInitialized {
         if(connections == null){
-            throw new ConnectionsNotInilizedException();
+            throw new Connections.ConnectionsNotInitialized();
         }
         ips = newIps;
     }
-    protected static ArrayList<Integer> getPorts() throws ConnectionsNotInilizedException {
+    protected static ArrayList<Integer> getPorts() throws Connections.ConnectionsNotInitialized {
         if(connections == null){
-            throw new ConnectionsNotInilizedException();
+            throw new Connections.ConnectionsNotInitialized();
         }
         return ports;
     }
-    protected static void setPorts(ArrayList<Integer> newPorts) throws ConnectionsNotInilizedException {
+    protected static void setPorts(ArrayList<Integer> newPorts) throws Connections.ConnectionsNotInitialized {
         if(connections == null){
-            throw new ConnectionsNotInilizedException();
+            throw new Connections.ConnectionsNotInitialized();
         }
         ports = newPorts;
     }
 
-    private static class ConnectionsNotInilizedException extends Throwable {
-        public ConnectionsNotInilizedException(){
+    private static class ConnectionsNotInitialized extends Throwable {
+        public ConnectionsNotInitialized(){
             super("Connections Has not been initialized");
         }
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

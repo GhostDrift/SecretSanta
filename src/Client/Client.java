@@ -40,6 +40,7 @@ public class Client {
      * @param port: the port on which the server is listening
      */
     public Client(String ip, int port) throws ConnectException {
+        new Connections();
         networkaccess = new NetworkAccess(ip, port);
     }
 
