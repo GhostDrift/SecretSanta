@@ -302,6 +302,9 @@ public class ClientGUI extends JFrame {
 //        private final JButton Adv;
 //        private final JLabel Portn;
 //        private final JTextField portnum;
+        private final ArrayList<String> ips;
+        private final ArrayList<Integer> ports;
+        private final ArrayList<String> names;
         private final JButton connect;
         private final JButton newConnection;
         private boolean t = false;
@@ -318,16 +321,30 @@ public class ClientGUI extends JFrame {
             title.setFont(timesRoman);
             JLabel i = new JLabel("HostName");
             i.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-            ArrayList<String> names;
+            ArrayList<String> tempips;
             try {
-                names =  Connections.getNames();
+                tempips = Connections.getIps();
             } catch (Connections.ConnectionsNotInitialized e) {
-                names = new ArrayList<String>();
+                tempips = new ArrayList<>();
+                e.printStackTrace();
             }
-            if(names.size() == 0){
-                names.add("No saved connections");
-                names.add("Local host");
+            ips = tempips;
+            ArrayList<Integer> tempPorts;
+            try{
+                tempPorts = Connections.getPorts();
+            } catch (Connections.ConnectionsNotInitialized connectionsNotInitialized) {
+                tempPorts = new ArrayList<>();
+                connectionsNotInitialized.printStackTrace();
             }
+            ports = tempPorts;
+            ArrayList<String> tempNames;
+            try {
+                tempNames =  Connections.getNames();
+            } catch (Connections.ConnectionsNotInitialized e) {
+                tempNames = new ArrayList<String>();
+            }
+            names = tempNames;
+            names.add(0,"Local host               ");
             connectionList = new JComboBox(names.toArray());
             connectionList.setBounds(50,50,90,20);
 //            IP = new JTextField("", 25);
@@ -375,7 +392,7 @@ public class ClientGUI extends JFrame {
             gbc.gridwidth = 2;
 //            this.add(errorMessage, gbc);
             this.errorMessage.setVisible(false);
-            PrepareButtons();
+            PrepareActionListeners();
             prepareKeyListener();
             if(error){
                 cannotConnect();
@@ -395,7 +412,7 @@ public class ClientGUI extends JFrame {
             this.repaint();
         }
 
-        public void PrepareButtons() {
+        public void PrepareActionListeners() {
 
 
 //            Adv.addActionListener(e -> {
@@ -452,6 +469,12 @@ public class ClientGUI extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     System.out.println("Open new connections");
+                }
+            });
+            connectionList.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+
                 }
             });
 
