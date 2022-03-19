@@ -307,6 +307,7 @@ public class ClientGUI extends JFrame {
         private final ArrayList<String> names;
         private final JButton connect;
         private final JButton newConnection;
+        private final JButton edit;
         private boolean t = false;
         private final JLabel errorMessage;
         private final JComboBox connectionList;
@@ -314,7 +315,7 @@ public class ClientGUI extends JFrame {
         savedConnections(Boolean error) {
             setLayout(new GridBagLayout());
 //            setLayout(new BorderLayout(0,0));
-            this.setPanelName("Connect");
+            this.setPanelName("Saved Connections");
             this.setSpaces("                                                                                                              ");
             windowTitle.setText(this.getLabel());
             JLabel title = new JLabel("Saved Connections");
@@ -359,23 +360,32 @@ public class ClientGUI extends JFrame {
             this.errorMessage = new JLabel("Server is unreachable");
             this.errorMessage.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             this.errorMessage.setForeground(Color.RED);
+            this.edit = new JButton("Edit connection");
+            JLabel space = new JLabel("      ");
 
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
-            gbc.ipadx = 10;
-            gbc.ipady = 10;
+            gbc.ipadx = 5;
+            gbc.ipady = 5;
             gbc.fill = GridBagConstraints.NONE;
             gbc.gridwidth = 2;
             this.add(errorMessage,gbc);
             gbc.gridy = 1;
-            this.add(title, gbc);
+            this.add(space, gbc);
             gbc.gridy = 2;
+            this.add(title, gbc);
+            gbc.gridy = 3;
             gbc.gridwidth = 1;
             this.add(i, gbc);
             gbc.gridx = 1;
             this.add(connectionList,gbc);
-            gbc.gridy = 1;
+            gbc.gridy = 4;
+            gbc.gridx = 0;
+            gbc.gridwidth = 2;
+            this.add(space,gbc);
+            gbc.gridy = 5;
+            this.add(edit,gbc);
 //            this.add(IP, gbc);
             gbc.gridx = 0;
             gbc.gridy = 2;
@@ -485,8 +495,15 @@ public class ClientGUI extends JFrame {
                         }
                 }
             });
+            edit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    System.out.println("Edit connection window");
+                }
+            });
 
 //            updateControl(Adv,connect);
+            //updateControl(newConnection,edit, connect);
             updateControl(newConnection,connect);
 
         }
