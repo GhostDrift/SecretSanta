@@ -297,8 +297,8 @@ public class ClientGUI extends JFrame {
     }
     private class savedConnections extends displayPanel{
 //        private final JTextField IP;
-        private final String IP = "";
-        private final int port = 8000;
+        private String IP = "";
+        private int port = 8000;
 //        private final JButton Adv;
 //        private final JLabel Portn;
 //        private final JTextField portnum;
@@ -474,7 +474,15 @@ public class ClientGUI extends JFrame {
             connectionList.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-
+                        int index = connectionList.getSelectedIndex();
+                        if(index == 0){
+                            IP = "";
+                            port = 800;
+                        }
+                        else{
+                            IP = ips.get(index);
+                            port = ports.get(index);
+                        }
                 }
             });
 
