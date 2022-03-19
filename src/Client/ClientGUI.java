@@ -324,11 +324,12 @@ public class ClientGUI extends JFrame {
             } catch (Connections.ConnectionsNotInitialized e) {
                 names = new ArrayList<String>();
             }
-//            if(names.equals(null)){
-//                names = new ArrayList<>();
-//            }
-            names.add(0,"");
+            if(names.size() == 0){
+                names.add("No saved connections");
+                names.add("Local host");
+            }
             connectionList = new JComboBox(names.toArray());
+            connectionList.setBounds(50,50,90,20);
 //            IP = new JTextField("", 25);
 
 //            Portn = new JLabel("Port Number");
@@ -351,9 +352,12 @@ public class ClientGUI extends JFrame {
             gbc.gridwidth = 2;
             this.add(errorMessage,gbc);
             gbc.gridy = 1;
+            this.add(title, gbc);
+            gbc.gridy = 2;
             gbc.gridwidth = 1;
             this.add(i, gbc);
             gbc.gridx = 1;
+            this.add(connectionList,gbc);
             gbc.gridy = 1;
 //            this.add(IP, gbc);
             gbc.gridx = 0;
