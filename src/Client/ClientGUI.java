@@ -8,6 +8,8 @@ import Common.displayPanel;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -21,10 +23,14 @@ public class ClientGUI extends JFrame {
     private final Label windowTitle;
     private ControlArea control;
     private User usr;
+    private Font timesRoman = new Font("TimesRoman", Font.PLAIN, 15);
 //    Client.ConnectGUI.BottomPanel Bot;
 
     //main method
     public ClientGUI(){
+        //initialize the connection list
+        Connections.initialize();
+//        Connections.printConnections();
         //set's the title of the application
         setTitle("Secret Santa Management System");
         //set the size of the window
@@ -46,7 +52,7 @@ public class ClientGUI extends JFrame {
         //create control pannel area
         control = new ControlArea();
         //set the data panel to display the connect panel.
-        Data = new ClientGUI.Connect(false);
+        Data = new ClientGUI.savedConnections(false);
 
 //          x.setLayout(new BoxLayout(x,BoxLayout.Y_AXIS));
         //set the title pannel to display the Connect text
@@ -133,8 +139,8 @@ public class ClientGUI extends JFrame {
             System.out.println("Label new text: " + newText);
         }
     }
-private class Connect extends displayPanel {
-    private final JTextField IP;
+    private class Connect extends displayPanel {
+        private final JTextField IP;
         private final JButton Adv;
         private final JLabel Portn;
         private final JTextField portnum;
@@ -287,6 +293,188 @@ private class Connect extends displayPanel {
 
                 }
             });
+        }
+    }
+    private class savedConnections extends displayPanel{
+//        private final JTextField IP;
+        private final String IP = "";
+        private final int port = 8000;
+//        private final JButton Adv;
+//        private final JLabel Portn;
+//        private final JTextField portnum;
+        private final JButton connect;
+        private final JButton newConnection;
+        private boolean t = false;
+        private final JLabel errorMessage;
+        private final JComboBox connectionList;
+
+        savedConnections(Boolean error) {
+            setLayout(new GridBagLayout());
+//            setLayout(new BorderLayout(0,0));
+            this.setPanelName("Connect");
+            this.setSpaces("                                                                                                              ");
+            windowTitle.setText(this.getLabel());
+            JLabel title = new JLabel("Saved Connections");
+            title.setFont(timesRoman);
+            JLabel i = new JLabel("HostName");
+            i.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            ArrayList<String> names;
+            try {
+                names =  Connections.getNames();
+            } catch (Connections.ConnectionsNotInitialized e) {
+                names = new ArrayList<String>();
+            }
+//            if(names.equals(null)){
+//                names = new ArrayList<>();
+//            }
+            names.add(0,"");
+            connectionList = new JComboBox(names.toArray());
+//            IP = new JTextField("", 25);
+
+//            Portn = new JLabel("Port Number");
+//            Portn.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+//            portnum = new JTextField("8000", 25);
+
+//            Adv = new JButton("Advanced...");
+            connect = new JButton("Connect");
+            newConnection = new JButton("New connection");
+            this.errorMessage = new JLabel("Server is unreachable");
+            this.errorMessage.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            this.errorMessage.setForeground(Color.RED);
+
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.ipadx = 10;
+            gbc.ipady = 10;
+            gbc.fill = GridBagConstraints.NONE;
+            gbc.gridwidth = 2;
+            this.add(errorMessage,gbc);
+            gbc.gridy = 1;
+            gbc.gridwidth = 1;
+            this.add(i, gbc);
+            gbc.gridx = 1;
+            gbc.gridy = 1;
+//            this.add(IP, gbc);
+            gbc.gridx = 0;
+            gbc.gridy = 2;
+//            Portn.setVisible(t);
+//            this.add(Portn, gbc);
+            gbc.gridx = 1;
+            gbc.gridy = 2;
+//            gbc.fill = GridBagConstraints.HORIZONTAL;
+//            portnum.setVisible(false);
+//            this.add(portnum, gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy = 2;
+            gbc.gridwidth = 2;
+//            this.add(errorMessage, gbc);
+            this.errorMessage.setVisible(false);
+            PrepareButtons();
+            prepareKeyListener();
+            if(error){
+                cannotConnect();
+            }
+            client = null;
+
+        }
+
+        protected void cannotConnect(){
+            this.errorMessage.setText("Server is unreachable");
+            this.errorMessage.setVisible(true);
+            this.repaint();
+        }
+        protected void invalidIP(){
+            cannotConnect();
+            this.errorMessage.setText("Invalid IP Address");
+            this.repaint();
+        }
+
+        public void PrepareButtons() {
+
+
+//            Adv.addActionListener(e -> {
+//                if (!t)
+//                {
+////                    portnum.setText("8000");
+//                }
+//                t = !t;
+////                Portn.setVisible(t);
+////                portnum.setVisible(t);
+//
+//            });
+            connect.addActionListener(e -> {
+                if (client == null) {
+                    try {
+                        String ipformat = "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$";
+                        Pattern ippattern = Pattern.compile(ipformat);
+                        String portformat = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
+                        Pattern portpattern = Pattern.compile(portformat);
+                        String host;
+                        //checks to see if host box is empty
+                        if(!IP.equals("")) {
+                            host = IP;
+                        }
+                        else{
+                            host = "127.0.0.1";
+                        }
+//                        int port = Integer.parseInt(portnum.getText());
+                        System.out.println(host);
+                        System.out.println(port);
+                        Matcher matcher = ippattern.matcher(host);
+                        if (matcher.find()) {
+//                            matcher = portpattern.matcher(portnum.getText());
+                            matcher = portpattern.matcher(port + "");
+                            if (matcher.find()) {
+                                client = new Client(host, port);
+                                updateData(new Login());
+//                                    Log = new LoginGUI();
+                            }
+                        }
+                        else
+                        {
+                            System.out.println("Invalid IP address");
+                            invalidIP();
+                        }
+
+                    } catch (Exception m) {
+                        m.printStackTrace();
+                        cannotConnect();
+                    }
+                }
+            });
+            newConnection.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    System.out.println("Open new connections");
+                }
+            });
+
+//            updateControl(Adv,connect);
+            updateControl(newConnection,connect);
+
+        }
+        private void prepareKeyListener(){
+//            this.IP.addKeyListener(new KeyListener() {
+//                @Override
+//                public void keyTyped(KeyEvent keyEvent) {
+//
+//                }
+//
+//                @Override
+//                public void keyPressed(KeyEvent keyEvent) {
+//                    System.out.println(keyEvent.getKeyCode());
+//                    if(keyEvent.getKeyCode() == 10){
+//                        connect.doClick();
+//                    }
+//                }
+//
+//                @Override
+//                public void keyReleased(KeyEvent keyEvent) {
+//
+//                }
+//            });
         }
     }
     private class Login extends displayPanel{
@@ -1584,7 +1772,7 @@ private class Connect extends displayPanel {
 
     //method to shut off client properly
     private void shutDown(){
-        if(Data instanceof Connect){
+        if(Data instanceof Connect || Data instanceof savedConnections){
             System.out.println("connect window");
 //            System.exit(0);
         }
