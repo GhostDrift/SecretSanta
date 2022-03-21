@@ -302,9 +302,9 @@ public class ClientGUI extends JFrame {
 //        private final JButton Adv;
 //        private final JLabel Portn;
 //        private final JTextField portnum;
-        private final ArrayList<String> ips;
-        private final ArrayList<Integer> ports;
-        private final ArrayList<String> names;
+        private  ArrayList<String> ips = new ArrayList<>();
+        private  ArrayList<Integer> ports  = new ArrayList<>();
+        private  ArrayList<String> names = new ArrayList<>();
         private final JButton connect;
         private final JButton newConnection;
         private final JButton edit;
@@ -315,7 +315,7 @@ public class ClientGUI extends JFrame {
         savedConnections(Boolean error) {
             setLayout(new GridBagLayout());
 //            setLayout(new BorderLayout(0,0));
-            this.setPanelName("Saved Connections");
+            this.setPanelName("Connect");
             this.setSpaces("                                                                                                              ");
             windowTitle.setText(this.getLabel());
             JLabel title = new JLabel("Saved Connections");
@@ -345,7 +345,14 @@ public class ClientGUI extends JFrame {
                 tempNames = new ArrayList<String>();
             }
             names = tempNames;
-            names.add(0,"Local host               ");
+//            loadConnections(names,ports,ips);
+//            System.out.println(names.size());
+            if(names.size() == 0){
+                names.add(0,"Local host               ");
+                ips.add("");
+                ports.add(8000);
+                saveConnections(names, ports, ips);
+            }
             connectionList = new JComboBox(names.toArray());
             connectionList.setBounds(50,50,90,20);
 //            IP = new JTextField("", 25);
@@ -372,19 +379,21 @@ public class ClientGUI extends JFrame {
             gbc.gridwidth = 2;
             this.add(errorMessage,gbc);
             gbc.gridy = 1;
-            this.add(space, gbc);
+            this.add(Box.createVerticalStrut(20), gbc);
             gbc.gridy = 2;
             this.add(title, gbc);
             gbc.gridy = 3;
+            this.add(Box.createVerticalStrut(20),gbc);
+            gbc.gridy = 4;
             gbc.gridwidth = 1;
             this.add(i, gbc);
             gbc.gridx = 1;
             this.add(connectionList,gbc);
-            gbc.gridy = 4;
+            gbc.gridy = 5;
             gbc.gridx = 0;
             gbc.gridwidth = 2;
-            this.add(space,gbc);
-            gbc.gridy = 5;
+            this.add(Box.createVerticalStrut(25),gbc);
+            gbc.gridy = 6;
             this.add(edit,gbc);
 //            this.add(IP, gbc);
             gbc.gridx = 0;
@@ -529,6 +538,44 @@ public class ClientGUI extends JFrame {
 //            });
         }
     }
+
+    private void saveConnections(ArrayList<String> names, ArrayList<Integer> ports, ArrayList<String> ips) {
+        try {
+            Connections.setNames(names);
+            Connections.setIps(ips);
+            Connections.setPorts(ports);
+            Connections.saveConnections();
+        } catch (Connections.ConnectionsNotInitialized e) {
+            e.printStackTrace();
+        }
+
+    }
+    private void loadConnections(ArrayList<String> names, ArrayList<Integer> ports, ArrayList<String> ips){
+        ArrayList<String> tempips;
+        try {
+            tempips = Connections.getIps();
+        } catch (Connections.ConnectionsNotInitialized e) {
+            tempips = new ArrayList<>();
+            e.printStackTrace();
+        }
+        ips = tempips;
+        ArrayList<Integer> tempPorts;
+        try{
+            tempPorts = Connections.getPorts();
+        } catch (Connections.ConnectionsNotInitialized connectionsNotInitialized) {
+            tempPorts = new ArrayList<>();
+            connectionsNotInitialized.printStackTrace();
+        }
+        ports = tempPorts;
+        ArrayList<String> tempNames;
+        try {
+            tempNames =  Connections.getNames();
+        } catch (Connections.ConnectionsNotInitialized e) {
+            tempNames = new ArrayList<String>();
+        }
+        names = tempNames;
+    }
+
     private class Login extends displayPanel{
         private final JLabel username;
         private final JLabel password;
