@@ -8,10 +8,7 @@ import Common.displayPanel;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -508,6 +505,7 @@ public class ClientGUI extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     System.out.println("Edit connection window");
+                    updateData(new EditConnection(connectionList.getSelectedIndex()));
                 }
             });
 
@@ -550,32 +548,81 @@ public class ClientGUI extends JFrame {
         }
 
     }
-    private void loadConnections(ArrayList<String> names, ArrayList<Integer> ports, ArrayList<String> ips){
-        ArrayList<String> tempips;
-        try {
-            tempips = Connections.getIps();
-        } catch (Connections.ConnectionsNotInitialized e) {
-            tempips = new ArrayList<>();
-            e.printStackTrace();
-        }
-        ips = tempips;
-        ArrayList<Integer> tempPorts;
-        try{
-            tempPorts = Connections.getPorts();
-        } catch (Connections.ConnectionsNotInitialized connectionsNotInitialized) {
-            tempPorts = new ArrayList<>();
-            connectionsNotInitialized.printStackTrace();
-        }
-        ports = tempPorts;
-        ArrayList<String> tempNames;
-        try {
-            tempNames =  Connections.getNames();
-        } catch (Connections.ConnectionsNotInitialized e) {
-            tempNames = new ArrayList<String>();
-        }
-        names = tempNames;
-    }
+//    private void loadConnections(ArrayList<String> names, ArrayList<Integer> ports, ArrayList<String> ips){
+//        ArrayList<String> tempips;
+//        try {
+//            tempips = Connections.getIps();
+//        } catch (Connections.ConnectionsNotInitialized e) {
+//            tempips = new ArrayList<>();
+//            e.printStackTrace();
+//        }
+//        ips = tempips;
+//        ArrayList<Integer> tempPorts;
+//        try{
+//            tempPorts = Connections.getPorts();
+//        } catch (Connections.ConnectionsNotInitialized connectionsNotInitialized) {
+//            tempPorts = new ArrayList<>();
+//            connectionsNotInitialized.printStackTrace();
+//        }
+//        ports = tempPorts;
+//        ArrayList<String> tempNames;
+//        try {
+//            tempNames =  Connections.getNames();
+//        } catch (Connections.ConnectionsNotInitialized e) {
+//            tempNames = new ArrayList<String>();
+//        }
+//        names = tempNames;
+//    }
+    private class EditConnection extends displayPanel{
+        private ArrayList<String> names;
+        private ArrayList<String> ips;
+        private ArrayList<Integer> ports;
+        private JButton save;
+        private JButton cancel;
+        private JTextField hostText;
+        private JTextField ipText;
+        private JTextField portText;
 
+        //constructor
+        public EditConnection(int index){
+            try {
+                this.setLayout(new GridBagLayout());
+                this.setPanelName("Edit Connection");
+                this.setSpaces("                                                                                                              ");
+                windowTitle.setText(this.getLabel());
+                this.names = Connections.getNames();
+                this.ips = Connections.getIps();
+                this.ports = Connections.getPorts();
+                this.save = new JButton("Save");
+                this.cancel = new JButton("Cancel");
+                this.hostText = new JTextField(names.get(index),25);
+                this.ipText = new JTextField(ips.get(index), 25);
+                this.portText = new JTextField(ports.get(index) + "",25);
+                JLabel hostLabel = new JLabel("Host Name");
+                hostLabel.setFont(timesRoman);
+                JLabel ipLabel = new JLabel("IP");
+                ipLabel.setFont(timesRoman);
+                JLabel title = new JLabel("Edit connection");
+                title.setFont(timesRoman);
+                JLabel portLabel = new JLabel("Port");
+
+                //Add components to window
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.gridwidth = 2;
+                this.add(title,gbc);
+                gbc.gridwidth = 1;
+                gbc.gridy = 1;
+                this.add(Box.createVerticalStrut(20),gbc);
+                gbc.gridy = 2;
+                this.add(hostLabel,gbc);
+                gbc.gridx = 1;
+                this.add(hostText,gbc);
+                this.setVisible(true);
+            } catch (Connections.ConnectionsNotInitialized connectionsNotInitialized) {
+                connectionsNotInitialized.printStackTrace();
+            }
+        }
+}
     private class Login extends displayPanel{
         private final JLabel username;
         private final JLabel password;
@@ -1871,7 +1918,7 @@ public class ClientGUI extends JFrame {
 
     //method to shut off client properly
     private void shutDown(){
-        if(Data instanceof Connect || Data instanceof savedConnections){
+        if(Data instanceof Connect || Data instanceof savedConnections || Data instanceof EditConnection){
             System.out.println("connect window");
 //            System.exit(0);
         }

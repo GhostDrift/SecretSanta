@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 ////////////This class is a Singleton////////////
 //a class used to hold the information for the saved connections for the client
-class Connections implements Serializable {
+public class Connections implements Serializable {
     //variables
     private  ArrayList<String> names;
     private  ArrayList<String> ips;
@@ -16,7 +16,7 @@ class Connections implements Serializable {
     protected Connections(){
     }
     //method to initialize object
-    protected static void initialize(){
+    public static void initialize(){
         System.out.println("initializing connections");
         if(connections == null){
             System.out.println("Creating new instance of connections");
@@ -71,37 +71,37 @@ class Connections implements Serializable {
     }
 
     //////////// Getters and Setters ////////////
-    protected static ArrayList<String> getNames() throws Connections.ConnectionsNotInitialized {
+    public static ArrayList<String> getNames() throws Connections.ConnectionsNotInitialized {
         if(connections == null){
             throw new Connections.ConnectionsNotInitialized();
         }
         return connections.names;
     }
-    protected static void setNames(ArrayList<String> newNames) throws Connections.ConnectionsNotInitialized {
+    public static void setNames(ArrayList<String> newNames) throws Connections.ConnectionsNotInitialized {
         if(connections == null){
             throw new Connections.ConnectionsNotInitialized();
         }
         connections.names = newNames;
     }
-    protected static ArrayList<String> getIps() throws Connections.ConnectionsNotInitialized {
+    public static ArrayList<String> getIps() throws Connections.ConnectionsNotInitialized {
         if(connections == null){
             throw new Connections.ConnectionsNotInitialized();
         }
         return connections.ips;
     }
-    protected static void setIps(ArrayList<String> newIps) throws Connections.ConnectionsNotInitialized {
+    public static void setIps(ArrayList<String> newIps) throws Connections.ConnectionsNotInitialized {
         if(connections == null){
             throw new Connections.ConnectionsNotInitialized();
         }
         connections.ips = newIps;
     }
-    protected static ArrayList<Integer> getPorts() throws Connections.ConnectionsNotInitialized {
+    public static ArrayList<Integer> getPorts() throws Connections.ConnectionsNotInitialized {
         if(connections == null){
             throw new Connections.ConnectionsNotInitialized();
         }
         return connections.ports;
     }
-    protected static void setPorts(ArrayList<Integer> newPorts) throws Connections.ConnectionsNotInitialized {
+    public static void setPorts(ArrayList<Integer> newPorts) throws Connections.ConnectionsNotInitialized {
         if(connections == null){
             throw new Connections.ConnectionsNotInitialized();
         }
