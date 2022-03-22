@@ -510,7 +510,7 @@ public class ClientGUI extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     System.out.println("Edit connection window");
-                    updateData(new EditConnection(connectionList.getSelectedIndex()));
+                    updateData(new EditConnection(connectionList.getSelectedIndex(),0));
                 }
             });
 
@@ -588,11 +588,13 @@ public class ClientGUI extends JFrame {
         private JTextField ipText;
         private JTextField portText;
         private int index;
+        private int origin;
 
         //constructor
-        public EditConnection(int index){
+        public EditConnection(int index, int origin){
             try {
                 this.index = index;
+                this.origin = origin;
                 this.setLayout(new GridBagLayout());
                 this.setPanelName("Edit Connection");
                 this.setSpaces("                                                                                                              ");
@@ -662,7 +664,12 @@ public class ClientGUI extends JFrame {
                         Connections.setPorts(ports);
                         Connections.setIps(ips);
                         Connections.saveConnections();
-                        updateData(new ClientGUI.SavedConnections(false,index));
+                        if(origin == 0) {
+                            updateData(new SavedConnections(false, index));
+                        }
+                        else if( origin == 1){
+                            updateData(new newConnection(false));
+                        }
                     } catch (Connections.ConnectionsNotInitialized e) {
                         e.printStackTrace();
                     }
@@ -672,7 +679,16 @@ public class ClientGUI extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     System.out.println("Saved connections");
-                    updateData(new ClientGUI.SavedConnections(false,index));
+                    if(origin == 0) {
+                        updateData(new ClientGUI.SavedConnections(false, index));
+                    }
+                    else if(origin == 1){
+                        names.remove(names.size()-1);
+                        ips.remove(ips.size()-1);
+                        ports.remove(ports.size()-1);
+                        saveConnections(names,ports,ips);
+                        updateData(new newConnection(false));
+                    }
                 }
             });
             updateControl(cancel,save);
@@ -821,10 +837,16 @@ public class ClientGUI extends JFrame {
                         Connections.getIps().add(IP.getText());
                         Connections.getPorts().add(Integer.parseInt(portnum.getText()));
                         Connections.saveConnections();
-                        updateData(new EditConnection(Connections.getNames().size()-1));
+                        updateData(new EditConnection(Connections.getNames().size()-1,1));
                     } catch (Connections.ConnectionsNotInitialized connectionsNotInitialized) {
                         connectionsNotInitialized.printStackTrace();
                     }
+                }
+            });
+            savedConnections.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    updateData(new SavedConnections(false,0));
                 }
             });
 
