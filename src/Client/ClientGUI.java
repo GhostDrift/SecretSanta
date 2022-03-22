@@ -352,6 +352,9 @@ public class ClientGUI extends JFrame {
             }
             connectionList = new JComboBox(names.toArray());
             connectionList.setBounds(50,50,90,20);
+            //update IP and port to be the values of the first entry in the combo box
+            IP = ips.get(0);
+            port = ports.get(0);
 //            IP = new JTextField("", 25);
 
 //            Portn = new JLabel("Port Number");
