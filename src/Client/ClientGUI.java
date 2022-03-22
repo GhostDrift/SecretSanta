@@ -582,10 +582,12 @@ public class ClientGUI extends JFrame {
         private JTextField hostText;
         private JTextField ipText;
         private JTextField portText;
+        private int index;
 
         //constructor
         public EditConnection(int index){
             try {
+                this.index = index;
                 this.setLayout(new GridBagLayout());
                 this.setPanelName("Edit Connection");
                 this.setSpaces("                                                                                                              ");
@@ -602,10 +604,11 @@ public class ClientGUI extends JFrame {
                 hostLabel.setFont(timesRoman);
                 JLabel ipLabel = new JLabel("IP");
                 ipLabel.setFont(timesRoman);
-                JLabel title = new JLabel("Edit connection");
+                JLabel title = new JLabel("Connection to be edited");
                 title.setFont(timesRoman);
                 JLabel portLabel = new JLabel("Port");
-
+                portLabel.setFont(timesRoman);
+                prepareActionListeners();
                 //Add components to window
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.gridwidth = 2;
@@ -617,11 +620,59 @@ public class ClientGUI extends JFrame {
                 this.add(hostLabel,gbc);
                 gbc.gridx = 1;
                 this.add(hostText,gbc);
+                gbc.gridy = 3;
+                this.add(Box.createVerticalStrut(20),gbc);
+                gbc.gridy = 4;
+                gbc.gridx = 0;
+                this.add(ipLabel,gbc);
+                gbc.gridx = 1;
+                this.add(ipText,gbc);
+                gbc.gridy = 5;
+                this.add(Box.createVerticalStrut(20),gbc);
+                gbc.gridx = 0;
+                gbc.gridy = 6;
+                this.add(portLabel,gbc);
+                gbc.gridx = 1;
+                this.add(portText,gbc);
                 this.setVisible(true);
+
+
             } catch (Connections.ConnectionsNotInitialized connectionsNotInitialized) {
                 connectionsNotInitialized.printStackTrace();
             }
         }
+
+    private void prepareActionListeners() {
+            save.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    names.remove(index);
+                    ips.remove(index);
+                    ports.remove(index);
+                    names.add(index,hostText.getText());
+                    ips.add(index,ipText.getText());
+                    ports.add(index,Integer.parseInt(portText.getText()));
+                    try {
+                        Connections.setNames(names);
+                        Connections.setPorts(ports);
+                        Connections.setIps(ips);
+                        Connections.saveConnections();
+                        updateData(new savedConnections(false));
+                    } catch (Connections.ConnectionsNotInitialized e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            cancel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    System.out.println("Saved connections");
+                    updateData(new savedConnections(false));
+                }
+            });
+            updateControl(cancel,save);
+    }
+
 }
     private class Login extends displayPanel{
         private final JLabel username;
