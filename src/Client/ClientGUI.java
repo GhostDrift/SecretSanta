@@ -703,12 +703,97 @@ public class ClientGUI extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     System.out.println("Delete connection");
+                    updateData(new ConfirmDelete(index,origin));
                 }
             });
             updateControl(cancel,save);
     }
 
 }
+    private class ConfirmDelete extends displayPanel{
+        private JButton confirm;
+        private JButton cancel;
+        private int index;
+        private int origin;
+        private ArrayList<String> names;
+        private ArrayList<String> ips;
+        private ArrayList<Integer> ports;
+
+        public ConfirmDelete(int index,int origin){
+            try{
+                this.index = index;
+                this.origin = origin;
+                names = Connections.getNames();
+                ips = Connections.getIps();
+                ports = Connections.getPorts();
+                this.setLayout(new GridBagLayout());
+                this.setPanelName("Delete Connection");
+                this.setSpaces("                                                                                                              ");
+                windowTitle.setText(this.getLabel());
+                this.confirm = new JButton("Yes Delete");
+                this.cancel = new JButton("Cancel");
+                JLabel hostLabel = new JLabel("HostName: " + names.get(index));
+                JLabel ipLabel = new JLabel("IP: " + ips.get(index));
+                JLabel portLabel = new JLabel("Port: " + ports.get(index));
+                JLabel areYouSure = new JLabel("Are you sure you want to delete this connection?");
+                hostLabel.setFont(timesRoman);
+                ipLabel.setFont(timesRoman);
+                portLabel.setFont(timesRoman);
+                areYouSure.setFont(timesRoman);
+                prepareActionListeners();
+                //add elements to gui
+                GridBagConstraints gbc = new GridBagConstraints();
+                this.add(areYouSure,gbc);
+                gbc.gridy = 1;
+                this.add(Box.createVerticalStrut(20),gbc);
+                gbc.gridy = 2;
+                this.add(hostLabel,gbc);
+                gbc.gridy = 3;
+                this.add(Box.createVerticalStrut(20),gbc);
+                gbc.gridy = 4;
+                this.add(ipLabel,gbc);
+                gbc.gridy = 5;
+                this.add(Box.createVerticalStrut(20),gbc);
+                gbc.gridy = 6;
+                this.add(portLabel,gbc);
+
+
+            } catch (Connections.ConnectionsNotInitialized connectionsNotInitialized) {
+                connectionsNotInitialized.printStackTrace();
+            }
+        }
+
+        private void prepareActionListeners() {
+            confirm.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    try {
+                        names.remove(index);
+                        ips.remove(index);
+                        ports.remove(index);
+                        Connections.setNames(names);
+                        Connections.setIps(ips);
+                        Connections.setPorts(ports);
+                        Connections.saveConnections();
+                        if (origin == 0) {
+                            updateData(new SavedConnections(false, 0));
+                        } else if (origin == 1) {
+                            updateData(new newConnection(false));
+                        }
+                    } catch (Connections.ConnectionsNotInitialized connectionsNotInitialized) {
+                        connectionsNotInitialized.printStackTrace();
+                    }
+                }
+            });
+            cancel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    updateData(new EditConnection(index,origin));
+                }
+            });
+            updateControl(cancel,confirm);
+        }
+    }
     private class newConnection extends  displayPanel{
         private final JTextField IP;
         private final JButton Adv;
@@ -2184,7 +2269,7 @@ public class ClientGUI extends JFrame {
 
     //method to shut off client properly
     private void shutDown(){
-        if(Data instanceof Connect || Data instanceof ClientGUI.SavedConnections || Data instanceof EditConnection || Data instanceof newConnection){
+        if(Data instanceof Connect || Data instanceof ClientGUI.SavedConnections || Data instanceof EditConnection || Data instanceof newConnection || Data instanceof ConfirmDelete){
             System.out.println("connect window");
 //            System.exit(0);
         }
