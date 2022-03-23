@@ -584,6 +584,7 @@ public class ClientGUI extends JFrame {
         private ArrayList<Integer> ports;
         private JButton save;
         private JButton cancel;
+        private JButton delete;
         private JTextField hostText;
         private JTextField ipText;
         private JTextField portText;
@@ -604,6 +605,7 @@ public class ClientGUI extends JFrame {
                 this.ports = Connections.getPorts();
                 this.save = new JButton("Save");
                 this.cancel = new JButton("Cancel");
+                this.delete = new JButton("Delete");
                 this.hostText = new JTextField(names.get(index),25);
                 this.ipText = new JTextField(ips.get(index), 25);
                 this.portText = new JTextField(ports.get(index) + "",25);
@@ -641,6 +643,12 @@ public class ClientGUI extends JFrame {
                 this.add(portLabel,gbc);
                 gbc.gridx = 1;
                 this.add(portText,gbc);
+                gbc.gridy = 7;
+                this.add(Box.createVerticalStrut(20),gbc);
+                gbc.gridy = 8;
+                gbc.gridwidth = 2;
+                gbc.gridx = 0;
+                this.add(delete,gbc);
                 this.setVisible(true);
 
 
@@ -689,6 +697,12 @@ public class ClientGUI extends JFrame {
                         saveConnections(names,ports,ips);
                         updateData(new newConnection(false));
                     }
+                }
+            });
+            delete.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    System.out.println("Delete connection");
                 }
             });
             updateControl(cancel,save);
