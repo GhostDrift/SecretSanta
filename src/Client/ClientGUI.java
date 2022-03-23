@@ -931,6 +931,7 @@ public class ClientGUI extends JFrame {
                         if (matcher.find()) {
                             matcher = portpattern.matcher(portnum.getText());
                             if (matcher.find()) {
+
                                 client = new Client(host, port);
                                 updateData(new Login());
 //                                    Log = new LoginGUI();
@@ -943,7 +944,7 @@ public class ClientGUI extends JFrame {
                         }
 
                     } catch (Exception m) {
-                        m.printStackTrace();
+//                        m.printStackTrace();
                         cannotConnect();
                     }
                 }
@@ -983,7 +984,36 @@ public class ClientGUI extends JFrame {
                 public void keyPressed(KeyEvent keyEvent) {
                     System.out.println(keyEvent.getKeyCode());
                     if(keyEvent.getKeyCode() == 10){
+                        if(!t) {
+                            connect.doClick();
+                        }
+                        else{
+                            portnum.requestFocus();
+                        }
+                    }
+                    else{
+                        errorMessage.setVisible(false);
+                    }
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
+            this.portnum.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+
+                }
+
+                @Override
+                public void keyPressed(KeyEvent keyEvent) {
+                    if(keyEvent.getKeyCode() == 10){
                         connect.doClick();
+                    }
+                    else{
+                        errorMessage.setVisible(false);
                     }
                 }
 
@@ -1111,7 +1141,7 @@ public class ClientGUI extends JFrame {
                  System.out.println("Disconnect");
                  client.disconnect();
                  client = null;
-                 updateData(new Connect(false));
+                 updateData(new SavedConnections(false,0));
 
              });
              register.addActionListener(e -> {
@@ -1120,11 +1150,11 @@ public class ClientGUI extends JFrame {
                      if (client.networkaccess.testConnection()) {
                          updateData(new Register());
                      } else {
-                         updateData(new Connect(true));
+                         updateData(new SavedConnections(true,0));
                      }
                  }
                  else{
-                     updateData(new Connect(true));
+                     updateData(new SavedConnections(true,0));
                  }
              });
              login.addActionListener(e -> {
@@ -1152,10 +1182,10 @@ public class ClientGUI extends JFrame {
                              status.setForeground(Color.RED);
                          }
                      } else {
-                         updateData(new Connect(true));
+                         updateData(new SavedConnections(true,0));
                      }
                  } catch(Exception n){
-                     updateData(new Connect(true));
+                     updateData(new SavedConnections(true,0));
                  }
              });
              recover.addActionListener(e -> {
@@ -1164,11 +1194,11 @@ public class ClientGUI extends JFrame {
                         updateData(new Recover());
                      }
                      else{
-                         updateData(new Connect(true));
+                         updateData(new SavedConnections(true,0));
                      }
                  }
                  else{
-                     updateData(new Connect(true));
+                     updateData(new SavedConnections(true,0));
                  }
                  System.out.println("Recover Password");
 
@@ -1284,11 +1314,11 @@ public class ClientGUI extends JFrame {
                         }
                     }
                     else{
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
                 }
                 else{
-                    updateData(new Connect(true));
+                    updateData(new SavedConnections(true,0));
                 }
 
             });
@@ -1529,11 +1559,11 @@ public class ClientGUI extends JFrame {
 
                     }
                     else{
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
                 }
                 else{
-                    updateData(new Connect(true));
+                    updateData(new SavedConnections(true,0));
                 }
 
 
@@ -1681,11 +1711,11 @@ public class ClientGUI extends JFrame {
                             updateWishList(myWishList,false);
                         }
                         else{
-                            updateData(new Connect(true));
+                            updateData(new SavedConnections(true,0));
                         }
                     }
                     else{
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
                 });
                 recipientWishListButton.addActionListener(e -> {
@@ -1718,11 +1748,11 @@ public class ClientGUI extends JFrame {
 
                         }
                         else{
-                            updateData(new Connect(true));
+                            updateData(new SavedConnections(true,0));
                         }
                     }
                     else{
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
 
 
@@ -1735,11 +1765,11 @@ public class ClientGUI extends JFrame {
                             updateData(new AddItem());
                         }
                         else {
-                            updateData(new Connect(true));
+                            updateData(new SavedConnections(true,0));
                         }
                     }
                     else{
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
                 });
                 remove.addActionListener(e -> {
@@ -1749,11 +1779,11 @@ public class ClientGUI extends JFrame {
                             updateData(new RemoveItem());
                         }
                         else {
-                            updateData(new Connect(true));
+                            updateData(new SavedConnections(true,0));
                         }
                     }
                     else{
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
                 });
                 clear.addActionListener(e -> {
@@ -1763,11 +1793,11 @@ public class ClientGUI extends JFrame {
                             updateData(new ClearWishList());
                         }
                         else {
-                            updateData(new Connect(true));
+                            updateData(new SavedConnections(true,0));
                         }
                     }
                     else{
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
 
                 });
@@ -1791,11 +1821,11 @@ public class ClientGUI extends JFrame {
                             }
                         }
                         else {
-                            updateData(new Connect(true));
+                            updateData(new SavedConnections(true,0));
                         }
                     }
                     else{
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
 
                 });
@@ -1813,11 +1843,11 @@ public class ClientGUI extends JFrame {
                             }
                         }
                         else {
-                            updateData(new Connect(true));
+                            updateData(new SavedConnections(true,0));
                         }
                     }
                     else{
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
                 });
                 accountSettings.addActionListener(e -> {
@@ -1827,11 +1857,11 @@ public class ClientGUI extends JFrame {
                             updateData(new AccountSettings());
                         }
                         else {
-                            updateData(new Connect(true));
+                            updateData(new SavedConnections(true,0));
                         }
                     }
                     else{
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
                 });
                 updateControl(logOut,accountSettings,confirmWishlist);
@@ -1917,11 +1947,11 @@ public class ClientGUI extends JFrame {
                         }
                     }
                     else {
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
                 }
                 else{
-                    updateData(new Connect(true));
+                    updateData(new SavedConnections(true,0));
                 }
             });
             cancel.addActionListener(e -> {
@@ -1931,11 +1961,11 @@ public class ClientGUI extends JFrame {
                         updateData(new Interaction());
                     }
                     else {
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
                 }
                 else{
-                    updateData(new Connect(true));
+                    updateData(new SavedConnections(true,0));
                 }
             });
             updateControl(cancel,add);
@@ -2032,11 +2062,11 @@ public class ClientGUI extends JFrame {
 
                     }
                     else {
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
                 }
                 else{
-                    updateData(new Connect(true));
+                    updateData(new SavedConnections(true,0));
                 }
             });
             cancel.addActionListener(e -> {
@@ -2046,11 +2076,11 @@ public class ClientGUI extends JFrame {
                         updateData(new Interaction());
                     }
                     else {
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
                 }
                 else{
-                    updateData(new Connect(true));
+                    updateData(new SavedConnections(true,0));
                 }
             });
             updateControl(cancel,remove);
@@ -2097,11 +2127,11 @@ public class ClientGUI extends JFrame {
                         }
                     }
                     else {
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
                 }
                 else{
-                    updateData(new Connect(true));
+                    updateData(new SavedConnections(true,0));
                 }
             });
             cancel.addActionListener(actionEvent -> {
@@ -2111,11 +2141,11 @@ public class ClientGUI extends JFrame {
                         updateData(new Interaction());
                     }
                     else {
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
                 }
                 else{
-                    updateData(new Connect(true));
+                    updateData(new SavedConnections(true,0));
                 }
             });
         }
@@ -2249,11 +2279,11 @@ public class ClientGUI extends JFrame {
                         updateData(new Interaction());
                     }
                     else {
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
                 }
                 else{
-                    updateData(new Connect(true));
+                    updateData(new SavedConnections(true,0));
                 }
 
             });
@@ -2276,11 +2306,11 @@ public class ClientGUI extends JFrame {
                         status.setVisible(true);
                     }
                     else {
-                        updateData(new Connect(true));
+                        updateData(new SavedConnections(true,0));
                     }
                 }
                 else{
-                    updateData(new Connect(true));
+                    updateData(new SavedConnections(true,0));
                 }
             });
             updateControl(cancel,apply);
