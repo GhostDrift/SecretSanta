@@ -588,6 +588,7 @@ public class ClientGUI extends JFrame {
         private JTextField hostText;
         private JTextField ipText;
         private JTextField portText;
+        private JLabel title;
         private int index;
         private int origin;
 
@@ -613,7 +614,7 @@ public class ClientGUI extends JFrame {
                 hostLabel.setFont(timesRoman);
                 JLabel ipLabel = new JLabel("IP");
                 ipLabel.setFont(timesRoman);
-                JLabel title = new JLabel("Connection to be edited");
+                title = new JLabel("Connection to be edited");
                 title.setFont(timesRoman);
                 JLabel portLabel = new JLabel("Port");
                 portLabel.setFont(timesRoman);
@@ -664,26 +665,18 @@ public class ClientGUI extends JFrame {
             save.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    names.remove(index);
-                    ips.remove(index);
-                    ports.remove(index);
-                    names.add(index,hostText.getText());
-                    ips.add(index,ipText.getText());
-                    ports.add(index,Integer.parseInt(portText.getText()));
-                    try {
-                        Connections.setNames(names);
-                        Connections.setPorts(ports);
-                        Connections.setIps(ips);
-                        Connections.saveConnections();
-                        if(origin == 0) {
-                            updateData(new SavedConnections(false, index));
+                    if(names.contains(hostText.getText())){
+                        int testIndex = names.indexOf(hostText.getText());
+                        if(testIndex != index){
+                            title.setForeground(Color.RED);
+                            title.setText("That name is already taken");
                         }
-                        else if( origin == 1){
-                            updateData(new newConnection(false));
+                        else{
+                            saveConnection();
                         }
-                    } catch (Connections.ConnectionsNotInitialized e) {
-                        e.printStackTrace();
                     }
+                    else saveConnection();
+
                 }
             });
             cancel.addActionListener(new ActionListener() {
@@ -710,6 +703,28 @@ public class ClientGUI extends JFrame {
                 }
             });
             updateControl(cancel,save);
+    }
+    private void saveConnection(){
+        names.remove(index);
+        ips.remove(index);
+        ports.remove(index);
+        names.add(index,hostText.getText());
+        ips.add(index,ipText.getText());
+        ports.add(index,Integer.parseInt(portText.getText()));
+        try {
+            Connections.setNames(names);
+            Connections.setPorts(ports);
+            Connections.setIps(ips);
+            Connections.saveConnections();
+            if(origin == 0) {
+                updateData(new SavedConnections(false, index));
+            }
+            else if( origin == 1){
+                updateData(new newConnection(false));
+            }
+        } catch (Connections.ConnectionsNotInitialized e) {
+            e.printStackTrace();
+        }
     }
 
 }
