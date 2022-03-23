@@ -850,7 +850,7 @@ public class ClientGUI extends JFrame {
                 }
             });
 
-            updateControl(Adv,connect);
+            updateControl(savedConnections,Adv,connect);
 
         }
         private void prepareKeyListener(){
