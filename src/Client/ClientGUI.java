@@ -649,6 +649,9 @@ public class ClientGUI extends JFrame {
                 gbc.gridwidth = 2;
                 gbc.gridx = 0;
                 this.add(delete,gbc);
+                if(origin == 1){
+                    delete.setVisible(false);
+                }
                 this.setVisible(true);
 
 
