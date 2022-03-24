@@ -317,6 +317,7 @@ public class Server extends Thread {
             }
             na.sendMessage(new Message(null,"disconnect"),false);
             removeID(i);
+//            System.out.println("# of connections: " + getconnections());
             i = getconnections()-1;
         }
 

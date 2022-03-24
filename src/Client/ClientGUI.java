@@ -49,7 +49,7 @@ public class ClientGUI extends JFrame {
         //create control pannel area
         control = new ControlArea();
         //set the data panel to display the connect panel.
-        Data = new ClientGUI.SavedConnections(false,0);
+        Data = new ClientGUI.newConnection(false);
 
 //          x.setLayout(new BoxLayout(x,BoxLayout.Y_AXIS));
         //set the title pannel to display the Connect text
@@ -1141,7 +1141,7 @@ public class ClientGUI extends JFrame {
                  System.out.println("Disconnect");
                  client.disconnect();
                  client = null;
-                 updateData(new SavedConnections(false,0));
+                 updateData(new newConnection(false));
 
              });
              register.addActionListener(e -> {
