@@ -305,6 +305,7 @@ public class ClientGUI extends JFrame {
         private final JButton connect;
         private final JButton newConnection;
         private final JButton edit;
+        private final JButton back;
         private boolean t = false;
         private final JLabel errorMessage;
         private final JComboBox connectionList;
@@ -312,7 +313,7 @@ public class ClientGUI extends JFrame {
         SavedConnections(Boolean error, int index) {
             setLayout(new GridBagLayout());
 //            setLayout(new BorderLayout(0,0));
-            this.setPanelName("Connect");
+            this.setPanelName("Saved Connections");
             this.setSpaces("                                                                                                              ");
             windowTitle.setText(this.getLabel());
             JLabel title = new JLabel("Saved Connections");
@@ -364,11 +365,12 @@ public class ClientGUI extends JFrame {
 
 //            Adv = new JButton("Advanced...");
             connect = new JButton("Connect");
-            newConnection = new JButton("New connection");
+            newConnection = new JButton("New");
+            back = new JButton("Back");
             this.errorMessage = new JLabel("Server is unreachable");
             this.errorMessage.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             this.errorMessage.setForeground(Color.RED);
-            this.edit = new JButton("Edit connection");
+            this.edit = new JButton("Edit");
             JLabel space = new JLabel("      ");
 
             GridBagConstraints gbc = new GridBagConstraints();
@@ -392,9 +394,11 @@ public class ClientGUI extends JFrame {
             this.add(connectionList,gbc);
             gbc.gridy = 5;
             gbc.gridx = 0;
-            gbc.gridwidth = 2;
+            gbc.gridwidth = 1;
             this.add(Box.createVerticalStrut(25),gbc);
             gbc.gridy = 6;
+            this.add(newConnection,gbc);
+            gbc.gridx = 1;
             this.add(edit,gbc);
 //            this.add(IP, gbc);
             gbc.gridx = 0;
@@ -513,10 +517,17 @@ public class ClientGUI extends JFrame {
                     updateData(new EditConnection(connectionList.getSelectedIndex(),0));
                 }
             });
+            back.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    System.out.println("Open new connections");
+                    updateData(new newConnection(false));
+                }
+            });
 
 //            updateControl(Adv,connect);
             //updateControl(newConnection,edit, connect);
-            updateControl(newConnection,connect);
+            updateControl(back,connect);
 
         }
         private void prepareKeyListener(){
@@ -826,7 +837,7 @@ public class ClientGUI extends JFrame {
         public newConnection(Boolean error) {
             setLayout(new GridBagLayout());
 //            setLayout(new BorderLayout(0,0));
-            this.setPanelName("New Connection");
+            this.setPanelName("Connect");
             this.setSpaces("                                                                                                              ");
             windowTitle.setText(this.getLabel());
             JLabel i = new JLabel("IP");
@@ -875,6 +886,10 @@ public class ClientGUI extends JFrame {
             gbc.gridy = 4;
             gbc.gridwidth = 3;
             this.add(save, gbc);
+            gbc.gridy = 5;
+            this.add(Box.createVerticalStrut(30),gbc);
+            gbc.gridy = 6;
+            this.add(savedConnections,gbc);
             this.errorMessage.setVisible(false);
             PrepareButtons();
             prepareKeyListener();
@@ -970,7 +985,8 @@ public class ClientGUI extends JFrame {
                 }
             });
 
-            updateControl(savedConnections,Adv,connect);
+//            updateControl(savedConnections,Adv,connect);
+            updateControl(Adv,connect);
 
         }
         private void prepareKeyListener(){
