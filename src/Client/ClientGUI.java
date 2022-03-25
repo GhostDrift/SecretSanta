@@ -1622,7 +1622,6 @@ public class ClientGUI extends JFrame {
         private final JButton remove;
         private final JButton clear;
         private final JLabel status;
-        private final JLabel recipient = new JLabel("recipient's name");
         private final JButton logOut;
         private final JButton accountSettings;
         private final JButton confirmWishlist;
@@ -1662,8 +1661,6 @@ public class ClientGUI extends JFrame {
             error.setForeground(Color.RED);
             error.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             error.setVisible(false);
-            recipient.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-            recipient.setVisible(false);
             prepareButtonHandlers();
             //add components
             this.add(wishListSelect,BorderLayout.NORTH);
@@ -1671,20 +1668,26 @@ public class ClientGUI extends JFrame {
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 1;
             gbc.gridheight = 1;
-            gbc.ipady = 20;
-            gbc.ipadx = 10;
+            gbc.ipady = 10;
+//            gbc.ipadx = 10;
             gbc.fill = GridBagConstraints.NONE;
-            dataArea.add(add, gbc);
+            dataArea.add(error, gbc);
             gbc.gridy = 1;
-            dataArea.add(remove, gbc);
+            dataArea.add(Box.createVerticalStrut(5),gbc);
             gbc.gridy = 2;
-            dataArea.add(clear, gbc);
+            dataArea.add(add, gbc);
             gbc.gridy = 3;
-            dataArea.add(status, gbc);
+            dataArea.add(Box.createVerticalStrut(5),gbc);
             gbc.gridy = 4;
-            dataArea.add(error,gbc);
+            dataArea.add(remove, gbc);
             gbc.gridy = 5;
-            dataArea.add(recipient,gbc);
+            dataArea.add(Box.createVerticalStrut(5),gbc);
+            gbc.gridy = 6;
+            dataArea.add(clear, gbc);
+            gbc.gridy = 7;
+            dataArea.add(Box.createVerticalStrut(5),gbc);
+            gbc.gridy = 8;
+            dataArea.add(status,gbc);
 //            dataArea.add(confirmWishlist,gbc);
             this.add(dataArea,BorderLayout.CENTER);
             updateWishList(myWishList,false);
@@ -1739,7 +1742,7 @@ public class ClientGUI extends JFrame {
                         if(client.networkaccess.testConnection()){
                             recipientWishListButton.setBackground(null);
                             myWishListButton.setBackground(Color.WHITE);
-                            recipient.setVisible(false);
+//                            recipient.setVisible(false);
                             add.setVisible(true);
                             remove.setVisible(true);
                             clear.setVisible(true);
@@ -1780,7 +1783,7 @@ public class ClientGUI extends JFrame {
                             }
                             else{
                                 if(!msg.message.equals("Names have not been drawn")){
-                                    recipient.setText(client.getRecipient().user.getName() + "'s wish list");
+//                                    recipient.setText(client.getRecipient().user.getName() + "'s wish list");
                                 }
                                 wishlist.setText(msg.message);
                                 this.repaint();
