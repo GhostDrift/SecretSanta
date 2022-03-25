@@ -33,7 +33,7 @@ public class ClientHandler extends Thread {
     /**
      * the unique id of this client
      */
-    private final int id;
+    private int id;
 
     /**
      * a reference to the server that "has" this ClientHandler
@@ -93,6 +93,10 @@ public class ClientHandler extends Thread {
     //method to get the user
     protected User getUser(){
         return this.usr;
+    }
+    //method to decrement the id of the client handler
+    public void decId(){
+        this.id--;
     }
 
     // -- similar to a main() function in that it is the entry point of

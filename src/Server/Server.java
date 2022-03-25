@@ -283,6 +283,11 @@ public class Server extends Thread {
 				// -- place some text in the area to let the server operator know
 				//    what is going on
 				System.out.println("SERVER: connection closed for client id " + id + "\n");
+				//decrements the ids of all the other connections after removed id
+				for(int j = i; j < clientconnections.size(); j++){
+				    clientconnections.get(j).decId();
+                }
+				nextId--;
 				break;
 			}
 		}
@@ -301,6 +306,7 @@ public class Server extends Thread {
         User usr;
         NetworkAccess na;
         while(getconnections()>0){
+            System.out.println("Connection #" + i);
             na = clientconnections.get(i).getNetworkaccess();
             usr = clientconnections.get(i).getUser();
             if(usr != null) {
