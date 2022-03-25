@@ -484,7 +484,7 @@ public class ClientGUI extends JFrame {
                         }
 
                     } catch (Exception m) {
-                        m.printStackTrace();
+//                        m.printStackTrace();
                         cannotConnect();
                     }
                 }
@@ -630,6 +630,7 @@ public class ClientGUI extends JFrame {
                 JLabel portLabel = new JLabel("Port");
                 portLabel.setFont(timesRoman);
                 prepareActionListeners();
+                prepareKeyListeners();
                 //Add components to window
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.gridwidth = 2;
@@ -671,6 +672,30 @@ public class ClientGUI extends JFrame {
                 connectionsNotInitialized.printStackTrace();
             }
         }
+
+    private void prepareKeyListeners() {
+          KeyListener k = new KeyListener() {
+              @Override
+              public void keyTyped(KeyEvent keyEvent) {
+
+              }
+
+              @Override
+              public void keyPressed(KeyEvent keyEvent) {
+                if(keyEvent.getKeyCode() == 10){
+                    save.doClick();
+                }
+              }
+
+              @Override
+              public void keyReleased(KeyEvent keyEvent) {
+
+              }
+          };
+          ipText.addKeyListener(k);
+          hostText.addKeyListener(k);
+          portText.addKeyListener(k);
+    }
 
     private void prepareActionListeners() {
             save.addActionListener(new ActionListener() {
