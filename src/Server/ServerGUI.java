@@ -2,32 +2,21 @@ package Server;
 
 import Common.displayPanel;
 
+import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
-
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-
-
-import javax.swing.*;
-import javax.swing.border.Border;
 //import Server.java;
 
 
 public class ServerGUI extends JFrame {
 
-    private final int WIDTH = 680;
-    private final int HEIGHT = 500;
-    private final ServerGUI owner = null;
-
     private Server server;
-    private  BottomPanel low;
     private  FieldPanel con;
     private displayPanel data;
-    private Label windowTitle;
+    private final Label windowTitle;
 //    private ClientGUI.Label windowTitle;
 
 
@@ -35,6 +24,8 @@ public class ServerGUI extends JFrame {
         setTitle("Secret Santa Management System Server");
 
         // -- size of the frame: width, height
+        int WIDTH = 680;
+        int HEIGHT = 500;
         setSize(WIDTH, HEIGHT);
 
         // -- center the frame on the screen
@@ -47,11 +38,6 @@ public class ServerGUI extends JFrame {
         setLayout(new BorderLayout(1, 1));
         this.windowTitle = new Label();
         this.data = new ServerControl();
-//        try {
-//            this.data = new EditConfig();
-//        } catch (ConfigNotInitializedException e) {
-//            e.printStackTrace();
-//        }
         this.add(data,BorderLayout.CENTER);
         this.add(windowTitle, BorderLayout.NORTH);
         setVisible(true);
@@ -79,12 +65,6 @@ public class ServerGUI extends JFrame {
         this.data = dataNew;
         this.add(data);
 
-//        System.out.println( "Login " +Data.getLabel());
-//        this.remove(windowTitle);
-//        this.windowTitle = new Label(Data.getLabel());
-//        this.add(windowTitle, BorderLayout.NORTH);
-//        this.windowTitle.repaint();
-//        System.out.println("Label " + windowTitle.getText());
         this.repaint();
 //        shutDown();
     }
@@ -109,7 +89,7 @@ public class ServerGUI extends JFrame {
             this.add(con, BorderLayout.CENTER);
 
 
-            low = new BottomPanel();
+            BottomPanel low = new BottomPanel();
             this.add(low, BorderLayout.SOUTH);
 
             // MENU Settings
@@ -137,40 +117,29 @@ public class ServerGUI extends JFrame {
             MenBar.add(drawNames);
             drawNames.setVisible(false);
 
-            drawNames.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    System.out.println("Draw Names");
-                    if (drawNames.getText().equals("Draw Names")) {
-                        server.drawNames(con,drawNames);
-//                        String result = server.drawNames();
-//                        if (result.equals("success")) {
-//                            addToTextArea("Names have been drawn");
-//                        } else {
-//                            addToTextArea(result);
-//                        }
-//                        drawNames.setText("Clear Names");
-                        try {
-                            Config.setNamesDrawn(true);
-                            Config.saveConfig();
-                        } catch (ConfigNotInitializedException e) {
-                            e.printStackTrace();
-                        }
-                        repaint();
-                    }
-                    else{
-                        server.resetRecipientIDS();
-                        addToTextArea("Names have been reset");
-                        drawNames.setText("Draw Names");
-                        try {
-                            Config.setNamesDrawn(false);
-                            Config.saveConfig();
-                        } catch (ConfigNotInitializedException e) {
-                            e.printStackTrace();
-                        }
-                        repaint();
+            drawNames.addActionListener(actionEvent -> {
+                System.out.println("Draw Names");
+                if (drawNames.getText().equals("Draw Names")) {
+                    server.drawNames(con,drawNames);
+                    try {
+                        Config.setNamesDrawn(true);
+                        Config.saveConfig();
+                    } catch (ConfigNotInitializedException e) {
+                        e.printStackTrace();
                     }
                 }
+                else{
+                    server.resetRecipientIDS();
+                    addToTextArea("Names have been reset");
+                    drawNames.setText("Draw Names");
+                    try {
+                        Config.setNamesDrawn(false);
+                        Config.saveConfig();
+                    } catch (ConfigNotInitializedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                repaint();
             });
 
             JMenuBar MenBar2 = new JMenuBar();
@@ -180,70 +149,54 @@ public class ServerGUI extends JFrame {
             JButton WhoLock = new JButton("Who is Locked Out");
 
             //Action listeners for buttons in MenBar2
-            NumLog.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("Number of logged in");
-                    int numLoggedIn = server.getNumLoggedIn();
-                    addToTextArea( "Number of logged in clients: " + numLoggedIn);
-                    requestFocus();
-                }
-
+            NumLog.addActionListener(e -> {
+                System.out.println("Number of logged in");
+                int numLoggedIn = server.getNumLoggedIn();
+                addToTextArea( "Number of logged in clients: " + numLoggedIn);
+                requestFocus();
             });
-            WhoLog.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("Logged in accounts");
-                    String result = "Logged in accounts: \n";
-                    try {
-                        ArrayList loggedInAccounts =  server.getWhoLoggedIn();
+            WhoLog.addActionListener(e -> {
+                System.out.println("Logged in accounts");
+                StringBuilder result = new StringBuilder("Logged in accounts: \n");
+                try {
+                    ArrayList<String> loggedInAccounts =  server.getWhoLoggedIn();
 
-                        for(int i = 0; i< loggedInAccounts.size(); i++){
+                    for (String loggedInAccount : loggedInAccounts) {
 //                       addToTextArea(loggedInAccounts.get(i) + "\n");
-                            result += loggedInAccounts.get(i) + "\n";
-                        }
-                        addToTextArea(result);
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
+                        result.append(loggedInAccount).append("\n");
                     }
-                    requestFocus();
+                    addToTextArea(result.toString());
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
-
+                requestFocus();
             });
-            NumReg.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("Number regestered");
-                    int numRegistered = 0;
-                    try {
-                        numRegistered = server.getNumRegistered();
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
-                    addToTextArea( "Number of registered accounts: " + numRegistered);
-                    requestFocus();
+            NumReg.addActionListener(e -> {
+                System.out.println("Number registered");
+                int numRegistered = 0;
+                try {
+                    numRegistered = server.getNumRegistered();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
-
+                addToTextArea( "Number of registered accounts: " + numRegistered);
+                requestFocus();
             });
-            WhoLock.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("Locked out accounts");
-                    String result = "Locked out accounts: \n";
-                    try {
-                        ArrayList LockedOutAccounts =  server.getWhoLockedOut();
+            WhoLock.addActionListener(e -> {
+                System.out.println("Locked out accounts");
+                StringBuilder result = new StringBuilder("Locked out accounts: \n");
+                try {
+                    ArrayList<String> LockedOutAccounts =  server.getWhoLockedOut();
 
-                        for(int i = 0; i< LockedOutAccounts.size(); i++){
+                    for (String lockedOutAccount : LockedOutAccounts) {
 //                       addToTextArea(loggedInAccounts.get(i) + "\n");
-                            result += LockedOutAccounts.get(i) + "\n";
-                        }
-                        addToTextArea(result);
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
+                        result.append(lockedOutAccount).append("\n");
                     }
-                    requestFocus();
+                    addToTextArea(result.toString());
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
-
+                requestFocus();
             });
 
             MenBar2.add(WhoLog);
@@ -257,37 +210,30 @@ public class ServerGUI extends JFrame {
 
 
             // Activate Server
-            Act.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if(Act.getText().equals("Activate Server")) {
-                        server = new Server(owner);
-                        server.start();
-                        //server.stop();
-                        Act.setText("Deactivate Server");
-                        Conf.setVisible(false);
-                        AConnect.setVisible(true);
-                        MenBar2.setVisible(true);
-                        drawNames.setVisible(true);
-                        addToTextArea("Server is running");
-
-                    }
-                    else if(Act.getText().equals("Deactivate Server")){
-//                    server.disconnectClients();
-//                    server.stop();
-                        server.stopServer();
-                        server.removeServersocket();
-                        Act.setText("Activate Server");
-                        Conf.setVisible(true);
-                        drawNames.setVisible(false);
-                        addToTextArea("Server has stopped");
-                        AConnect.setVisible(false);
-                        MenBar2.setVisible(false);
-                    }
-                    requestFocus();
+            Act.addActionListener(e -> {
+                if(Act.getText().equals("Activate Server")) {
+                    server = new Server(null);
+                    server.start();
+                    //server.stop();
+                    Act.setText("Deactivate Server");
+                    Conf.setVisible(false);
+                    AConnect.setVisible(true);
+                    MenBar2.setVisible(true);
+                    drawNames.setVisible(true);
+                    addToTextArea("Server is running");
 
                 }
-
+                else if(Act.getText().equals("Deactivate Server")){
+                    server.stopServer();
+                    server.removeServersocket();
+                    Act.setText("Activate Server");
+                    Conf.setVisible(true);
+                    drawNames.setVisible(false);
+                    addToTextArea("Server has stopped");
+                    AConnect.setVisible(false);
+                    MenBar2.setVisible(false);
+                }
+                requestFocus();
 
             });
             // Deactivate Server
@@ -299,31 +245,21 @@ public class ServerGUI extends JFrame {
 //
 //            });
 // Config File Button
-            Conf.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-//                        new ConfigEditor();
-//                        dispose();
-                        updateData(new EditConfig());
-                    } catch (ConfigNotInitializedException ex) {
-                        ex.printStackTrace();
-                        System.out.println("Config has not been initialized");
-                    }
+            Conf.addActionListener(e -> {
+                try {
+                    updateData(new EditConfig());
+                } catch (ConfigNotInitializedException ex) {
+                    ex.printStackTrace();
+                    System.out.println("Config has not been initialized");
                 }
-
             });
 
 
-            AConnect.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println(server);
-                    String p = "Number of active connections: " + server.getconnections();
-                    addToTextArea(p + "");
-                    requestFocus();
-                }
-
+            AConnect.addActionListener(e -> {
+                System.out.println(server);
+                String p = "Number of active connections: " + server.getconnections();
+                addToTextArea(p + "");
+                requestFocus();
             });
 
 
@@ -340,81 +276,49 @@ public class ServerGUI extends JFrame {
     }
     //innerclass for holding the window title
     private static class Label extends JPanel{
-        private JLabel title;
-        private String text;
+        private final JLabel title;
 
 
         Label(){
-            setLayout(new FlowLayout(1, 10,10));
+            setLayout(new FlowLayout(FlowLayout.CENTER, 10,10));
             Border labelBorder = BorderFactory.createLineBorder(Color.black);
-            this.text = "";
+            String text = "";
             title = new JLabel(text);
             title.setBorder(labelBorder);
             title.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             this.add(title);
         }
 
-        Label(String text){
-            super();
-            this.setText(text);
-        }
         protected void setText(String newText){
             this.title.setText(newText);
             System.out.println("Label new text: " + newText);
-        }
-        protected String getText(){
-            return this.text;
         }
     }
 
     //innerclass for editing config
     protected class EditConfig extends displayPanel implements ItemListener {
 //        private ControlArea control;
-        private JButton apply;
-        private JButton cancel;
-        private JLabel usernameSettings;
-        private JLabel passwordSettings;
-        private JLabel emailSettings;
-        private JLabel databaseAndOtherSettings;
-        private JLabel minUsernameLength;
-        private JTextField minUsernameValue;
-        private JLabel maxUsernameLength;
-        private JTextField maxUsernameValue;
-        private JLabel illegalUsernameCharacters;
-        private JTextField illegalUsernameChars;
-        private JTextField illegalUsernameCharsList;
-        private JLabel minPasswordLength;
-        private JTextField minPasswordValue;
-        private JLabel maxPasswordLength;
-        private JTextField maxPasswordValue;
-        private JLabel illegalPasswordCharacters;
-        private JTextField illegalPasswordChars;
-        private JTextField illegalPasswordCharList;
-        private JLabel requiredCharSets;
-        private JCheckBox uppercaseLetters;
-        private JCheckBox lowercaseLetters;
-        private JCheckBox numbers;
-        private JCheckBox symbols;
-        private JCheckBox enforcePassHistoryValue;
-        private JLabel enforcePassHistory;
-        private JLabel validEmailFormat;
-        private JTextField validEmailFormatValue;
-        private JLabel systemEmail;
-        private JTextField systemEmailValue;
-        private JLabel systemEmailPassword;
-        private JTextField systemEmailPasswordValue;
-        private JLabel userDatabaseFilePath;
-        private JTextField userDatabaseFilePathValue;
-        private JLabel systemDatabaseFilePath;
-        private JTextField systemDatabaseFilePathValue;
-        private JLabel databaseUsername;
-        private JTextField databaseUsernameValue;
-        private JLabel databasePassword;
-        private JTextField databasePasswordValue;
-        private JLabel lockoutThreshold;
-        private JTextField lockoutThresholdValue;
-        private final Font timesNewRoman = new Font("TimesRoman", Font.PLAIN, 15);
-        private GridBagConstraints gbc = new GridBagConstraints();
+        private final JButton apply;
+        private final JButton cancel;
+        private final JTextField minUsernameValue;
+        private final JTextField maxUsernameValue;
+        private final JTextField illegalUsernameCharsList;
+        private final JTextField minPasswordValue;
+        private final JTextField maxPasswordValue;
+        private final JTextField illegalPasswordCharList;
+        private final JCheckBox uppercaseLetters;
+        private final JCheckBox lowercaseLetters;
+        private final JCheckBox numbers;
+        private final JCheckBox symbols;
+        private final JCheckBox enforcePassHistoryValue;
+        private final JTextField validEmailFormatValue;
+        private final JTextField systemEmailValue;
+        private final JTextField systemEmailPasswordValue;
+        private final JTextField userDatabaseFilePathValue;
+        private final JTextField systemDatabaseFilePathValue;
+        private final JTextField databaseUsernameValue;
+        private final JTextField databasePasswordValue;
+        private final JTextField lockoutThresholdValue;
         private boolean uppercaseValue;
         private boolean lowercaseValue;
         private boolean numbersValue;
@@ -422,46 +326,29 @@ public class ServerGUI extends JFrame {
         private boolean passHistoryValue;
 
         protected EditConfig() throws ConfigNotInitializedException {
-//            Config.initializeConfig("ServerConfiguration.conf");
-//            setTitle("Config Editor");
-//            setLayout(new BorderLayout(15, 5));
-//            this.minPasswordLength = new JLabel("Minimum Password Length: ");
-//            this.minPasswordLength.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-//            this.minPasswordValue = new JTextField(String.valueOf(Config.getMinPasswordLength()), 25);
-//            this.add(minPasswordLength,BorderLayout.CENTER);
-//            this.add(minPasswordValue,BorderLayout.CENTER);
-//            this.setVisible(true);
-//            this.repaint();
             this.setPanelName("Config Editor");
-//            this.setSpaces("                                                                                                              ");
-//            setTitle("Config Editor");
             setSize(WIDTH, HEIGHT);
 //            setLayout(new FlowLayout(1,10,10));
             setLayout(new GridBagLayout());
             windowTitle.setText(this.getLabel());
             //initialize components
-//            this.settings = new JLabel("Username Settings");
-//            this.usernameSettings = new JButton("Username Settings");
-//            this.passwordSettings = new JButton("Password Settings");
-//            this.emailSettings = new JButton("Email Settings");
-//            this.databaseAndOtherSettings = new JButton("Database And Other Settings");
-//            this.control = new ControlArea();
-            this.usernameSettings = new JLabel("Username Settings");
-            this.usernameSettings.setFont(timesNewRoman);
-            this.passwordSettings = new JLabel("Password Settings");
-            this.passwordSettings.setFont(timesNewRoman);
-            this.emailSettings = new JLabel("Email Settings");
-            this.emailSettings.setFont(timesNewRoman);
-            this.databaseAndOtherSettings = new JLabel("Database and other settings");
-            this.databaseAndOtherSettings.setFont(timesNewRoman);
-            this.minUsernameLength = new JLabel("Minimum Username Length");
-            this.minUsernameLength.setFont(timesNewRoman);
+            JLabel usernameSettings = new JLabel("Username Settings");
+            Font timesNewRoman = new Font("TimesRoman", Font.PLAIN, 15);
+            usernameSettings.setFont(timesNewRoman);
+            JLabel passwordSettings = new JLabel("Password Settings");
+            passwordSettings.setFont(timesNewRoman);
+            JLabel emailSettings = new JLabel("Email Settings");
+            emailSettings.setFont(timesNewRoman);
+            JLabel databaseAndOtherSettings = new JLabel("Database and other settings");
+            databaseAndOtherSettings.setFont(timesNewRoman);
+            JLabel minUsernameLength = new JLabel("Minimum Username Length");
+            minUsernameLength.setFont(timesNewRoman);
             this.minUsernameValue = new JTextField(String.valueOf(Config.getMinUsernameLength()), 25);
-            this.maxUsernameLength = new JLabel("Maximum Username Length");
-            this.maxUsernameLength.setFont(timesNewRoman);
+            JLabel maxUsernameLength = new JLabel("Maximum Username Length");
+            maxUsernameLength.setFont(timesNewRoman);
             this.maxUsernameValue = new JTextField(String.valueOf(Config.getMaxUsernameLength()), 25);
-            this.illegalUsernameCharacters = new JLabel("Illegal Username Characters");
-            this.illegalUsernameCharacters.setFont(timesNewRoman);
+            JLabel illegalUsernameCharacters = new JLabel("Illegal Username Characters");
+            illegalUsernameCharacters.setFont(timesNewRoman);
             String badUserChars;
             if (Config.getIllegalUsernameCharacters().length < 1){
                 badUserChars = "";
@@ -470,17 +357,17 @@ public class ServerGUI extends JFrame {
                 badUserChars = Utilities.getStringFromArray(Config.getIllegalUsernameCharacters());
             }
             this.illegalUsernameCharsList = new JTextField(badUserChars,25);
-            this.minPasswordLength = new JLabel("Minimum Password Length: ");
-            this.minPasswordLength.setFont(timesNewRoman);
+            JLabel minPasswordLength = new JLabel("Minimum Password Length: ");
+            minPasswordLength.setFont(timesNewRoman);
             this.minPasswordValue = new JTextField(String.valueOf(Config.getMinPasswordLength()), 25);
-            this.maxPasswordLength = new JLabel("Maximum Password Length");
-            this.maxPasswordLength.setFont(timesNewRoman);
+            JLabel maxPasswordLength = new JLabel("Maximum Password Length");
+            maxPasswordLength.setFont(timesNewRoman);
             this.maxPasswordValue = new JTextField(String.valueOf(Config.getMaxPasswordLength()), 25);
-            this.illegalPasswordCharacters = new JLabel("Illegal Password Characters");
-            this.illegalPasswordCharacters.setFont(timesNewRoman);
+            JLabel illegalPasswordCharacters = new JLabel("Illegal Password Characters");
+            illegalPasswordCharacters.setFont(timesNewRoman);
             this.illegalPasswordCharList = new JTextField(Config.getIllegalPasswordCharacters(),25);
-            this.requiredCharSets = new JLabel("Required Character sets:");
-            this.requiredCharSets.setFont(timesNewRoman);
+            JLabel requiredCharSets = new JLabel("Required Character sets:");
+            requiredCharSets.setFont(timesNewRoman);
             boolean[] charSetRequirements = Config.getRequiredCharacterSets();
             this.lowercaseLetters = new JCheckBox("Lowercase",charSetRequirements[0]);
             this.lowercaseValue = charSetRequirements[0];
@@ -496,31 +383,31 @@ public class ServerGUI extends JFrame {
             this.symbols.setMnemonic(KeyEvent.VK_T);
             this.enforcePassHistoryValue = new JCheckBox("",Config.getEnforcePasswordHistory());
             this.enforcePassHistoryValue.setMnemonic(KeyEvent.VK_0);
-            this.enforcePassHistory = new JLabel("Enforce Password History:");
-            this.enforcePassHistory.setFont(timesNewRoman);
-            this.validEmailFormat = new JLabel("Valid Email Format");
-            this.validEmailFormat.setFont(timesNewRoman);
+            JLabel enforcePassHistory = new JLabel("Enforce Password History:");
+            enforcePassHistory.setFont(timesNewRoman);
+            JLabel validEmailFormat = new JLabel("Valid Email Format");
+            validEmailFormat.setFont(timesNewRoman);
             this.validEmailFormatValue = new JTextField(Config.getValidEmailFormat(),25);
-            this.systemEmail = new JLabel("System Email: ");
-            this.systemEmail.setFont(timesNewRoman);
+            JLabel systemEmail = new JLabel("System Email: ");
+            systemEmail.setFont(timesNewRoman);
             this.systemEmailValue = new JTextField(Config.getEmailUsername(),25);
-            this.systemEmailPassword = new JLabel("System Email Password");
-            this.systemEmailPassword.setFont(timesNewRoman);
+            JLabel systemEmailPassword = new JLabel("System Email Password");
+            systemEmailPassword.setFont(timesNewRoman);
             this.systemEmailPasswordValue = new JTextField(Config.getEmailPassword(),25);
-            this.userDatabaseFilePath = new JLabel("User Database File Path");
-            this.userDatabaseFilePath.setFont(timesNewRoman);
+            JLabel userDatabaseFilePath = new JLabel("User Database File Path");
+            userDatabaseFilePath.setFont(timesNewRoman);
             this.userDatabaseFilePathValue = new JTextField(Config.getUserDatabaseServerAddress(),25);
-            this.systemDatabaseFilePath = new JLabel("System Database File Path");
-            this.systemDatabaseFilePath.setFont(timesNewRoman);
+            JLabel systemDatabaseFilePath = new JLabel("System Database File Path");
+            systemDatabaseFilePath.setFont(timesNewRoman);
             this.systemDatabaseFilePathValue = new JTextField(Config.getSystemDatabaseServerAddress(),25);
-            this.databaseUsername = new JLabel("Database Username");
-            this.databaseUsername.setFont(timesNewRoman);
+            JLabel databaseUsername = new JLabel("Database Username");
+            databaseUsername.setFont(timesNewRoman);
             this.databaseUsernameValue = new JTextField(Config.getDatabaseUsername(),25);
-            this.databasePassword = new JLabel("Database Password");
-            this.databasePassword.setFont(timesNewRoman);
+            JLabel databasePassword = new JLabel("Database Password");
+            databasePassword.setFont(timesNewRoman);
             this.databasePasswordValue = new JTextField(Config.getDatabasePassword(),25);
-            this.lockoutThreshold = new JLabel("Lockout Threshold");
-            this.lockoutThreshold.setFont(timesNewRoman);
+            JLabel lockoutThreshold = new JLabel("Lockout Threshold");
+            lockoutThreshold.setFont(timesNewRoman);
             this.lockoutThresholdValue = new JTextField(String.valueOf(Config.getLockoutThreshold()),25);
             this.cancel = new JButton("Cancel");
             this.apply = new JButton("Apply");
@@ -531,133 +418,134 @@ public class ServerGUI extends JFrame {
             this.enforcePassHistoryValue.addItemListener(this);
             prepareButtonHandlers();
             prepareMouseHandlers();
+            GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
             gbc.gridwidth = 5;
-            this.add(usernameSettings,gbc);
+            this.add(usernameSettings, gbc);
             gbc.gridy = 1;
             gbc.gridwidth = 1;
-            this.add(minUsernameLength,gbc);
+            this.add(minUsernameLength, gbc);
             gbc.gridx = 1;
             gbc.gridwidth = 4;
-            this.add(minUsernameValue,gbc);
+            this.add(minUsernameValue, gbc);
             gbc.gridy = 2;
             gbc.gridx = 0;
             gbc.gridwidth = 1;
             this.add(maxUsernameLength, gbc);
             gbc.gridx = 1;
             gbc.gridwidth = 4;
-            this.add(maxUsernameValue,gbc);
+            this.add(maxUsernameValue, gbc);
             gbc.gridx = 0;
             gbc.gridy = 3;
             gbc.gridwidth = 1;
-            this.add(illegalUsernameCharacters,gbc);
+            this.add(illegalUsernameCharacters, gbc);
             gbc.gridx = 1;
             gbc.gridwidth = 4;
-            this.add(illegalUsernameCharsList,gbc);
+            this.add(illegalUsernameCharsList, gbc);
             gbc.gridx = 0;
             gbc.gridy = 4;
             gbc.gridwidth = 5;
-            this.add(passwordSettings,gbc);
+            this.add(passwordSettings, gbc);
             gbc.gridy = 5;
             gbc.gridwidth = 1;
-            this.add(minPasswordLength,gbc);
+            this.add(minPasswordLength, gbc);
             gbc.gridx = 1;
             gbc.gridwidth = 4;
-            this.add(minPasswordValue,gbc);
+            this.add(minPasswordValue, gbc);
             gbc.gridx = 0;
             gbc.gridy = 6;
             gbc.gridwidth = 1;
-            this.add(maxPasswordLength,gbc);
+            this.add(maxPasswordLength, gbc);
             gbc.gridx = 1;
             gbc.gridwidth = 4;
-            this.add(maxPasswordValue,gbc);
+            this.add(maxPasswordValue, gbc);
             gbc.gridx = 0;
             gbc.gridy = 7;
             gbc.gridwidth = 1;
-            this.add(illegalPasswordCharacters,gbc);
+            this.add(illegalPasswordCharacters, gbc);
             gbc.gridx = 1;
             gbc.gridwidth = 4;
-            this.add(illegalPasswordCharList,gbc);
+            this.add(illegalPasswordCharList, gbc);
             gbc.gridx = 0;
             gbc.gridy = 8;
             gbc.gridwidth = 1;
-            this.add(requiredCharSets,gbc);
+            this.add(requiredCharSets, gbc);
             gbc.gridx = 1;
-            this.add(lowercaseLetters,gbc);
+            this.add(lowercaseLetters, gbc);
             gbc.gridx = 2;
-            this.add(uppercaseLetters,gbc);
+            this.add(uppercaseLetters, gbc);
             gbc.gridx = 3;
-            this.add(numbers,gbc);
+            this.add(numbers, gbc);
             gbc.gridx = 4;
-            this.add(symbols,gbc);
+            this.add(symbols, gbc);
             gbc.gridx = 0;
             gbc.gridy = 9;
-            this.add(enforcePassHistory,gbc);
+            this.add(enforcePassHistory, gbc);
             gbc.gridx = 1;
-            this.add(enforcePassHistoryValue,gbc);
+            this.add(enforcePassHistoryValue, gbc);
             gbc.gridx = 0;
             gbc.gridy = 10;
             gbc.gridwidth = 5;
-            this.add(emailSettings,gbc);
+            this.add(emailSettings, gbc);
             gbc.gridy = 11;
             gbc.gridwidth = 1;
-            this.add(validEmailFormat,gbc);
+            this.add(validEmailFormat, gbc);
             gbc.gridx = 1;
             gbc.gridwidth = 4;
-            this.add(validEmailFormatValue,gbc);
+            this.add(validEmailFormatValue, gbc);
             gbc.gridx = 0;
             gbc.gridy = 12;
             gbc.gridwidth = 1;
-            this.add(systemEmail,gbc);
+            this.add(systemEmail, gbc);
             gbc.gridx = 1;
             gbc.gridwidth = 4;
-            this.add(systemEmailValue,gbc);
+            this.add(systemEmailValue, gbc);
             gbc.gridx = 0;
             gbc.gridy = 13;
             gbc.gridwidth = 1;
-            this.add(systemEmailPassword,gbc);
+            this.add(systemEmailPassword, gbc);
             gbc.gridx = 1;
             gbc.gridwidth = 4;
-            this.add(systemEmailPasswordValue,gbc);
+            this.add(systemEmailPasswordValue, gbc);
             gbc.gridx = 0;
             gbc.gridy = 14;
             gbc.gridwidth = 5;
-            this.add(databaseAndOtherSettings,gbc);
+            this.add(databaseAndOtherSettings, gbc);
             gbc.gridy = 15;
             gbc.gridwidth = 1;
-            this.add(userDatabaseFilePath,gbc);
+            this.add(userDatabaseFilePath, gbc);
             gbc.gridx = 1;
             gbc.gridwidth = 4;
-            this.add(userDatabaseFilePathValue,gbc);
+            this.add(userDatabaseFilePathValue, gbc);
             gbc.gridx = 0;
             gbc.gridy = 16;
             gbc.gridwidth = 1;
-            this.add(systemDatabaseFilePath,gbc);
+            this.add(systemDatabaseFilePath, gbc);
             gbc.gridx = 1;
             gbc.gridwidth = 4;
-            this.add(systemDatabaseFilePathValue,gbc);
+            this.add(systemDatabaseFilePathValue, gbc);
             gbc.gridx = 0;
             gbc.gridy = 17;
             gbc.gridwidth = 1;
-            this.add(databaseUsername,gbc);
+            this.add(databaseUsername, gbc);
             gbc.gridx = 1;
             gbc.gridwidth = 4;
-            this.add(databaseUsernameValue,gbc);
+            this.add(databaseUsernameValue, gbc);
             gbc.gridx = 0;
             gbc.gridy = 18;
             gbc.gridwidth = 1;
-            this.add(databasePassword,gbc);
+            this.add(databasePassword, gbc);
             gbc.gridx = 1;
             gbc.gridwidth = 4;
-            this.add(databasePasswordValue,gbc);
+            this.add(databasePasswordValue, gbc);
             gbc.gridx = 0;
             gbc.gridy = 19;
             gbc.gridwidth = 1;
-            this.add(lockoutThreshold,gbc);
+            this.add(lockoutThreshold, gbc);
             gbc.gridx = 1;
             gbc.gridwidth = 4;
-            this.add(lockoutThresholdValue,gbc);
+            this.add(lockoutThresholdValue, gbc);
             this.add(cancel);
             this.add(apply);
             this.setVisible(true);
@@ -675,14 +563,7 @@ public class ServerGUI extends JFrame {
             }
             return ch;
         }
-//        private String getStringFromArray(char[] chars){
-//            String str = "";
-//            for(int i = 0; i < chars.length; i ++){
-//                str = str + chars[i];
-//            }
-//            return str;
-//        }
-        private void saveChanges() throws ConfigNotInitializedException{
+private void saveChanges() throws ConfigNotInitializedException{
             int flag = 0;
             try {
                 Config.setMinUsernameLength(Integer.parseInt(minUsernameValue.getText()));
@@ -865,22 +746,9 @@ public class ServerGUI extends JFrame {
                 else{
                     symbolsValue = value;
                 }
-//                try {
-//                    boolean[] reqChars = Config.getRequiredCharacterSets();
-//                    reqChars[i] = value;
-//                    System.out.println(Arrays.toString(Config.getRequiredCharacterSets()));
-//                } catch (ConfigNotInitializedException ex) {
-//                    ex.printStackTrace();
-//                }
             }
             else{
                 passHistoryValue = value;
-//                try {
-//                    Config.setEnforcePasswordHistory(value);
-//                    System.out.println("Enforce Password History: " + Config.getEnforcePasswordHistory());
-//                } catch (ConfigNotInitializedException ex) {
-//                    ex.printStackTrace();
-//                }
             }
 
         }
@@ -1009,23 +877,16 @@ public class ServerGUI extends JFrame {
         }
 
         private void prepareButtonHandlers() {
-            cancel.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("Cancel");
-                    updateData(new ServerControl());
-                }
-
+            cancel.addActionListener(e -> {
+                System.out.println("Cancel");
+                updateData(new ServerControl());
             });
-            apply.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    System.out.println("Apply");
-                    try {
-                        saveChanges();
-                    } catch (ConfigNotInitializedException e) {
-                        e.printStackTrace();
-                    }
+            apply.addActionListener(actionEvent -> {
+                System.out.println("Apply");
+                try {
+                    saveChanges();
+                } catch (ConfigNotInitializedException e) {
+                    e.printStackTrace();
                 }
             });
         }
@@ -1037,13 +898,14 @@ public class ServerGUI extends JFrame {
     }
 
 
-    public class FieldPanel extends JPanel {
+    public static class FieldPanel extends JPanel {
 
         //private JButton loadButton;
         private final TextArea Text;
 
         public FieldPanel() {
-            setLayout(new FlowLayout(20, 20, 10));
+//            setLayout(new FlowLayout(20, 20, 10));
+            setLayout(new FlowLayout(FlowLayout.CENTER));
 
             Text = new TextArea("Information Will be Displayed Here", 20, 50);
 
@@ -1060,7 +922,7 @@ public class ServerGUI extends JFrame {
 
     }
 
-    public class BottomPanel extends JPanel {
+    public static class BottomPanel extends JPanel {
         private final JButton Close;
         private final JButton Done;
 
@@ -1082,17 +944,11 @@ public class ServerGUI extends JFrame {
         public void PrepareButtons() {
 
             // Close Button Action
-            Close.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
-                    System.exit(0);
-                }
-            });
+            Close.addActionListener(arg0 -> System.exit(0));
 
             // Forgot Button Action
-            Done.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
+            Done.addActionListener(arg0 -> {
 
-                }
             });
         }
 
@@ -1101,7 +957,6 @@ public class ServerGUI extends JFrame {
 
     public static void main(String[] args) throws ConfigNotInitializedException {
         Config.initializeConfig("ServerConfiguration.conf");
-        UserDatabase usrDB = new UserDatabase(Config.getUserDatabaseServerAddress(), Config.getDatabaseUsername(), Config.getDatabasePassword());
         new ServerGUI();
     }
 }
