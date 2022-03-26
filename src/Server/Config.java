@@ -76,11 +76,6 @@ public class Config implements Serializable {
         }
     }
 
-    public static void initializeConfig() {
-        if (config == null)
-            config = new Config();
-    }
-
     public static void initializeConfig(String filePath) {
 
         if (config == null) {
@@ -135,9 +130,7 @@ public class Config implements Serializable {
         catch (FileNotFoundException e) {
             assignDefaultValues();
             saveConfig();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -248,16 +241,6 @@ public class Config implements Serializable {
         return config.requiredCharacterSets;
     }
 
-    public static void setRequiredCharacterSets(boolean[] characterSets) throws ConfigNotInitializedException, InvalidAttributeValueException {
-        if (config == null)
-            throw new ConfigNotInitializedException("The config file has not been initialized.");
-        if (characterSets == null)
-            throw new InvalidAttributeValueException("Character array cannot be null");
-        if (characterSets.length != 4)
-            throw new InvalidAttributeValueException("Character sets array must be length 4.");
-        config.requiredCharacterSets = characterSets;
-    }
-
     public static boolean getEnforcePasswordHistory() throws ConfigNotInitializedException {
         if (config == null)
             throw new ConfigNotInitializedException("The config file has not been initialized.");
@@ -269,12 +252,6 @@ public class Config implements Serializable {
         config.enforcePasswordHistory = value;
     }
 
-
-    public static void setRequiredCharacterSets(boolean enforceHistory) throws ConfigNotInitializedException, InvalidAttributeValueException {
-        if (config == null)
-            throw new ConfigNotInitializedException("The config file has not been initialized.");
-        config.enforcePasswordHistory = enforceHistory;
-    }
 
     public static String getValidEmailFormat() throws ConfigNotInitializedException {
         if (config == null)
