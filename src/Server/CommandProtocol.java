@@ -1,14 +1,11 @@
 package Server;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import Client.Client;
 import Common.Message;
 import Common.NetworkAccess;
 import Common.User;
-import com.mysql.cj.util.Util;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 
 /**
@@ -17,101 +14,87 @@ import com.mysql.cj.util.Util;
 public class CommandProtocol {
 
     /**
-     * commands and their responses
-     */
-    private static final HashMap<String, String> commands;
-
-    static {
-        commands = new HashMap<>();
-        commands.put("disconnect", "");
-        commands.put("hello", "world!");
-    }
-
-    /**
      * process commands sent to the server
      *
      * @param cmd: command to be processed
      * @param na:  NetworkAccess object for communication
      * @param ch:  ClientHandler object requesting the processing
-     * @return
      */
     public static void processCommand(Message cmd, NetworkAccess na, ClientHandler ch) {
 //            System.out.println("CP user: " + cmd.user);
-        if (cmd.message.equals("disconnect")) {
+        switch (cmd.message) {
+            case "disconnect":
 
-            // -- no response to the client is necessary
-            na.close();
-            ch.getServer().removeID(ch.getID());
-            ch.Stop();
-        } else if (cmd.message.equals("hello")) {
+                // -- no response to the client is necessary
+                na.close();
+                ch.getServer().removeID(ch.getID());
+                ch.Stop();
+                break;
+            case "hello":
 
-            // -- client is expecting a response
-            na.sendMessage(new Message(null, "world!"), false);
+                // -- client is expecting a response
+                na.sendMessage(new Message(null, "world!"), false);
 
-        }else if(cmd.message.equals("login")){
+                break;
+            case "login":
 //                    login(cmd.user);
-            na.sendMessage(login(cmd.user,ch),false);
-//            if(login(cmd.user,ch)){
-//                na.sendMessage(new Message(null,"success"),false);
-//
-//            }
-//            else {
-//                na.sendMessage(new Message(null, "fail"),false);
-//            }
-        }else if(cmd.message.equals("logout")){
-            System.out.println(cmd.user.getUsername());
-            if(logout(cmd.user,ch)){
-                na.sendMessage(new Message(null,"success"),false);
-                ch.setUser(null);
-            }
-            else {
-                na.sendMessage(new Message(null,"fail"), false);
-            }
+                na.sendMessage(login(cmd.user, ch), false);
+                break;
+            case "logout":
+                System.out.println(cmd.user.getUsername());
+                if (logout(cmd.user, ch)) {
+                    na.sendMessage(new Message(null, "success"), false);
+                    ch.setUser(null);
+                } else {
+                    na.sendMessage(new Message(null, "fail"), false);
+                }
 
-        } else if(cmd.message.equals("Register")){
-            na.sendMessage(register(cmd.user,ch),false);
-        }
-        else if(cmd.message.equals("recover")){
-            na.sendMessage(accountRecovery(cmd.user,ch),false);
-        }
-        else if (cmd.message.equals("updateSettings")){
-            na.sendMessage(updateAccountSettings(cmd.user,ch),false);
-        }
-        else if(cmd.message.equals("getUser")){
-             na.sendMessage(getUser(cmd.user,ch),false);
-        }
-        else if(cmd.message.equals("getWishList")){
-            na.sendMessage(getWishList(cmd.user,ch),false);
-        }
-        else if(cmd.message.equals("add")){
-            System.out.println(cmd.user.getEntry());
-            na.sendMessage(addItem(cmd.user,ch), false);
-        }
-        else if (cmd.message.equals("remove")){
-            na.sendMessage(removeItem(cmd.user,ch), false);
-        }
-        else if (cmd.message.equals("clear")){
-            na.sendMessage(clearWishList(ch),false);
-        }
-        else if (cmd.message.equals("confirmed?")){
-            na.sendMessage(getWishListConformation(ch),false);
-        }
-        else if(cmd.message.equals("confirm")){
-            na.sendMessage(confirmWishList(ch),false);
-        }
-        else if (cmd.message.equals("unconfirm")){
-            na.sendMessage(unconfirmWishList(ch),false);
-        }
-        else if(cmd.message.equals("getRecipientWishList")){
-            na.sendMessage(getRecipientWishList(ch),false);
-        }
-        else if(cmd.message.equals("getRecipient")){
-            na.sendMessage(getRecipient(ch),false);
-        }
-        else {
+                break;
+            case "Register":
+                na.sendMessage(register(cmd.user, ch), false);
+                break;
+            case "recover":
+                na.sendMessage(accountRecovery(cmd.user, ch), false);
+                break;
+            case "updateSettings":
+                na.sendMessage(updateAccountSettings(cmd.user, ch), false);
+                break;
+            case "getUser":
+                na.sendMessage(getUser(cmd.user, ch), false);
+                break;
+            case "getWishList":
+                na.sendMessage(getWishList(cmd.user, ch), false);
+                break;
+            case "add":
+                System.out.println(cmd.user.getEntry());
+                na.sendMessage(addItem(cmd.user, ch), false);
+                break;
+            case "remove":
+                na.sendMessage(removeItem(cmd.user, ch), false);
+                break;
+            case "clear":
+                na.sendMessage(clearWishList(ch), false);
+                break;
+            case "confirmed?":
+                na.sendMessage(getWishListConformation(ch), false);
+                break;
+            case "confirm":
+                na.sendMessage(confirmWishList(ch), false);
+                break;
+            case "unconfirm":
+                na.sendMessage(unconfirmWishList(ch), false);
+                break;
+            case "getRecipientWishList":
+                na.sendMessage(getRecipientWishList(ch), false);
+                break;
+            case "getRecipient":
+                na.sendMessage(getRecipient(ch), false);
+                break;
+            default:
 
-            na.sendMessage(cmd, false);
+                na.sendMessage(cmd, false);
 
+                break;
         }
     }
     //method to login a user
@@ -129,7 +112,6 @@ public class CommandProtocol {
             if(result.getPassword() != null) {
                 if (result.getLockCount() >= Config.getLockoutThreshold()) {
                     msg.message = "Your account is locked, please recover it to continue";
-                    return msg;
                 }
                 else {
                     if(result.getPassword().equals(password)){
@@ -146,13 +128,12 @@ public class CommandProtocol {
                             Utilities.lockedOutNotification(result);
                         }
                     }
-                    return msg;
                 }
             }
             else{
                 msg.message = "User does not exist";
-                return msg;
             }
+            return msg;
 
         }
         catch (SQLException | ConfigNotInitializedException throwables) {
@@ -189,26 +170,24 @@ public class CommandProtocol {
                 if(stop){
 //                    na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Utilities.getStringFromArray(illegalChars)),false);
                     result.message = "Usernames cannot contain the following: " + Utilities.getStringFromArray(illegalChars);
-                    return result;
                 }
                 else{
                     User test = ch.getServer().getUserDatabase().getUser(usr.getUsername());
                     if(test.getUsername() != null){
 //                        na.sendMessage(new Message(null, "Username already exists"),false);
                         result.message = "Username already exists";
-                        return result;
                     }
                     else{
-                        validatePasswordAndEmail(usr,result,ch);
+                        validatePasswordAndEmail(usr,result);
                         if(result.message.equals("success")){
                             ch.getServer().getUserDatabase().addUser(usr);
                             usr = ch.getServer().getUserDatabase().getUser(usr.getUsername());
                             ch.getServer().getSystemDatabase().addIndex(usr);
                             Utilities.accountCreated(usr);
                         }
-                        return result;
                     }
                 }
+                return result;
 
             }
         } catch (ConfigNotInitializedException | SQLException e) {
@@ -238,7 +217,7 @@ public class CommandProtocol {
         return result;
     }
     //method to validate the password
-    private static boolean validatePasswordAndEmail(User usr, Message result, ClientHandler ch){
+    private static boolean validatePasswordAndEmail(User usr, Message result){
         try {
             if(usr.getPassword().length() > Config.getMaxPasswordLength()){
     //                        na.sendMessage(new Message(null, "Password must be less than " + Config.getMaxPasswordLength() + " characters long"),false);
@@ -258,7 +237,6 @@ public class CommandProtocol {
                 else {
                     System.out.println("Testing password required sets");
                     boolean[] requiredTypes = Config.getRequiredCharacterSets();
-                    stop = false;
                     int i = 0;
                     while((!stop) && (i < requiredTypes.length)){
                         if(requiredTypes[i]){
@@ -327,17 +305,13 @@ public class CommandProtocol {
         Message msg = new Message(null,"");
         try{
             usr.setId(userDb.getUser(ch.getUser().getUsername()).getId());
-//            ArrayList<String> passHistory = userDb.getPassHistory(usr);
-//            System.out.println(usr.getUsername() + ": " + passHistory);
             User update = userDb.getUser(ch.getUser().getUsername());
             update.setEmail(usr.getEmail());
             update.setPassword(usr.getPassword());
             update.setName(usr.getName());
             System.out.println(update.getPassword());
-            if(validatePasswordAndEmail(update,msg,ch)){
+            if(validatePasswordAndEmail(update,msg)){
                 if(Config.getEnforcePasswordHistory()){
-//                    System.out.println("password to be checked: " + update.getPassword());
-//                    System.out.println("Current password: " + userDb.getUser(ch.getUser().getUsername()).getPassword());
                     if(!usr.getPassword().equals(userDb.getUser(update.getUsername()).getPassword())) {
                         if (userDb.checkPassHistory(update)) {
                             msg.message = "You cannot use a previous password";
@@ -447,7 +421,6 @@ public class CommandProtocol {
         System.out.println(ch.getUser());
         WishListDatabase wldb = ch.getServer().getSystemDatabase();
         UserDatabase usrDB = ch.getServer().getUserDatabase();
-//        System.out.println("User who's list conformation is being checked: " + ch.getUser());
         User usr;
         try{
             usr = usrDB.getUser(ch.getUser().getUsername());
@@ -553,11 +526,10 @@ public class CommandProtocol {
         System.out.println("User:" + result.user);
         return result;
     }
-    //method to get a user's recpient
+    //method to get a user's recipient
     private static Message getRecipient(ClientHandler ch){
         User user = new User();
         Message result = new Message(user,"success");
-        WishListDatabase wldb = ch.getServer().getSystemDatabase();
         UserDatabase usrDB = ch.getServer().getUserDatabase();
         User usr;
         try{
