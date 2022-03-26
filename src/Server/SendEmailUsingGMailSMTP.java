@@ -2,41 +2,29 @@ package Server;
 
 // -- Download JavaMail API from here: http://www.oracle.com/technetwork/java/javamail/index.html
 // -- Download JavaBeans Activation Framework from here: http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-java-plat-419418.html#jaf-1.1.1-fcs-oth-JPR
-import java.util.Properties;
-import java.util.Scanner;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Properties;
 
 public class SendEmailUsingGMailSMTP extends Thread{
-    private String to;
-    private String subject;
-    private String _message;
+    private final String to;
+    private final String subject;
+    private final String _message;
     private boolean go;
 
 	// -- set the gmail host URL
 	final static private String host = "smtp.gmail.com";
 
 	// -- You must have a valid gmail username/password pair to use
-	// gmail as a SMTP service
+	// gmail as an SMTP service
 	static private String username = "<<your gmail username>>";
 	static private String password = "<<your gmail password>>";
 
 	public static void main(String[] args) throws ConfigNotInitializedException {
 		Config.initializeConfig("ServerConfiguration.conf");
-//		sendEmail("example@gmail.com", "Team MERJ", """
-//				Dear user,
-//
-//				This is a test email to make sure that the email sender for the Client-Server project is working.
-//
-//				Regards,
-//				Team MERJ""");
-       new  SendEmailUsingGMailSMTP("Jrstojkovic123@gmail.com","Test Email", "Dear User,\n\n\nThis is a test Email.\n\n\nWith regards, Jessica Stojkovic");
+        new  SendEmailUsingGMailSMTP("Jrstojkovic123@gmail.com","Test Email", "Dear User,\n\n\nThis is a test Email.\n\n\nWith regards, Jessica Stojkovic");
 	}
 
 	//Constructor
