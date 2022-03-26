@@ -9,10 +9,6 @@ import java.util.ArrayList;
 //A class that provides all the interaction methods for the user database
 class UserDatabase extends Database {
 
-    //Default Constructor
-    protected UserDatabase() {
-    }
-
     //Overloaded constructor
     protected UserDatabase(String url, String username, String password) {
         super(url, username, password);
@@ -65,9 +61,6 @@ class UserDatabase extends Database {
                 }
 
             }
-//            usr.print();
-//            System.out.println(usr.getUsername());
-//            System.out.println(rset.getString(numberOfColumns));
         }
         return usr;
     }
@@ -80,7 +73,7 @@ class UserDatabase extends Database {
         User usr = new User();
         int numberOfColumns = rsmd.getColumnCount(); // get the number of columns in the result set
         String data;
-        while (rset.next()) { // I don't know why this while loop has to be here but it does
+        while (rset.next()) { // I don't know why this while loop has to be here, but it does
             // -- loop through the columns of the ResultSet
             for (int i = 1; i <= numberOfColumns; ++i) {
 //                System.out.print(rset.getString(i) + "\t\t");
@@ -116,9 +109,6 @@ class UserDatabase extends Database {
                 }
 
             }
-//            usr.print();
-//            System.out.println(usr.getUsername());
-//            System.out.println(rset.getString(numberOfColumns));
         }
         return usr;
     }
@@ -129,7 +119,7 @@ class UserDatabase extends Database {
         User usr = new User();
         int numberOfColumns = rsmd.getColumnCount(); // get the number of columns in the result set
         String data;
-        while (rset.next()) { // I don't know why this while loop has to be here but it does
+        while (rset.next()) { // I don't know why this while loop has to be here, but it does
             // -- loop through the columns of the ResultSet
             for (int i = 1; i <= numberOfColumns; ++i) {
 //                System.out.print(rset.getString(i) + "\t\t");
@@ -165,9 +155,6 @@ class UserDatabase extends Database {
                 }
 
             }
-//            usr.print();
-//            System.out.println(usr.getUsername());
-//            System.out.println(rset.getString(numberOfColumns));
         }
         return usr;
     }
@@ -193,9 +180,6 @@ class UserDatabase extends Database {
     protected void login(User usr) {
 //        System.out.println(usr.getLoggedIn());
         usr.setLoggedIn(usr.getLoggedIn() + 1);
-//        System.out.println(usr.getLoggedIn());
-//        this.update("UPDATE users SET `loggedIn` = '" + usr.getLoggedIn() + "' WHERE (`username` = '" + usr.getUsername() +"');");
-//        System.out.println(usr.getUsername());
         this.update("UPDATE `users` SET `loggedIn` = '" + usr.getLoggedIn() + "', `lockCount` = '" + 0 + "' WHERE (`username` = '"+ usr.getUsername() + "');");
     }
 
@@ -238,10 +222,6 @@ class UserDatabase extends Database {
         int numberOfColumns = rsmd.getColumnCount();
         while(rset.next()){
             for(int i =1; i <= numberOfColumns; i++){
-//                System.out.println(rset.getString(i));
-//                if(Integer.parseInt(rset.getString(i)) >= 3){
-//                    count++;
-//                }
                 count += Integer.parseInt(rset.getString(i));
             }
         }
@@ -250,10 +230,8 @@ class UserDatabase extends Database {
 
     //method that returns an array of the usernames of the logged in accounts
     protected ArrayList<String> getWhoLoggedIn() throws SQLException {
-        ArrayList loggedInUsers = new ArrayList();
+        ArrayList<String> loggedInUsers = new ArrayList<>();
         rset = this.query("Select loggedIn, username from users;");
-//        ResultSetMetaData rsmd = rset.getMetaData();
-//        int numberOfColumns = rsmd.getColumnCount();
         int loggedIn;
         while(rset.next()){
 //            System.out.print(rset.getString(1) + " ");
@@ -261,9 +239,7 @@ class UserDatabase extends Database {
             if(loggedIn >= 1){
                 loggedInUsers.add(rset.getString(2));
             }
-//            System.out.println(rset.getString(2));
 
-//            System.out.println();
         }
         return loggedInUsers;
     }
@@ -281,14 +257,12 @@ class UserDatabase extends Database {
 
     //method that returns an array of the usernames of the locked out accounts
     protected ArrayList<String> getWhoLockedOut() throws SQLException {
-        ArrayList<String> lockedOutUsers = new ArrayList<String>();
+        ArrayList<String> lockedOutUsers = new ArrayList<>();
         rset = this.query("Select lockCount, username from users;");
-        int lockCount = 0;
+        int lockCount;
         while(rset.next()){
 //            System.out.print(rset.getString(1) + " ");
             lockCount = Integer.parseInt(rset.getString(1));
-//            System.out.print(lockCount + " ");
-//            System.out.println(rset.getString(2));
             try {
                 if(lockCount >= Config.getLockoutThreshold()){
                     lockedOutUsers.add(rset.getString(2));
@@ -296,35 +270,12 @@ class UserDatabase extends Database {
             } catch (ConfigNotInitializedException e) {
                 e.printStackTrace();
             }
-//            System.out.println(rset.getString(2));
 
-//            System.out.println();
         }
 //        System.out.println(lockedOutUsers);
         return lockedOutUsers;
     }
 
-    //method to reset a user's lock count
-    protected void resetLockCount(User usr) {
-
-    }
-    //method that returns an arraylist containing all the user's previous passwords
-    protected ArrayList<String> getPassHistory(User usr){
-        ArrayList<String> history = new ArrayList<String>();
-        try{
-        usr.setId(getUser(usr.getUsername()).getId());
-        rset = this.query("SELECT * FROM passwordhistory WHERE userid = '" + usr.getId() + "';");
-            ResultSetMetaData rsmd = rset.getMetaData();
-            int numberOfColumns = rsmd.getColumnCount();
-            while (rset.next()) { // I don't know why this while loop has to be here but it does
-                  history.add(rset.getString(3));
-            }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        System.out.println(history);
-        return history;
-    }
     //method to check if a password has already been used by a user
     //returns true if the password has been used before
     protected boolean checkPassHistory(User usr){
@@ -333,14 +284,9 @@ class UserDatabase extends Database {
             usr.setId(getUser(usr.getUsername()).getId());
             System.out.println("Id: " + usr.getId() + "password to be checked: " + usr.getPassword());
             rset = this.query("SELECT password FROM passwordhistory WHERE userid = '" + usr.getId() + "' and password = '" +usr.getPassword() +"';");
-            ResultSetMetaData rsmd = rset.getMetaData();
-            String s;
             if(rset.next()) {
                 result = true;
             }
-//            while(rset.next()){
-//
-//            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -349,15 +295,15 @@ class UserDatabase extends Database {
     }
     //method to clear password history
     public void clearPassHistory(){
-        ArrayList<Integer> ids = new ArrayList<Integer>();
+        ArrayList<Integer> ids = new ArrayList<>();
         try {
             rset = query("select * from passwordhistory;");
             while (rset.next()) {
                 ids.add(rset.getInt(1));
 //                update("delete from passwordhistory where id = '" + id + "';");
             }
-            for(int i = 0; i < ids.size(); i++){
-                update("delete from passwordhistory where id = '" + ids.get(i) + "';");
+            for (Integer id : ids) {
+                update("delete from passwordhistory where id = '" + id + "';");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -375,8 +321,8 @@ class UserDatabase extends Database {
                 usr.setPassword(rset.getString(2));
                 users.add(usr);
             }
-            for(int i = 0; i< users.size(); i++){
-                addPassHistoryEntry(users.get(i));
+            for (User user : users) {
+                addPassHistoryEntry(user);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -401,11 +347,6 @@ class UserDatabase extends Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-//        usrDB.clearRecipientIDS();
-//        usrDB.printResultSet(usrDB.query("SELECT * FROM users;"));
-        //             usrDB.clearPassHistory();
-//        usrDB.populatePassHistory();
-//            User usr = usrDB.getUser("test");
         User usr = new User();
         usr.setName("test name");
         usr.setEmail("testEmail");
@@ -413,25 +354,6 @@ class UserDatabase extends Database {
 //            usrDB.updateUser(usr);
         usrDB.addUser(usr);
         System.out.println(usr);
-//            usr.setPassword("Example");
-//            usrDB.updateUser(usr);
-//            usrDB.addPassHistoryEntry(usr);
-//            User usr = new User("Jessica", "test123", "someEmail@gmail.com");
-//            usrDB.logout(user);
-//            usrDB.addUser(usr);
-//            usrDB.getUser("jstojkovic");
-//            usr.setUsername("Stojkovic");
-//            usr.setPassword("123test");
-//            usr.setEmail("fakeEmail@gmail.com");
-//            usr.setLoggedIn(1);
-//            usr.setLockCount(1);
-//            usrDB.updateUser(usr);
-//            usrDB.getUser("Stojkovic");
-//            usrDB.getUser("Jessica");
-//            System.out.println(usrDB.getNumberOfLoggedIn());
-//            System.out.println(usrDB.getWhoLoggedIn());
-//            usrDB.getNumRegistered();
-//            System.out.println(usrDB.getPassHistory(usr));
     }
 
 }
