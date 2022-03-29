@@ -10,7 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Vector;
 
 /*
@@ -40,7 +40,7 @@ public class Server extends Thread {
 	/**
 	 * provide access to the GUI
 	 */
-	ServerGUI servergui = null;
+	ServerGUI servergui;
 	
 	/**
 	 * the port number used for client communication
@@ -66,7 +66,7 @@ public class Server extends Thread {
 	 * list of active client threads by ID number
 	 * Vector is a "thread safe" ArrayList
 	 */
-	private final Vector<ClientHandler> clientconnections;
+	private final Vector<ClientHandler> clientConnections;
 
 	/**
 	 * the user and system databases
@@ -74,9 +74,9 @@ public class Server extends Thread {
 	private UserDatabase userDatabase;
 	private WishListDatabase systemDatabase;
 	
-	public int getconnections ()
+	public int getConnections()
 	{
-		return clientconnections.size();
+		return clientConnections.size();
 	}
 	//method to get the number of logged in clients
 	public int getNumLoggedIn(){
@@ -117,52 +117,6 @@ public class Server extends Thread {
     public void drawNames(ServerGUI.FieldPanel textArea, JButton button){
 	    new DrawNames(getUserDatabase(),getSystemDatabase(),textArea,button);
     }
-//    //Method to draw names and assign them to the users
-//    public String drawNames(){
-//	    String result = "success";
-//	    UserDatabase usrdb = getUserDatabase();
-//	    WishListDatabase wldb = getSystemDatabase();
-//	    ArrayList<Integer> ids = usrdb.getIds();
-//	    System.out.println("List of ids: " + ids );
-//	    if(ids.size() <=1){
-//	        result = "there needs to be at least two registered users";
-//        }else{
-//            ArrayList<Integer> shuffled = usrdb.getIds();
-//            Collections.shuffle(shuffled);
-//            System.out.println("list of shuffled ids: " + shuffled);
-//            boolean reshuffle = true;
-//            while(reshuffle){
-//                if(checkShuffle(ids,shuffled)){
-//                    reshuffle = false;
-//                }
-//                Collections.shuffle(shuffled);
-//            }
-//            User usr = new User();
-//            for(int i = 0; i< ids.size(); i++){
-//                try {
-//                    usr = usrdb.getUserById(ids.get(i));
-//                    usr.setSsrid(shuffled.get(i));
-//                    System.out.println("User to be updated: " + usr);
-//                    usrdb.updateUser(usr);
-//                    wldb.unconfirmWishList(usr);
-//                } catch (SQLException e) {
-//                    result = "Sql error";
-//                }
-//            }
-//
-//        }
-//
-//        return result;
-//    }
-//    //method to check and see if each user doesn't have themselves when names are drawn; returns true if no user has themselves
-//    private boolean checkShuffle(ArrayList<Integer> ids, ArrayList<Integer> shuffled){
-//	    for(int i = 0; i< ids.size(); i++){
-//	        if(ids.get(i)== shuffled.get(i)){
-//	            return false;
-//            }
-//        }
-//	    return true;
-//    }
 
     /**
 	 * constructor creates the list of clients and
@@ -173,7 +127,7 @@ public class Server extends Thread {
 		//System.out.println("yay");
 		
 		// -- construct the list of active client threads
-		clientconnections = new Vector<ClientHandler>();
+		clientConnections = new Vector<>();
 
 		try {
 			// -- construct the user and system databases
@@ -193,7 +147,7 @@ public class Server extends Thread {
 		}
 		catch (Exception e)
 		{
-			System.out.println(e.getStackTrace());
+			System.out.println(Arrays.toString(e.getStackTrace()));
 			System.exit(1);
 		}
 	}
@@ -224,7 +178,7 @@ public class Server extends Thread {
 
                     // -- connection accepted, create a peer-to-peer socket
                     //    between the server (thread) and client (route the call to the requested extension)
-                    peerconnection(socket);
+                    peerConnection(socket);
                 } catch(Exception e){
                     System.out.println("Server has been stopped");
                 }
@@ -245,13 +199,13 @@ public class Server extends Thread {
 	 * 
 	 * @param socket: socket from the ServerSocket.listen() call
 	 */
-	public void peerconnection (Socket socket)
+	public void peerConnection(Socket socket)
 	{		
 		// -- when a client arrives, create a thread for their communication
 		ClientHandler connection = new ClientHandler(nextId, socket, this, this.servergui);
 
 		// -- add the thread to the active client threads list
-		clientconnections.add(connection);
+		clientConnections.add(connection);
 		
 		// -- start the thread
 		connection.start();
@@ -272,20 +226,20 @@ public class Server extends Thread {
 	public void removeID(int id)
 	{
 		// -- find the object belonging to the client thread being terminated
-		for (int i = 0; i < clientconnections.size(); ++i) {
-			ClientHandler cc = clientconnections.get(i);
+		for (int i = 0; i < clientConnections.size(); ++i) {
+			ClientHandler cc = clientConnections.get(i);
 			long x = cc.getID();
 			if (x == id) {
 				// -- remove it from the active threads list
 				//    the thread will terminate itself
-				clientconnections.remove(i);
+				clientConnections.remove(i);
 				
 				// -- place some text in the area to let the server operator know
 				//    what is going on
 				System.out.println("SERVER: connection closed for client id " + id + "\n");
 				//decrements the ids of all the other connections after removed id
-				for(int j = i; j < clientconnections.size(); j++){
-				    clientconnections.get(j).decId();
+				for(int j = i; j < clientConnections.size(); j++){
+				    clientConnections.get(j).decId();
                 }
 				nextId--;
 				break;
@@ -293,7 +247,7 @@ public class Server extends Thread {
 		}
 	}
 	//method to close the server socket
-	protected void removeServersocket(){
+	protected void removeServerSocket(){
         try {
             this.serversocket.close();
         } catch (IOException e) {
@@ -302,13 +256,13 @@ public class Server extends Thread {
     }
     //method to log out and  disconnect all the clients from the server
     protected void logoutAndDisconnectClients(){
-	    int i = getconnections()-1;
+	    int i = getConnections()-1;
         User usr;
         NetworkAccess na;
-        while(getconnections()>0){
+        while(getConnections()>0){
             System.out.println("Connection #" + i);
-            na = clientconnections.get(i).getNetworkaccess();
-            usr = clientconnections.get(i).getUser();
+            na = clientConnections.get(i).getNetworkaccess();
+            usr = clientConnections.get(i).getUser();
             if(usr != null) {
                 try {
                     System.out.println(userDatabase.getUser(usr.getUsername()));
@@ -323,8 +277,8 @@ public class Server extends Thread {
             }
             na.sendMessage(new Message(null,"disconnect"),false);
             removeID(i);
-//            System.out.println("# of connections: " + getconnections());
-            i = getconnections()-1;
+//            System.out.println("# of connections: " + getConnections());
+            i = getConnections()-1;
         }
 
     }

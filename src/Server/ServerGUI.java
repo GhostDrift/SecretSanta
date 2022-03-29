@@ -52,7 +52,7 @@ public class ServerGUI extends JFrame {
                     if (server.isRunning()) {
                         System.out.println("Logging out and disconnecting clients");
                         server.stopServer();
-                        server.removeServersocket();
+                        server.removeServerSocket();
                     }
                 }
                 System.exit(0);
@@ -225,7 +225,7 @@ public class ServerGUI extends JFrame {
                 }
                 else if(Act.getText().equals("Deactivate Server")){
                     server.stopServer();
-                    server.removeServersocket();
+                    server.removeServerSocket();
                     Act.setText("Activate Server");
                     Conf.setVisible(true);
                     drawNames.setVisible(false);
@@ -257,7 +257,7 @@ public class ServerGUI extends JFrame {
 
             AConnect.addActionListener(e -> {
                 System.out.println(server);
-                String p = "Number of active connections: " + server.getconnections();
+                String p = "Number of active connections: " + server.getConnections();
                 addToTextArea(p + "");
                 requestFocus();
             });
