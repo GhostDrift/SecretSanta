@@ -2,8 +2,6 @@ package Server;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 public class Config implements Serializable {
     private static Config config;
@@ -379,33 +377,6 @@ public class Config implements Serializable {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static boolean isValidPassword(String password) {
-        String passwordregex = "^";
-        if (config.requiredCharacterSets[0])
-            passwordregex += "(?=.*[a-z])";
-        if (config.requiredCharacterSets[1])
-            passwordregex += "(?=.*[A-Z])";
-        if (config.requiredCharacterSets[2])
-            passwordregex += "(?=.*[0-9])";
-        if (config.requiredCharacterSets[3])
-            passwordregex += "(?=.*[@#$%^&+=])";
-        if (config.illegalPasswordCharacters.length() > 0)
-            passwordregex += "(?=^[^" + config.illegalPasswordCharacters + "]+$)";
-        passwordregex += "(?=\\S+$)";
-        passwordregex += ".{" + config.minPasswordLength + "," + config.maxPasswordLength + "}";
-        passwordregex += "$";
-
-        Pattern passwordpattern = Pattern.compile(passwordregex);
-        Matcher matcher = passwordpattern.matcher(password);
-        return matcher.find();
-    }
-
-    public static boolean isValidEmail(String emailAddress) {
-        String emailregex = config.validEmailFormat;
-        Pattern emailpattern = Pattern.compile(emailregex);
-        Matcher matcher = emailpattern.matcher(emailAddress);
-        return matcher.find();
-    }
 }
 
 class InvalidAttributeValueException extends Exception {
