@@ -6,9 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class WishListDatabase extends Database{
-    //constructor
-    public WishListDatabase(){
-    }
     //overloaded constructor
     public WishListDatabase(String url,String username,String password){
         super(url,username,password);
@@ -47,13 +44,12 @@ public class WishListDatabase extends Database{
             rset = query("select description from wishlistentries where id = '" + listId + "' and description = '" + entry + "';");
             if(rset.next()){
                 result = "Item already in list";
-                return result;
             }
             else{
                 update("INSERT INTO `wishlistentries` (`id`, `description`) VALUES ('" + listId + "', '" + entry + "');");
                 result = "success";
-                return result;
             }
+            return result;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -80,7 +76,6 @@ public class WishListDatabase extends Database{
     public void removeEntry(User usr, String entry){
         int listId = getListID(usr);
         System.out.println(listId);
-        int entryId = 0;
         ArrayList<String> wl = getWishList(usr);
 //        System.out.println(wl.get(0));
         entry = wl.get(Integer.parseInt(entry));
@@ -99,7 +94,7 @@ public class WishListDatabase extends Database{
 //            throwables.printStackTrace();
 //        }
     }
-    //method to obtain the wishlist Id
+    //method to obtain the wishlist ID
     private int getListID(User usr){
         int listId = 0;
         try{
@@ -114,7 +109,6 @@ public class WishListDatabase extends Database{
     }
     //method to confirm wishlist
     public void confirmWishList(User usr){
-        int listId = getListID(usr);
         update("UPDATE `wishlistindex` SET `confirmed` = '1' WHERE (`ownerId` = '" + usr.getId() +"');");
     }
     //method to unconfirm wish list
@@ -124,21 +118,18 @@ public class WishListDatabase extends Database{
     //method to get wishList conformation
     public boolean getWishListConformation(User usr){
         boolean confirmed = false;
-//        System.out.println("User who's list conformation is being checked: " + usr);
+//        System.out.println("User whose list conformation is being checked: " + usr);
         int result;
         try{
             rset = query("Select confirmed from wishlistindex where ownerId = '" + usr.getId() + "';");
             while(rset.next()){
                 result = rset.getInt(1);
-                System.out.println("Confomation number: " + result);
+                System.out.println("Conformation number: " + result);
                 System.out.println("Does result == 1?: " + (result == 1));
                 if(result == 1){
                     confirmed = true;
                 }
 
-//                if(rset.getInt(1) == 1){
-//                    confirmed = true;
-//                }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -155,39 +146,31 @@ public class WishListDatabase extends Database{
     //method for dealing with apostrophes
     private static String doubleApostrophes(String test){
         String[] split = test.split("'");
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for(int i = 0; i< split.length; i++){
             if(i == split.length-1) {
 //                if(split[i].contains("'"))
-                s += split[i];
+                s.append(split[i]);
             }
             else{
-                s += split[i] + "''";
+                s.append(split[i]).append("''");
             }
 
         }
         String check = "" + test.charAt(test.length()-1);
         if(check.equals("'")){
-            s += "'";
+            s.append("'");
         }
-        return s;
+        return s.toString();
     }
     //main method for testing
     public static void main(String[] args) {
         Config.initializeConfig("ServerConfiguration.conf");
         try {
-            UserDatabase usrdb = new UserDatabase(Config.getUserDatabaseServerAddress(),Config.getDatabaseUsername(),Config.getDatabasePassword());
             WishListDatabase wlDB = new WishListDatabase(Config.getSystemDatabaseServerAddress(),Config.getDatabaseUsername(),Config.getDatabasePassword());
             User usr = new User();
             usr.setId(10);
-//            System.out.println(wlDB.addEntry(usr, "This item should be removed"));
-//            wlDB.removeEntry(usr,"this item is to be removed");
             System.out.println(wlDB.addIndex(usr));
-//            ArrayList<String> wl = wlDB.getWishList(usr);
-//            System.out.println(wl);
-//           wlDB.addEntry(usr,"This is an example entry");
-//            wlDB.clearWishList(usr);
-//            System.out.println(wlDB.getWishList(usr));
         } catch (ConfigNotInitializedException e) {
             e.printStackTrace();
         }
