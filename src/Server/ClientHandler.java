@@ -1,19 +1,18 @@
 package Server;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.sql.SQLException;
-
 import Common.Message;
 import Common.NetworkAccess;
 import Common.User;
+
+import java.io.IOException;
+import java.net.Socket;
 
 
 public class ClientHandler extends Thread {
     /**
      * provide access to the GUI for displaying messages
      */
-    ServerGUI servergui = null;
+    ServerGUI servergui;
 
     /**
      * provides a peer-to-peer connection to the client
@@ -65,15 +64,6 @@ public class ClientHandler extends Thread {
         return name;
     }
 
-    /**
-     * getter function for the private name field
-     *
-     * @return name
-     */
-    public String getname() {
-        return name;
-    }
-
     public void Stop() {
         go = false;
     }
@@ -106,38 +96,8 @@ public class ClientHandler extends Thread {
         // -- server thread runs until the client terminates the connection
         while (go) {
             try {
-                // -- always receives a String object with a newline (\n)
-                //    on the end due to how BufferedReader readLine() works.
-                //    The client adds it to the user's string but the BufferedReader
-                //    readLine() call strips it off
                 Message cmd = networkaccess.readMessage();
                 System.out.println("server got " + cmd);
-                //logic for login
-//                if(cmd.message.equals("login")){
-////                    login(cmd.user);
-//                    if(login(cmd.user)){
-//                        networkaccess.sendMessage(new Message(null,"success"),false);
-//                    }
-//                    else {
-//                        networkaccess.sendMessage(new Message(null, "fail"),false);
-//                    }
-//                }
-//                else
-
-                // -- if it is not the termination message, send it back adding the
-                //    required (by readLine) "\n"
-
-                // -- if the disconnect string is received then
-                //    close the socket, remove this thread object from the
-                //    server's active client thread list, and terminate the thread
-                //    this is the server side "command processor"
-                //    you will need to define a communication protocol (language) to be used
-                //    between the client and the server
-                //    e.g. client sends "LOGIN;<username>;<password>\n"
-                //         server parses it to "LOGIN", "<username>", "<password>" and performs login function
-                //         server responds with "SUCCESS\n"
-                //    this is where all the server side Use Cases will be handled
-                //	this.servergui.addToTextArea(cmd);
                 CommandProtocol.processCommand(cmd, networkaccess, this);
             } catch (IOException e) {
 
@@ -148,7 +108,7 @@ public class ClientHandler extends Thread {
 
         }
     }
-    protected NetworkAccess getNetworkaccess(){
+    protected NetworkAccess getNetworkAccess(){
         return this.networkaccess;
     }
 }

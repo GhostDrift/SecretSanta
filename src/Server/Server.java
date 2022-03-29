@@ -261,7 +261,7 @@ public class Server extends Thread {
         NetworkAccess na;
         while(getConnections()>0){
             System.out.println("Connection #" + i);
-            na = clientConnections.get(i).getNetworkaccess();
+            na = clientConnections.get(i).getNetworkAccess();
             usr = clientConnections.get(i).getUser();
             if(usr != null) {
                 try {
