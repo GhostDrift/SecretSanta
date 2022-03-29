@@ -2342,6 +2342,7 @@ public class ClientGUI extends JFrame {
                         String result = client.updateSettings(usr);
                         if(result.equals("success")) {
                             status.setText("Account Updated");
+                            status.setForeground(Color.black);
                         }
                         else{
                             status.setText(result);
