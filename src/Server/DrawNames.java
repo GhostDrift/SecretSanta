@@ -41,7 +41,7 @@ public class DrawNames extends Thread{
         if(cleared){
             System.out.println("Names have been cleared");
             while(go){
-                this.clearNotificaion();
+                this.clearNotification();
             }
         }
         else{
@@ -54,7 +54,7 @@ public class DrawNames extends Thread{
         }
     }
 
-    private void clearNotificaion() {
+    private void clearNotification() {
         ArrayList<Integer> ids = usrdb.getIds();
         if(ids.size() >= 2) {
             try {
