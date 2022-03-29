@@ -5,15 +5,12 @@ import java.sql.*;
 //A class used to access a mysql database with the provided url, username and password.
 class Database {
     //database login variables
-    private String url;
-    private String username;
-    private String password;
+    private final String url;
+    private final String username;
+    private final String password;
     private Statement stmt = null;
     protected ResultSet rset = null;
 
-    //default constructor
-    protected Database() {
-    }
 
     //constructor with url, username and password
     protected Database(String url, String username, String password) {
