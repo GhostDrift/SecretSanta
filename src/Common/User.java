@@ -124,14 +124,6 @@ public class User implements Serializable {
         return name;
     }
 
-    public void print(){
-        System.out.println("Username: " + this.username);
-        System.out.println("Password: " + this.password);
-        System.out.println("Email: " + this.email);
-        System.out.println("Lock Count: " + this.lockCount);
-        System.out.println("Loggedin: " + this.loggedIn);
-    }
-
     @Override
     public String toString() {
         return "User{" +
