@@ -8,7 +8,8 @@ import Common.displayPanel;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -958,7 +959,8 @@ private class EditConnection extends displayPanel{
         private final JLabel username;
         private final JLabel password;
         private final JTextField usrName;
-        private final JTextField pasWord;
+//        private final JTextField pasWord;
+        private final JPasswordField pasWord;
         private final JButton disconnect;
         private final JButton register;
         private final JButton login;
@@ -982,7 +984,8 @@ private class EditConnection extends displayPanel{
              status.setVisible(false);
              //create the JTextFields
              usrName = new JTextField("", 25);
-             pasWord = new JTextField("", 25);
+//             pasWord = new JTextField("", 25);
+             pasWord = new JPasswordField(25);
              //create the JButtons for the control panel
              disconnect = new JButton("Disconnect");
              register = new JButton("Register");
@@ -1033,7 +1036,8 @@ private class EditConnection extends displayPanel{
              status.setVisible(display);
              //create the JTextFields
              usrName = new JTextField("", 25);
-             pasWord = new JTextField("", 25);
+//             pasWord = new JTextField("", 25);
+             pasWord = new JPasswordField(25);
              //create the JButtons for the control panel
              disconnect = new JButton("Disconnect");
              register = new JButton("Register");
@@ -1090,7 +1094,9 @@ private class EditConnection extends displayPanel{
              login.addActionListener(e -> {
                  System.out.println("Login");
                  String username = usrName.getText();
-                 String password = pasWord.getText();
+//                 String password = pasWord.getText();
+                 String password = getPassword(pasWord.getPassword());
+                 System.out.println("Password: " + password);
                  try {
                      if (client.networkaccess.testConnection()) {
                          if ((!username.equals("")) && (!password.equals(""))) {
@@ -1134,6 +1140,13 @@ private class EditConnection extends displayPanel{
              });
 
              updateControl(disconnect,register,recover,login);
+         }
+         private String getPassword(char[] text){
+             StringBuilder s = new StringBuilder();
+             for (char c : text) {
+                 s.append(c);
+             }
+             return s.toString();
          }
         private void prepareKeyListener(){
             this.pasWord.addKeyListener(new KeyListener() {
