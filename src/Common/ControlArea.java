@@ -34,17 +34,6 @@ public class ControlArea extends JPanel {
         this.add(newCenter,BorderLayout.CENTER);
         this.repaint();
     }
-    protected void delButton(int i){
-        if(i == 0){
-            this.remove(left);
-        }
-        else if(i == 1){
-            this.remove(center);
-        }
-        else{
-            this.remove(right);
-        }
-    }
 
     public void setCenter(JPanel center) {
         this.add(center, BorderLayout.CENTER);
