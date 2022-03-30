@@ -20,7 +20,7 @@ public class ClientGUI extends JFrame {
     private final Label windowTitle;
     private ControlArea control;
     private User usr;
-    private Font timesRoman = new Font("TimesRoman", Font.PLAIN, 15);
+    private final Font timesRoman = new Font("TimesRoman", Font.PLAIN, 15);
 //    Client.ConnectGUI.BottomPanel Bot;
 
     //main method
@@ -37,7 +37,7 @@ public class ClientGUI extends JFrame {
         setSize(WIDTH, HEIGHT);
         // -- center the frame on the screen
         setLocationRelativeTo(null);
-        //stops the program when the clise button is pressed
+        //stops the program when the close button is pressed
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //prevents the window from being resized
         setResizable(false);
@@ -46,13 +46,13 @@ public class ClientGUI extends JFrame {
         setLayout(new BorderLayout(0, 0));
         //create new WindowTitle
         this.windowTitle = new Label();
-        //create control pannel area
+        //create control panel area
         control = new ControlArea();
         //set the data panel to display the connect panel.
         Data = new ClientGUI.newConnection(false);
 
 //          x.setLayout(new BoxLayout(x,BoxLayout.Y_AXIS));
-        //set the title pannel to display the Connect text
+        //set the title panel to display the Connect text
 //        this.windowTitle = new Label(Data.getLabel());
         this.add(windowTitle, BorderLayout.NORTH);
         this.add(Data, BorderLayout.CENTER);
@@ -230,10 +230,10 @@ public class ClientGUI extends JFrame {
             connect.addActionListener(e -> {
                 if (client == null) {
                     try {
-                        String ipformat = "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$";
-                        Pattern ippattern = Pattern.compile(ipformat);
-                        String portformat = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
-                        Pattern portpattern = Pattern.compile(portformat);
+                        String ipFormat = "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$";
+                        Pattern ipPattern = Pattern.compile(ipFormat);
+                        String portFormat = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
+                        Pattern portPattern = Pattern.compile(portFormat);
                         String host;
                         //checks to see if host box is empty
                         if(!IP.getText().equals("")) {
@@ -245,9 +245,9 @@ public class ClientGUI extends JFrame {
                         int port = Integer.parseInt(portnum.getText());
                         System.out.println(host);
                         System.out.println(port);
-                        Matcher matcher = ippattern.matcher(host);
+                        Matcher matcher = ipPattern.matcher(host);
                         if (matcher.find()) {
-                            matcher = portpattern.matcher(portnum.getText());
+                            matcher = portPattern.matcher(portnum.getText());
                             if (matcher.find()) {
                                 client = new Client(host, port);
                                 updateData(new Login());
@@ -294,21 +294,16 @@ public class ClientGUI extends JFrame {
     }
     private class SavedConnections extends displayPanel{
 //        private final JTextField IP;
-        private String IP = "";
-        private int port = 8000;
-//        private final JButton Adv;
-//        private final JLabel Portn;
-//        private final JTextField portnum;
-        private  ArrayList<String> ips = new ArrayList<>();
-        private  ArrayList<Integer> ports  = new ArrayList<>();
-        private  ArrayList<String> names = new ArrayList<>();
+        private String IP;
+        private int port;
+private final ArrayList<String> ips;
+        private final ArrayList<Integer> ports;
         private final JButton connect;
         private final JButton newConnection;
         private final JButton edit;
         private final JButton back;
-        private boolean t = false;
         private final JLabel errorMessage;
-        private final JComboBox connectionList;
+        private final JComboBox<String> connectionList;
 
         SavedConnections(Boolean error, int index) {
             setLayout(new GridBagLayout());
@@ -320,14 +315,14 @@ public class ClientGUI extends JFrame {
             title.setFont(timesRoman);
             JLabel i = new JLabel("HostName");
             i.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-            ArrayList<String> tempips;
+            ArrayList<String> tempIps;
             try {
-                tempips = Connections.getIps();
+                tempIps = Connections.getIps();
             } catch (Connections.ConnectionsNotInitialized e) {
-                tempips = new ArrayList<>();
+                tempIps = new ArrayList<>();
                 e.printStackTrace();
             }
-            ips = tempips;
+            ips = tempIps;
             ArrayList<Integer> tempPorts;
             try{
                 tempPorts = Connections.getPorts();
@@ -340,30 +335,22 @@ public class ClientGUI extends JFrame {
             try {
                 tempNames =  Connections.getNames();
             } catch (Connections.ConnectionsNotInitialized e) {
-                tempNames = new ArrayList<String>();
+                tempNames = new ArrayList<>();
             }
-            names = tempNames;
-//            loadConnections(names,ports,ips);
-//            System.out.println(names.size());
+            ArrayList<String> names = tempNames;
             if(names.size() == 0){
                 names.add(0,"Local host               ");
                 ips.add("");
                 ports.add(8000);
                 saveConnections(names, ports, ips);
             }
-            connectionList = new JComboBox(names.toArray());
+            connectionList = new JComboBox<>(getStringArray(names.toArray()));
             connectionList.setBounds(50,50,90,20);
             //update IP and port to be the values of the first entry in the combo box
             IP = ips.get(index);
             port = ports.get(index);
             connectionList.setSelectedIndex(index);
-//            IP = new JTextField("", 25);
 
-//            Portn = new JLabel("Port Number");
-//            Portn.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-//            portnum = new JTextField("8000", 25);
-
-//            Adv = new JButton("Advanced...");
             connect = new JButton("Connect");
             newConnection = new JButton("New");
             back = new JButton("Back");
@@ -371,7 +358,6 @@ public class ClientGUI extends JFrame {
             this.errorMessage.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             this.errorMessage.setForeground(Color.RED);
             this.edit = new JButton("Edit");
-            JLabel space = new JLabel("      ");
 
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
@@ -400,16 +386,6 @@ public class ClientGUI extends JFrame {
             this.add(newConnection,gbc);
             gbc.gridx = 1;
             this.add(edit,gbc);
-//            this.add(IP, gbc);
-            gbc.gridx = 0;
-            gbc.gridy = 2;
-//            Portn.setVisible(t);
-//            this.add(Portn, gbc);
-            gbc.gridx = 1;
-            gbc.gridy = 2;
-//            gbc.fill = GridBagConstraints.HORIZONTAL;
-//            portnum.setVisible(false);
-//            this.add(portnum, gbc);
 
             gbc.gridx = 0;
             gbc.gridy = 2;
@@ -423,6 +399,15 @@ public class ClientGUI extends JFrame {
             }
             client = null;
 
+        }
+        protected String[] getStringArray(Object[] array){
+            String[] result = new String[array.length];
+            for(int i = 0; i< array.length; i++){
+                if(array[i] instanceof String){
+                    result[i] = (String) array[i];
+                }
+            }
+            return result;
         }
 
         protected void cannotConnect(){
@@ -439,23 +424,13 @@ public class ClientGUI extends JFrame {
         public void PrepareActionListeners() {
 
 
-//            Adv.addActionListener(e -> {
-//                if (!t)
-//                {
-////                    portnum.setText("8000");
-//                }
-//                t = !t;
-////                Portn.setVisible(t);
-////                portnum.setVisible(t);
-//
-//            });
             connect.addActionListener(e -> {
                 if (client == null) {
                     try {
-                        String ipformat = "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$";
-                        Pattern ippattern = Pattern.compile(ipformat);
-                        String portformat = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
-                        Pattern portpattern = Pattern.compile(portformat);
+                        String ipFormat = "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$";
+                        Pattern ipPattern = Pattern.compile(ipFormat);
+                        String portFormat = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
+                        Pattern portPattern = Pattern.compile(portFormat);
                         String host;
                         //checks to see if host box is empty
                         if(!IP.equals("")) {
@@ -467,10 +442,9 @@ public class ClientGUI extends JFrame {
 //                        int port = Integer.parseInt(portnum.getText());
                         System.out.println(host);
                         System.out.println(port);
-                        Matcher matcher = ippattern.matcher(host);
+                        Matcher matcher = ipPattern.matcher(host);
                         if (matcher.find()) {
-//                            matcher = portpattern.matcher(portnum.getText());
-                            matcher = portpattern.matcher(port + "");
+                            matcher = portPattern.matcher(port + "");
                             if (matcher.find()) {
                                 client = new Client(host, port);
                                 updateData(new Login());
@@ -489,67 +463,34 @@ public class ClientGUI extends JFrame {
                     }
                 }
             });
-            newConnection.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    System.out.println("Open new connections");
-                    updateData(new newConnection(false));
-                }
+            newConnection.addActionListener(actionEvent -> {
+                System.out.println("Open new connections");
+                updateData(new newConnection(false));
             });
-            connectionList.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                        int index = connectionList.getSelectedIndex();
-                        if(index == 0){
-                            IP = "";
-                            port = 800;
-                        }
-                        else{
-                            IP = ips.get(index);
-                            port = ports.get(index);
-                        }
-                }
+            connectionList.addActionListener(actionEvent -> {
+                    int index = connectionList.getSelectedIndex();
+                    if(index == 0){
+                        IP = "";
+                        port = 800;
+                    }
+                    else{
+                        IP = ips.get(index);
+                        port = ports.get(index);
+                    }
             });
-            edit.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    System.out.println("Edit connection window");
-                    updateData(new EditConnection(connectionList.getSelectedIndex(),0));
-                }
+            edit.addActionListener(actionEvent -> {
+                System.out.println("Edit connection window");
+                updateData(new EditConnection(connectionList.getSelectedIndex(),0));
             });
-            back.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    System.out.println("Open new connections");
-                    updateData(new newConnection(false));
-                }
+            back.addActionListener(actionEvent -> {
+                System.out.println("Open new connections");
+                updateData(new newConnection(false));
             });
 
-//            updateControl(Adv,connect);
-            //updateControl(newConnection,edit, connect);
             updateControl(back,connect);
 
         }
         private void prepareKeyListener(){
-//            this.IP.addKeyListener(new KeyListener() {
-//                @Override
-//                public void keyTyped(KeyEvent keyEvent) {
-//
-//                }
-//
-//                @Override
-//                public void keyPressed(KeyEvent keyEvent) {
-//                    System.out.println(keyEvent.getKeyCode());
-//                    if(keyEvent.getKeyCode() == 10){
-//                        connect.doClick();
-//                    }
-//                }
-//
-//                @Override
-//                public void keyReleased(KeyEvent keyEvent) {
-//
-//                }
-//            });
         }
     }
 
@@ -564,32 +505,7 @@ public class ClientGUI extends JFrame {
         }
 
     }
-//    private void loadConnections(ArrayList<String> names, ArrayList<Integer> ports, ArrayList<String> ips){
-//        ArrayList<String> tempips;
-//        try {
-//            tempips = Connections.getIps();
-//        } catch (Connections.ConnectionsNotInitialized e) {
-//            tempips = new ArrayList<>();
-//            e.printStackTrace();
-//        }
-//        ips = tempips;
-//        ArrayList<Integer> tempPorts;
-//        try{
-//            tempPorts = Connections.getPorts();
-//        } catch (Connections.ConnectionsNotInitialized connectionsNotInitialized) {
-//            tempPorts = new ArrayList<>();
-//            connectionsNotInitialized.printStackTrace();
-//        }
-//        ports = tempPorts;
-//        ArrayList<String> tempNames;
-//        try {
-//            tempNames =  Connections.getNames();
-//        } catch (Connections.ConnectionsNotInitialized e) {
-//            tempNames = new ArrayList<String>();
-//        }
-//        names = tempNames;
-//    }
-    private class EditConnection extends displayPanel{
+private class EditConnection extends displayPanel{
         private ArrayList<String> names;
         private ArrayList<String> ips;
         private ArrayList<Integer> ports;
@@ -698,45 +614,36 @@ public class ClientGUI extends JFrame {
     }
 
     private void prepareActionListeners() {
-            save.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    if(names.contains(hostText.getText())){
-                        int testIndex = names.indexOf(hostText.getText());
-                        if(testIndex != index){
-                            title.setForeground(Color.RED);
-                            title.setText("That name is already taken");
-                        }
-                        else{
-                            saveConnection();
-                        }
+            save.addActionListener(actionEvent -> {
+                if(names.contains(hostText.getText())){
+                    int testIndex = names.indexOf(hostText.getText());
+                    if(testIndex != index){
+                        title.setForeground(Color.RED);
+                        title.setText("That name is already taken");
                     }
-                    else saveConnection();
+                    else{
+                        saveConnection();
+                    }
+                }
+                else saveConnection();
 
+            });
+            cancel.addActionListener(actionEvent -> {
+                System.out.println("Saved connections");
+                if(origin == 0) {
+                    updateData(new SavedConnections(false, index));
+                }
+                else if(origin == 1){
+                    names.remove(names.size()-1);
+                    ips.remove(ips.size()-1);
+                    ports.remove(ports.size()-1);
+                    saveConnections(names,ports,ips);
+                    updateData(new newConnection(false));
                 }
             });
-            cancel.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    System.out.println("Saved connections");
-                    if(origin == 0) {
-                        updateData(new ClientGUI.SavedConnections(false, index));
-                    }
-                    else if(origin == 1){
-                        names.remove(names.size()-1);
-                        ips.remove(ips.size()-1);
-                        ports.remove(ports.size()-1);
-                        saveConnections(names,ports,ips);
-                        updateData(new newConnection(false));
-                    }
-                }
-            });
-            delete.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    System.out.println("Delete connection");
-                    updateData(new ConfirmDelete(index,origin));
-                }
+            delete.addActionListener(actionEvent -> {
+                System.out.println("Delete connection");
+                updateData(new ConfirmDelete(index,origin));
             });
             updateControl(cancel,save);
     }
@@ -818,33 +725,25 @@ public class ClientGUI extends JFrame {
         }
 
         private void prepareActionListeners() {
-            confirm.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    try {
-                        names.remove(index);
-                        ips.remove(index);
-                        ports.remove(index);
-                        Connections.setNames(names);
-                        Connections.setIps(ips);
-                        Connections.setPorts(ports);
-                        Connections.saveConnections();
-                        if (origin == 0) {
-                            updateData(new SavedConnections(false, 0));
-                        } else if (origin == 1) {
-                            updateData(new newConnection(false));
-                        }
-                    } catch (Connections.ConnectionsNotInitialized connectionsNotInitialized) {
-                        connectionsNotInitialized.printStackTrace();
+            confirm.addActionListener(actionEvent -> {
+                try {
+                    names.remove(index);
+                    ips.remove(index);
+                    ports.remove(index);
+                    Connections.setNames(names);
+                    Connections.setIps(ips);
+                    Connections.setPorts(ports);
+                    Connections.saveConnections();
+                    if (origin == 0) {
+                        updateData(new SavedConnections(false, 0));
+                    } else if (origin == 1) {
+                        updateData(new newConnection(false));
                     }
+                } catch (Connections.ConnectionsNotInitialized connectionsNotInitialized) {
+                    connectionsNotInitialized.printStackTrace();
                 }
             });
-            cancel.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    updateData(new EditConnection(index,origin));
-                }
-            });
+            cancel.addActionListener(actionEvent -> updateData(new EditConnection(index,origin)));
             updateControl(cancel,confirm);
         }
     }
@@ -884,8 +783,6 @@ public class ClientGUI extends JFrame {
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
-//            gbc.ipadx = 10;
-//            gbc.ipady = 10;
             gbc.fill = GridBagConstraints.NONE;
             gbc.gridwidth = 3;
             this.add(errorMessage,gbc);
@@ -952,10 +849,10 @@ public class ClientGUI extends JFrame {
             connect.addActionListener(e -> {
                 if (client == null) {
                     try {
-                        String ipformat = "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$";
-                        Pattern ippattern = Pattern.compile(ipformat);
-                        String portformat = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
-                        Pattern portpattern = Pattern.compile(portformat);
+                        String ipFormat = "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$";
+                        Pattern ipPattern = Pattern.compile(ipFormat);
+                        String portFormat = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
+                        Pattern portPattern = Pattern.compile(portFormat);
                         String host;
                         //checks to see if host box is empty
                         if(!IP.getText().equals("")) {
@@ -967,9 +864,9 @@ public class ClientGUI extends JFrame {
                         int port = Integer.parseInt(portnum.getText());
                         System.out.println(host);
                         System.out.println(port);
-                        Matcher matcher = ippattern.matcher(host);
+                        Matcher matcher = ipPattern.matcher(host);
                         if (matcher.find()) {
-                            matcher = portpattern.matcher(portnum.getText());
+                            matcher = portPattern.matcher(portnum.getText());
                             if (matcher.find()) {
 
                                 client = new Client(host, port);
@@ -989,26 +886,18 @@ public class ClientGUI extends JFrame {
                     }
                 }
             });
-            save.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    try {
-                        Connections.getNames().add("");
-                        Connections.getIps().add(IP.getText());
-                        Connections.getPorts().add(Integer.parseInt(portnum.getText()));
-                        Connections.saveConnections();
-                        updateData(new EditConnection(Connections.getNames().size()-1,1));
-                    } catch (Connections.ConnectionsNotInitialized connectionsNotInitialized) {
-                        connectionsNotInitialized.printStackTrace();
-                    }
+            save.addActionListener(actionEvent -> {
+                try {
+                    Connections.getNames().add("");
+                    Connections.getIps().add(IP.getText());
+                    Connections.getPorts().add(Integer.parseInt(portnum.getText()));
+                    Connections.saveConnections();
+                    updateData(new EditConnection(Connections.getNames().size()-1,1));
+                } catch (Connections.ConnectionsNotInitialized connectionsNotInitialized) {
+                    connectionsNotInitialized.printStackTrace();
                 }
             });
-            savedConnections.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    updateData(new SavedConnections(false,0));
-                }
-            });
+            savedConnections.addActionListener(actionEvent -> updateData(new SavedConnections(false,0)));
 
 //            updateControl(savedConnections,Adv,connect);
             updateControl(Adv,connect);
@@ -1081,7 +970,7 @@ public class ClientGUI extends JFrame {
             setLayout(new GridBagLayout());
              this.setPanelName("Login");
              this.setSpaces("                                                                                                              ");
-             //Set windowTitle to the label of the datapanel
+             //Set windowTitle to the label of the data panel
              windowTitle.setText(this.getLabel());
              //create the Jlabels
              username = new JLabel("Username");
@@ -1091,7 +980,7 @@ public class ClientGUI extends JFrame {
              status = new JLabel("");
              status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
              status.setVisible(false);
-             //create the JTextfields
+             //create the JTextFields
              usrName = new JTextField("", 25);
              pasWord = new JTextField("", 25);
              //create the JButtons for the control panel
@@ -1129,7 +1018,7 @@ public class ClientGUI extends JFrame {
              setLayout(new GridBagLayout());
              this.setPanelName("Login");
              this.setSpaces("                                                                                                              ");
-             //Set windowTitle to the label of the datapanel
+             //Set windowTitle to the label of the data panel
              windowTitle.setText(this.getLabel());
              //create the Jlabels
              username = new JLabel("Username");
@@ -1142,7 +1031,7 @@ public class ClientGUI extends JFrame {
              status = new JLabel(message);
              status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
              status.setVisible(display);
-             //create the JTextfields
+             //create the JTextFields
              usrName = new JTextField("", 25);
              pasWord = new JTextField("", 25);
              //create the JButtons for the control panel
@@ -1199,7 +1088,6 @@ public class ClientGUI extends JFrame {
                  }
              });
              login.addActionListener(e -> {
-//                     System.out.println("Connection Status: " + client.networkaccess.testConnection());
                  System.out.println("Login");
                  String username = usrName.getText();
                  String password = pasWord.getText();
@@ -1299,7 +1187,7 @@ public class ClientGUI extends JFrame {
             setPanelName("Recover");
             this.setSpaces("                                                                                                              ");
             this.setLayout(new GridBagLayout());
-            //Set windowTitle to the label of the datapanel
+            //Set windowTitle to the label of the data panel
             windowTitle.setText(this.getLabel());
             //prepare components
             this.status = new JLabel("status will be displayed here");
@@ -1669,7 +1557,6 @@ public class ClientGUI extends JFrame {
             gbc.gridx = 1;
             gbc.gridheight = 1;
             gbc.ipady = 10;
-//            gbc.ipadx = 10;
             gbc.fill = GridBagConstraints.NONE;
             dataArea.add(error, gbc);
             gbc.gridy = 1;
@@ -1782,9 +1669,6 @@ public class ClientGUI extends JFrame {
                                 wishlist.setText(client.getRecipient().user.getName() + "'s wish list is unconfirmed");
                             }
                             else{
-                                if(!msg.message.equals("Names have not been drawn")){
-//                                    recipient.setText(client.getRecipient().user.getName() + "'s wish list");
-                                }
                                 wishlist.setText(msg.message);
                                 this.repaint();
                             }
