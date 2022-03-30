@@ -17,8 +17,8 @@ public class NetworkAccess {
      * stream variables for peer to peer communication
      * to be opened on top of the socket
      */
-    private ObjectInputStream datain;
-    private ObjectOutputStream dataout;
+    private ObjectInputStream dataIn;
+    private ObjectOutputStream dataOut;
 
     /**
      * Constructor performs connection construction for the client
@@ -33,12 +33,9 @@ public class NetworkAccess {
             //    check if the server is available and connects if it is,
             //    if not throw an exception
             socket = new Socket(ip, port);
-
-            // -- wrap the socket in stream I/O objects
-            //    these are for passing String types over the network
-            //    there are other stream types (Object stream) that can be used
-            dataout = new ObjectOutputStream(socket.getOutputStream());
-            datain = new ObjectInputStream(socket.getInputStream());
+            // create object input and output streams
+            dataOut = new ObjectOutputStream(socket.getOutputStream());
+            dataIn = new ObjectInputStream(socket.getInputStream());
 
         } catch (UnknownHostException e) {
 
@@ -57,7 +54,7 @@ public class NetworkAccess {
     }
 
     /**
-     * Constructor performs connection construction for the server
+     * Constructor performs connection construction for the server.
      * the server will provide the socket as received from the ServerSocket.listen()
      *
      * @param socket: socket provided by the server ServerSocket
@@ -69,11 +66,9 @@ public class NetworkAccess {
             //    if not throw an exception
             this.socket = socket;
 
-            // -- wrap the socket in stream I/O objects
-            //    these are for passing String types over the network
-            //    there are other stream types (Object stream) that can be used
-            datain = new ObjectInputStream(socket.getInputStream());
-            dataout = new ObjectOutputStream(socket.getOutputStream());
+            // -- Create object input and output streams
+            dataIn = new ObjectInputStream(socket.getInputStream());
+            dataOut = new ObjectOutputStream(socket.getOutputStream());
 
         } catch (IOException e) {
 
@@ -83,7 +78,7 @@ public class NetworkAccess {
     }
 
     /**
-     * reads a string from the input data stream
+     * reads message object from the input data stream
      *
      * @return string from the stream
      * @throws IOException
@@ -91,11 +86,9 @@ public class NetworkAccess {
      */
     public Message readMessage() throws IOException {
         try {
-            Message in = (Message) datain.readObject();
+            Message in = (Message) dataIn.readObject();
             System.out.println("readMessage got: " + in);
             return in;
-        } catch (IOException e) {
-            throw e;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.exit(1);
@@ -104,10 +97,10 @@ public class NetworkAccess {
     }
 
     /**
-     * send a String to the server and return the received hand-shake String
+     * send a Message object to the server and return the received hand-shake Message
      *
-     * @param _msg:        the string to be sent (\n will be added)
-     * @param acknowledge: whether or not to expect an acknowledgment string
+     * @param _msg:        the Message to be sent
+     * @param acknowledge: whether to expect an acknowledgment string
      *                     client will set this to true except for disconnect
      *                     server will set it to false
      * @return
@@ -116,40 +109,34 @@ public class NetworkAccess {
         Message rtnmsg = null;
 
         // -- the protocol is this:
-        //    client sends a \n terminated String to the server
-        //    server receives String, processes it, sends \n terminate String to client
+        //    client sends a Message object to the server.
+        //    server receives Message, processes it, and returns a Message Object
         //    this is called a "hand-shake" system
         try {
-            // -- the server only receives String objects that are
-            //    terminated with a newline \n"
-            // -- send the String making sure to flush the buffer
-            dataout.writeObject(_msg);
-            dataout.flush();
+            // -- send the Message making sure to flush the buffer
+            dataOut.writeObject(_msg);
+            dataOut.flush();
 
             if (acknowledge) {
                 // -- receive the response from the server
                 //    The do/while makes this a blocking read. Normally BufferedReader.readLine() is non-blocking.
-                //    That is, if there is no String to read, it will read "". Doing it this way does not allow
+                //    That is, if there is no Message to read, it will read null. Doing it this way does not allow
                 //    that to occur. We must get a response from the server. Time out could be implemented with
                 //    a counter.
-                rtnmsg = null;
                 do {
                     // -- this is a non-blocking read
-                    rtnmsg = (Message) datain.readObject();
+                    rtnmsg = (Message) dataIn.readObject();
                     System.out.println("reply was " + rtnmsg );
                 } while (rtnmsg == null);
             }
         }
         catch(SocketException e){
             rtnmsg = new Message(null,"false");
-        }catch (IOException e) {
+        }catch (IOException | ClassNotFoundException e) {
 
             e.printStackTrace();
             System.exit(1);
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.exit(1);
         }
 
         return rtnmsg;
