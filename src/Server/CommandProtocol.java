@@ -53,6 +53,8 @@ public class CommandProtocol {
             case "Register":
                 na.sendMessage(register(cmd.user, ch), false);
                 break;
+            case "verifyEmail":
+                na.sendMessage(sendVerificationCode(cmd.user),false);
             case "recover":
                 na.sendMessage(accountRecovery(cmd.user, ch), false);
                 break;
@@ -547,8 +549,9 @@ public class CommandProtocol {
         return result;
     }
     //method to send verification code to provided email
-    private Message sendVerificationCode(User usr){
+    private static Message sendVerificationCode(User usr){
         Message result = new Message(usr,"success");
+        System.out.println("Email to be sent code: " + usr.getEmail());
         try {
             if (!Utilities.goodEmail(usr.getEmail())) {
                 result.message = "Invalid Email";
