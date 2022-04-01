@@ -1490,9 +1490,17 @@ private class EditConnection extends displayPanel{
                             repaint();
                         }
                         else {
-                            String result = client.register(usrName.getText().toLowerCase(), eMailText.getText(), pasWord.getText(), rePassText.getText(),nameText.getText());
+//                            String result = client.register(usrName.getText().toLowerCase(), eMailText.getText(), pasWord.getText(), rePassText.getText(),nameText.getText());
+                            String result = client.sendVerificationCode(eMailText.getText()).message;
                             if (result.equals("success")) {
-                                updateData(new Login(true, "Account successfully created!"));
+//                                updateData(new Login(true, "Account successfully created!"));
+                                User usr = new User();
+                                usr.setName(nameText.getText());
+                                usr.setUsername(usrName.getText().toLowerCase());
+                                usr.setPassword(pasWord.getText());
+                                usr.setEmail(eMailText.getText());
+
+                                updateData(new VerifyEmail(usr));
                             } else {
                                 status.setForeground(Color.RED);
                                 status.setText(result);
@@ -1532,6 +1540,7 @@ private class EditConnection extends displayPanel{
             //Set the window title label
             windowTitle.setText(this.getLabel());
             //prepare components
+            this.usr = usr;
             codeText = new JTextField(25);
             resendEmail = new JButton("Resend");
             back = new JButton("Back");
@@ -1540,7 +1549,7 @@ private class EditConnection extends displayPanel{
             resendEmail.setFont(timesRoman);
             back.setFont(timesRoman);
             submit.setFont(timesRoman);
-            status = new JLabel();
+            status = new JLabel("");
             resetStatus();
             prepareButtonHandlers();
             prepareKeyListener();
