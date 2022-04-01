@@ -546,5 +546,7 @@ public class CommandProtocol {
         }
         return result;
     }
+    //method to send verification code to provided email
+
 
 }
