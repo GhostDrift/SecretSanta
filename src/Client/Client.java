@@ -160,4 +160,13 @@ public class Client {
         msg = networkaccess.sendMessage(msg,true);
         return msg;
     }
+    //method to check provided verification code
+    public Message checkCode(String code){
+        User usr = new User();
+        //saving the code to the password field to be verified.
+        usr.setPassword(code);
+        Message msg = new Message(usr,"checkCode");
+        msg = networkaccess.sendMessage(msg,true);
+        return msg;
+    }
 }

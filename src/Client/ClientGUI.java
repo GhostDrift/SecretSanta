@@ -8,6 +8,8 @@ import Common.displayPanel;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -1512,6 +1514,119 @@ private class EditConnection extends displayPanel{
             });
 
             updateControl(cancel,submit);
+        }
+    }
+    private class VerifyEmail extends displayPanel{
+        private JTextField codeText;
+        private JButton resendEmail;
+        private JButton back;
+        private JButton submit;
+        private JLabel status;
+        private User usr;
+
+        //constructor
+        VerifyEmail(User usr){
+            this.setLayout(new GridBagLayout());
+            this.setPanelName("Verify Email");
+            this.setSpaces("                                                                                                              ");
+            //Set the window title label
+            windowTitle.setText(this.getLabel());
+            //prepare components
+            codeText = new JTextField(25);
+            resendEmail = new JButton("Resend");
+            back = new JButton("Back");
+            submit = new JButton("Submit");
+            codeText.setFont(timesRoman);
+            resendEmail.setFont(timesRoman);
+            back.setFont(timesRoman);
+            submit.setFont(timesRoman);
+            status = new JLabel();
+            resetStatus();
+            prepareButtonHandlers();
+            prepareKeyListener();
+            //add components to window
+            GridBagConstraints gbc = new GridBagConstraints();
+            this.add(status,gbc);
+            gbc.gridy = 1;
+            this.add(codeText,gbc);
+            gbc.gridy = 2;
+            this.add(resendEmail,gbc);
+            this.setVisible(true);
+            repaint();
+        }
+        private void resetStatus(){
+            status.setText("A verification code has been sent to " + usr.getEmail() + " please enter the code below.");
+            status.setForeground(Color.BLACK);
+            repaint();
+        }
+        private void error(String s){
+            status.setText(s);
+            status.setForeground(Color.RED);
+            repaint();
+        }
+
+        private void prepareKeyListener() {
+            codeText.addKeyListener(new KeyListener() {
+                @Override
+                public void keyTyped(KeyEvent keyEvent) {
+
+                }
+
+                @Override
+                public void keyPressed(KeyEvent keyEvent) {
+                    if(keyEvent.getKeyCode() == 10){
+                        submit.doClick();
+                    }
+                }
+
+                @Override
+                public void keyReleased(KeyEvent keyEvent) {
+
+                }
+            });
+        }
+
+        private void prepareButtonHandlers() {
+            back.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    if(client != null && client.networkaccess.testConnection() ){
+                        updateData(new Register());
+                    }
+                    else{
+                            updateData(new newConnection(true));
+                    }
+                }
+            });
+            submit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    if(client != null && client.networkaccess.testConnection()){
+                        Message result = client.checkCode(codeText.getText());
+                        if(result.message.equals("success")){
+                            updateData(new Login());
+                        }
+                        else{
+                            error(result.message);
+                        }
+                    }
+                    else{
+                        updateData(new newConnection(true));
+                    }
+                }
+            });
+            resendEmail.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    if(client != null && client.networkaccess.testConnection()){
+                        client.sendVerificationCode(usr.getEmail());
+                    }
+                    else{
+                        updateData(new newConnection(true));
+                    }
+                }
+            });
+            updateControl(back,submit);
         }
     }
 
