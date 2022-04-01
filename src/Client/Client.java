@@ -152,4 +152,12 @@ public class Client {
         msg = networkaccess.sendMessage(msg,true);
         return msg;
     }
+    //method to send verification code to provided email
+    public Message sendVerificationCode(String email){
+        User usr = new User();
+        usr.setEmail(email);
+        Message msg = new Message(usr,"verifyEmail");
+        msg = networkaccess.sendMessage(msg,true);
+        return msg;
+    }
 }
