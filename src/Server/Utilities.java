@@ -98,8 +98,13 @@ public class Utilities {
     }
     //method to notify a user that names have been reset
     public static void namesClearedNotification(User usr){
-        String message = "Dear " + usr.getUsername() + ",\n\nNames have been reset.\nYou will be notified when you have received a new recipient.\n\nWith regards,Stojkovic Technical Solutions.";
+        String message = "Dear " + usr.getUsername() + ",\n\nNames have been reset.\nYou will be notified when you have received a new recipient.\n\nWith regards, Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Names reset",message);
+    }
+    //method to send verification code to provided email for email validation
+    public static void verifyEmail(String email, String code){
+        String message =  "Hello,\nThank you for making an account with the Secret Santa Management System.\n Your verification code is\n" + code + "\nIf you received this email by mistake please ignore it.\n\nWith regards, Stojkovic Technical Solutions.";
+        new SendEmailUsingGMailSMTP(email,"Verify Your Email", message);
     }
 
     public static void main(String[] args) throws ConfigNotInitializedException {

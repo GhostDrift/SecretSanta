@@ -125,6 +125,7 @@ public class Server extends Thread {
 	public Server (ServerGUI gui) {
 		this.servergui = gui;
 		//System.out.println("yay");
+        System.out.println("Gui added");
 		
 		// -- construct the list of active client threads
 		clientConnections = new Vector<>();
@@ -135,10 +136,12 @@ public class Server extends Thread {
 					Config.getUserDatabaseServerAddress(),
 					Config.getDatabaseUsername(),
 					Config.getDatabasePassword());
+			System.out.println("UserDatabase added");
 			this.systemDatabase = new WishListDatabase(
 					Config.getSystemDatabaseServerAddress(),
 					Config.getDatabaseUsername(),
 					Config.getDatabasePassword());
+			System.out.println("systemDatabase added");
 		}
 		catch (ConfigNotInitializedException e)
 		{

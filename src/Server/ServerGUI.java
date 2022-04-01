@@ -212,9 +212,11 @@ public class ServerGUI extends JFrame {
             // Activate Server
             Act.addActionListener(e -> {
                 if(Act.getText().equals("Activate Server")) {
+                    System.out.println("activating server");
                     server = new Server(null);
+                    System.out.println("Server has been created");
                     server.start();
-                    //server.stop();
+                    System.out.println("Server has started");
                     Act.setText("Deactivate Server");
                     Conf.setVisible(false);
                     AConnect.setVisible(true);
