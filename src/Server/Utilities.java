@@ -2,6 +2,7 @@ package Server;
 
 import Common.User;
 
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -106,10 +107,29 @@ public class Utilities {
         String message =  "Hello,\nThank you for making an account with the Secret Santa Management System.\n Your verification code is\n" + code + "\nIf you received this email by mistake please ignore it.\n\nWith regards, Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(email,"Verify Your Email", message);
     }
+    //method to generate random string of numbers and characters
+    public static String generateString(){
+        //Modified code from https://www.baeldung.com/java-random-string
+        //Example 5
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 5;
+        Random random = new Random();
 
-    public static void main(String[] args) throws ConfigNotInitializedException {
-        Config.initializeConfig("ServerConfiguration.conf");
-        String test = "jstojkovic@Callutheran";
-        System.out.println(goodEmail(test));
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+        return generatedString;
+//        System.out.println(generatedString);
     }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public static void main(String[] args) throws ConfigNotInitializedException {
+//        Config.initializeConfig("ServerConfiguration.conf");
+//        String test = "jstojkovic@Callutheran";
+//        System.out.println(goodEmail(test));
+//        generateString();
+    }
+
 }

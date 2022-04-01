@@ -547,6 +547,21 @@ public class CommandProtocol {
         return result;
     }
     //method to send verification code to provided email
+    private Message sendVerificationCode(User usr){
+        Message result = new Message(usr,"success");
+        try {
+            if (!Utilities.goodEmail(usr.getEmail())) {
+                result.message = "Invalid Email";
+            }
+            else {
+                Utilities.verifyEmail(usr.getEmail(),Utilities.generateString());
+            }
+        } catch (ConfigNotInitializedException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 
 
 }
