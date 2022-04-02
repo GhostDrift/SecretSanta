@@ -22,6 +22,7 @@ public class CommandProtocol {
      */
     public static void processCommand(Message cmd, NetworkAccess na, ClientHandler ch) {
 //            System.out.println("CP user: " + cmd.user);
+        System.out.println("Message Received: " + cmd.message);
         switch (cmd.message) {
             case "disconnect":
 
@@ -55,6 +56,7 @@ public class CommandProtocol {
                 break;
             case "verifyEmail":
                 na.sendMessage(sendVerificationCode(cmd.user),false);
+                break;
             case "recover":
                 na.sendMessage(accountRecovery(cmd.user, ch), false);
                 break;

@@ -107,6 +107,7 @@ public class NetworkAccess {
      */
     public Message sendMessage(Message _msg, boolean acknowledge) {
         Message rtnmsg = null;
+        System.out.println("Message to be sent: " + _msg);
 
         // -- the protocol is this:
         //    client sends a Message object to the server.
@@ -154,8 +155,8 @@ public class NetworkAccess {
         }
     }
     public boolean testConnection(){
-
         Message result = sendMessage(new Message(null,"hello"), true);
+        System.out.println("Test result: " + result.message);
         return result.message.equals("world!");
     }
 }

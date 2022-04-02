@@ -1477,6 +1477,7 @@ private class EditConnection extends displayPanel{
                     status.setText("Working...");
                     status.setVisible(true);
                     repaint();
+                    System.out.println(client.networkaccess.testConnection());
                     if(client.networkaccess.testConnection()){
                         if(nameText.getText().equals("") ){
                             status.setForeground(Color.RED);
@@ -1499,7 +1500,6 @@ private class EditConnection extends displayPanel{
                                 usr.setUsername(usrName.getText().toLowerCase());
                                 usr.setPassword(pasWord.getText());
                                 usr.setEmail(eMailText.getText());
-
                                 updateData(new VerifyEmail(usr));
                             } else {
                                 status.setForeground(Color.RED);
@@ -1599,12 +1599,26 @@ private class EditConnection extends displayPanel{
             back.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if(client != null && client.networkaccess.testConnection() ){
-                        updateData(new Register());
+                    if(client != null){
+                        System.out.println(client.networkaccess.testConnection());
+                        if(client.networkaccess.testConnection()){
+                            updateData(new Register());
+                        }
+                        else{
+                            System.out.println("Connection test failed");
+                            updateData(new newConnection(true));
+                        }
                     }
                     else{
-                            updateData(new newConnection(true));
+                        System.out.println("client is null");
+                        updateData(new newConnection(true));
                     }
+//                    if(client != null && client.networkaccess.testConnection()){
+//                        updateData(new Register());
+//                    }
+//                    else{
+//                            updateData(new newConnection(true));
+//                    }
                 }
             });
             submit.addActionListener(new ActionListener() {
