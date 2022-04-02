@@ -169,4 +169,14 @@ public class Client {
         msg = networkaccess.sendMessage(msg,true);
         return msg;
     }
+    //method to validate User credentials
+    public String validateUser(String username, String email, String password, String rePassword,String name){
+        if(!password.equals(rePassword)){
+            return "Passwords do not match";
+        }
+        User usr = new User(username,password,email,name);
+        Message msg = new Message(usr,"validate");
+        msg = networkaccess.sendMessage(msg,true);
+        return msg.message;
+    }
 }
