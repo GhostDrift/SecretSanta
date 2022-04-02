@@ -38,9 +38,14 @@ public class ClientHandler extends Thread {
      * a reference to the server that "has" this ClientHandler
      */
     private final Server server;
-
+    /**
+     * a reference to hold which account is using this client
+     */
     private User usr = new User();
-
+    /**
+     * A way to hold the verification code for email registration
+     */
+    private String code = "";
     /**
      * Constructor saves the ID, socket, and reference to the server
      * then construct the NetworkAccess object
@@ -87,6 +92,14 @@ public class ClientHandler extends Thread {
     //method to decrement the id of the client handler
     public void decId(){
         this.id--;
+    }
+    //method to set the code
+    protected void setCode(String code){
+        this.code = code;
+    }
+    //method to get the code
+    protected String getCode(){
+        return this.code;
     }
 
     // -- similar to a main() function in that it is the entry point of
