@@ -1629,7 +1629,8 @@ private class EditConnection extends displayPanel{
                     if(client != null && client.networkaccess.testConnection()){
                         Message result = client.checkCode(codeText.getText());
                         if(result.message.equals("success")){
-                            updateData(new Login());
+                            client.register();
+                            updateData(new Login(true, "Account successfully created!"));
                         }
                         else{
                             error(result.message);

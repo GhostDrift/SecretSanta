@@ -82,6 +82,10 @@ public class Client {
         Message answer = networkaccess.sendMessage(new Message(usr,"Register"), true);
         return answer.message;
     }
+    public String register(){
+        Message result = networkaccess.sendMessage(new Message(null,"Register"),true);
+        return result.message;
+    }
     //account recovery
     public String recover(String username){
         User usr = new User(username);
@@ -153,12 +157,12 @@ public class Client {
         return msg;
     }
     //method to send verification code to provided email
-    public Message sendVerificationCode(String email){
-        User usr = new User();
-        usr.setEmail(email);
-        Message msg = new Message(usr,"verifyEmail");
+    public void sendVerificationCode(String email){
+//        User usr = new User();
+//        usr.setEmail(email);
+        Message msg = new Message(null,"verifyEmail");
         msg = networkaccess.sendMessage(msg,true);
-        return msg;
+//        return msg;
     }
     //method to check provided verification code
     public Message checkCode(String code){
