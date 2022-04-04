@@ -22,7 +22,7 @@ public class ClientGUI extends JFrame {
     displayPanel Data;
     private final Label windowTitle;
     private ControlArea control;
-    private User usr;
+    private User clientUser;
     private final Font timesRoman = new Font("TimesRoman", Font.PLAIN, 15);
 //    Client.ConnectGUI.BottomPanel Bot;
 
@@ -1084,7 +1084,7 @@ private class EditConnection extends displayPanel{
                  System.out.println("Register");
                  if(client != null) {
                      if (client.networkaccess.testConnection()) {
-                         updateData(new Register());
+                         updateData(new Register(0));
                      } else {
                          updateData(new SavedConnections(true,0));
                      }
@@ -1104,7 +1104,7 @@ private class EditConnection extends displayPanel{
                          if ((!username.equals("")) && (!password.equals(""))) {
                              Message msg = client.login(username.toLowerCase(),password);
                              if(msg.message.equals("success")){
-                                 usr = new User(username.toLowerCase());
+                                 clientUser = new User(username.toLowerCase());
                                  updateData(new Interaction());
                              }
                              else{
@@ -1305,7 +1305,7 @@ private class EditConnection extends displayPanel{
         private final JButton submit;
         private final JLabel status;
 
-        Register(){
+        Register(int source){
             this.setLayout(new GridBagLayout());
             this.setPanelName("Register");
             this.setSpaces("                                                                                                              ");
@@ -1327,6 +1327,14 @@ private class EditConnection extends displayPanel{
             eMailText = new JTextField("", 25);
             rePassText = new JTextField("", 25);
             nameText = new JTextField("",25);
+            if(source == 1){
+                usrName.setText(clientUser.getUsername());
+                pasWord.setText(clientUser.getPassword());
+                eMailText.setText(clientUser.getEmail());
+                rePassText.setText(pasWord.getText());
+                nameText.setText(clientUser.getName());
+            }
+
             status = new JLabel("Errors will be displayed here");
 //            status.setForeground(Color.RED);
             status.setVisible(false);
@@ -1501,6 +1509,7 @@ private class EditConnection extends displayPanel{
                                 usr.setUsername(usrName.getText().toLowerCase());
                                 usr.setPassword(pasWord.getText());
                                 usr.setEmail(eMailText.getText());
+                                clientUser = usr;
                                 client.sendVerificationCode(usr.getEmail());
                                 updateData(new VerifyEmail(usr));
                             } else {
@@ -1604,7 +1613,7 @@ private class EditConnection extends displayPanel{
                     if(client != null){
                         System.out.println(client.networkaccess.testConnection());
                         if(client.networkaccess.testConnection()){
-                            updateData(new Register());
+                            updateData(new Register(1));
                         }
                         else{
                             System.out.println("Connection test failed");
@@ -1668,7 +1677,7 @@ private class EditConnection extends displayPanel{
         private final JButton accountSettings;
         private final JButton confirmWishlist;
         JTextArea wishlist;
-        private ArrayList<String> myWishList = client.getWishList(usr);
+        private ArrayList<String> myWishList = client.getWishList(clientUser);
         private final JLabel error;
 
         //constructor
@@ -1789,10 +1798,10 @@ private class EditConnection extends displayPanel{
                             clear.setVisible(true);
                             status.setVisible(true);
                             confirmWishlist.setVisible(true);
-                            usr.setPassword("wishlist");
-                            myWishList = client.getWishList(usr);
-                            usr.setEntry("null");
-                            System.out.println(usr);
+                            clientUser.setPassword("wishlist");
+                            myWishList = client.getWishList(clientUser);
+                            clientUser.setEntry("null");
+                            System.out.println(clientUser);
                             updateWishList(myWishList,false);
                         }
                         else{
@@ -1913,11 +1922,11 @@ private class EditConnection extends displayPanel{
                 });
                 logOut.addActionListener(e -> {
                     System.out.println("Log Out");
-                    System.out.println(usr.getUsername());
+                    System.out.println(clientUser.getUsername());
                     if(client != null){
                         if(client.networkaccess.testConnection()){
-                            if(client.logout(usr)){
-                                usr = new User(); //clearing the global User variable when the client logs out
+                            if(client.logout(clientUser)){
+                                clientUser = new User(); //clearing the global User variable when the client logs out
                                 updateData(new Login());
                             }
                             else {
@@ -2063,7 +2072,7 @@ private class EditConnection extends displayPanel{
             this.setPanelName("Remove an Item");
             this.setLayout(new GridBagLayout());
             windowTitle.setText(this.getLabel());
-            usr.setWishList(client.getWishList(usr));
+            clientUser.setWishList(client.getWishList(clientUser));
             //prepare components
             JLabel removeHere = new JLabel("Enter the number of the item on the list you would like to remove");
             removeHere.setFont(new Font("TimesRoman", Font.PLAIN, 15));
@@ -2242,7 +2251,7 @@ private class EditConnection extends displayPanel{
 
         //constructor
         protected AccountSettings(){
-            usr = client.getUser(usr);
+            clientUser = client.getUser(clientUser);
             this.setPanelName("Account Settings");
             windowTitle.setText(this.getLabel());
             this.setLayout(new GridBagLayout());
@@ -2253,9 +2262,9 @@ private class EditConnection extends displayPanel{
             email.setFont(new Font("TimesRoman", Font.PLAIN, 15));
             JLabel name = new JLabel("Your name");
             name.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-            passText = new JTextField(usr.getPassword(), 25);
-            emailText = new JTextField(usr.getEmail(), 25);
-            nameText = new JTextField(usr.getName(), 25);
+            passText = new JTextField(clientUser.getPassword(), 25);
+            emailText = new JTextField(clientUser.getEmail(), 25);
+            nameText = new JTextField(clientUser.getName(), 25);
             cancel = new JButton("Back");
             apply = new JButton("Apply");
             status = new JLabel("Status will be displayed here");
@@ -2418,7 +2427,7 @@ private class EditConnection extends displayPanel{
 
     }
     private void logoutAndDisconnect(){
-        client.logout(usr);
+        client.logout(clientUser);
         client.disconnect();
 //        System.exit(0);
     }
