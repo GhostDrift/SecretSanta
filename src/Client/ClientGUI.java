@@ -1654,6 +1654,8 @@ private class EditConnection extends displayPanel{
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     if(client != null && client.networkaccess.testConnection()){
+                        status.setText("A new code has ben sent to " + usr.getEmail());
+                        status.setForeground(Color.black);
                         client.sendVerificationCode(usr.getEmail());
                     }
                     else{
