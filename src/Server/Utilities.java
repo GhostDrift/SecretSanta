@@ -69,7 +69,7 @@ public class Utilities {
     }
     //method to send account creation conformation email
     public static void accountCreated(User usr) throws ConfigNotInitializedException {
-        String message = "Dear " + usr.getUsername() + ",\n\nThank you for creating an account with the secret santa management system. you will receive an email with your recipient when names are drawn.\n\nWith regards,Stojkovic Technical Solutions.";
+        String message = "Dear " + usr.getName() + ",\n\nThank you for creating an account with the secret santa management system. you will receive an email with your recipient when names are drawn.\n\nWith regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Account Created",message);
     }
     //method to send account recovery email
