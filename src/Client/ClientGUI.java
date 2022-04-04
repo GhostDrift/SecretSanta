@@ -1492,7 +1492,8 @@ private class EditConnection extends displayPanel{
                         }
                         else {
 //                            String result = client.register(usrName.getText().toLowerCase(), eMailText.getText(), pasWord.getText(), rePassText.getText(),nameText.getText());
-                            String result = client.sendVerificationCode(eMailText.getText()).message;
+//                            String result = client.sendVerificationCode(eMailText.getText()).message;
+                            String result = client.validateUser(usrName.getText().toLowerCase(), eMailText.getText(), pasWord.getText(), rePassText.getText(),nameText.getText());
                             if (result.equals("success")) {
 //                                updateData(new Login(true, "Account successfully created!"));
                                 User usr = new User();
@@ -1500,6 +1501,7 @@ private class EditConnection extends displayPanel{
                                 usr.setUsername(usrName.getText().toLowerCase());
                                 usr.setPassword(pasWord.getText());
                                 usr.setEmail(eMailText.getText());
+                                client.sendVerificationCode(usr.getEmail());
                                 updateData(new VerifyEmail(usr));
                             } else {
                                 status.setForeground(Color.RED);
