@@ -2405,7 +2405,7 @@ private class EditConnection extends displayPanel{
             System.out.println("connect window");
 //            System.exit(0);
         }
-        else if((Data instanceof Login)||(Data instanceof Register) || (Data instanceof Recover)){
+        else if((Data instanceof Login)||(Data instanceof Register) || (Data instanceof Recover)||(Data instanceof VerifyEmail)){
             System.out.println("Login window");
             client.disconnect();
 //            System.exit(0);

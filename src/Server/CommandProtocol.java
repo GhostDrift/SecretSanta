@@ -60,6 +60,8 @@ public class CommandProtocol {
             case "validate":
                 na.sendMessage(verifyUsernamePasswordAndEmail(cmd.user,ch),false);
                 break;
+            case "checkCode":
+                na.sendMessage(checkCode(cmd.user,ch),false);
             case "recover":
                 na.sendMessage(accountRecovery(cmd.user, ch), false);
                 break;
@@ -666,7 +668,7 @@ public class CommandProtocol {
                 result.message = "Invalid Email";
             }
             else {
-                ch.setCode(Utilities.generateString());
+                ch.setCode(Utilities.generateString().toLowerCase());
                 ch.setUser(usr);
                 Utilities.verifyEmail(usr.getEmail(),ch.getCode());
             }
@@ -674,6 +676,14 @@ public class CommandProtocol {
             e.printStackTrace();
         }
         return result;
+    }
+    //method to check the verification code
+    private static Message checkCode(User usr, ClientHandler ch){
+        Message msg = new Message(usr,"success");
+        if(!ch.getCode().equals(usr.getPassword().toLowerCase())){
+            msg.message = "Invalid Code";
+        }
+        return msg;
     }
 
 
