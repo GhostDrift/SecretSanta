@@ -2250,6 +2250,7 @@ private class EditConnection extends displayPanel{
         private final JButton cancel;
         private final JButton apply;
         private final JLabel status;
+        private final JButton delete;
 
         //constructor
         protected AccountSettings(){
@@ -2269,6 +2270,7 @@ private class EditConnection extends displayPanel{
             nameText = new JTextField(clientUser.getName(), 25);
             cancel = new JButton("Back");
             apply = new JButton("Apply");
+            delete = new JButton("Delete Account");
             status = new JLabel("Status will be displayed here");
             status.setVisible(false);
             status.setFont(new Font("TimesRoman", Font.PLAIN, 15));
@@ -2296,6 +2298,10 @@ private class EditConnection extends displayPanel{
             this.add(name, gbc);
             gbc.gridx = 1;
             this.add(nameText, gbc);
+            gbc.gridx = 0;
+            gbc.gridy = 4;
+            gbc.gridwidth = 2;
+            this.add(delete,gbc);
         }
 
         //method to add key listeners
@@ -2405,6 +2411,12 @@ private class EditConnection extends displayPanel{
                 }
                 else{
                     updateData(new SavedConnections(true,0));
+                }
+            });
+            delete.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    System.out.println("Delete User");
                 }
             });
             updateControl(cancel,apply);
