@@ -646,7 +646,7 @@ private class EditConnection extends displayPanel{
             });
             delete.addActionListener(actionEvent -> {
                 System.out.println("Delete connection");
-                updateData(new ConfirmDelete(index,origin));
+                updateData(new ConfirmDeleteConnection(index,origin));
             });
             updateControl(cancel,save);
     }
@@ -674,7 +674,7 @@ private class EditConnection extends displayPanel{
     }
 
 }
-    private class ConfirmDelete extends displayPanel{
+    private class ConfirmDeleteConnection extends displayPanel{
         private JButton confirm;
         private JButton cancel;
         private int index;
@@ -683,7 +683,7 @@ private class EditConnection extends displayPanel{
         private ArrayList<String> ips;
         private ArrayList<Integer> ports;
 
-        public ConfirmDelete(int index,int origin){
+        public ConfirmDeleteConnection(int index, int origin){
             try{
                 this.index = index;
                 this.origin = origin;
@@ -2417,19 +2417,61 @@ private class EditConnection extends displayPanel{
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     System.out.println("Delete User");
+                    updateData(new ConfirmDeletion());
                 }
             });
             updateControl(cancel,apply);
         }
     }
+    private class ConfirmDeletion extends  displayPanel{
+        private final JButton confirm;
+        private final JButton cancel;
+        //constructor
+        ConfirmDeletion(){
+            clientUser = client.getUser(clientUser);
+            this.setPanelName("Delete Account?");
+            windowTitle.setText(this.getLabel());
+            this.setLayout(new GridBagLayout());
+            //prepare components
+            confirm = new JButton("Delete Account");
+            cancel = new JButton("Cancel");
+            JLabel notice = new JLabel("Are you sure you want to delete your account?\nYou will lose all of your data.");
+            notice.setFont(new Font("Notice",Font.PLAIN,20));
+            notice.setForeground(Color.red);
+            prepareButtonHandlers();
+            //add components to display
+            GridBagConstraints gbc = new GridBagConstraints();
+            this.add(notice,gbc);
+            gbc.gridy = 1;
+            this.add(confirm,gbc);
+            this.setVisible(true);
+            repaint();
+        }
+
+        private void prepareButtonHandlers() {
+            cancel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    updateData(new AccountSettings());
+                }
+            });
+            confirm.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    client.deleteUser();
+                    updateData(new Login());
+                }
+            });
+        }
+    }
 
     //method to shut off client properly
     private void shutDown(){
-        if(Data instanceof Connect || Data instanceof ClientGUI.SavedConnections || Data instanceof EditConnection || Data instanceof newConnection || Data instanceof ConfirmDelete){
+        if(Data instanceof Connect || Data instanceof ClientGUI.SavedConnections || Data instanceof EditConnection || Data instanceof newConnection || Data instanceof ConfirmDeleteConnection){
             System.out.println("connect window");
 //            System.exit(0);
         }
-        else if((Data instanceof Login)||(Data instanceof Register) || (Data instanceof Recover)||(Data instanceof VerifyEmail)){
+        else if((Data instanceof Login)||(Data instanceof Register) || (Data instanceof Recover)||(Data instanceof VerifyEmail)|| Data instanceof ConfirmDeletion){
             System.out.println("Login window");
             client.disconnect();
 //            System.exit(0);
