@@ -183,4 +183,9 @@ public class Client {
         msg = networkaccess.sendMessage(msg,true);
         return msg.message;
     }
+    //method to delete a user
+    public void deleteUser(){
+        Message msg = new Message(null, "delete");
+        networkaccess.sendMessage(msg,true);
+    }
 }
