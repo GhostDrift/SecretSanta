@@ -100,6 +100,10 @@ public class CommandProtocol {
             case "getRecipient":
                 na.sendMessage(getRecipient(ch), false);
                 break;
+            case "delete":
+                deleteUser(ch);
+                na.sendMessage(new Message(ch.getUser(),"done"),false);
+                break;
             default:
 
                 na.sendMessage(cmd, false);
@@ -699,6 +703,18 @@ public class CommandProtocol {
             msg.message = "Invalid Code";
         }
         return msg;
+    }
+    //method to delete a User from the system
+    private static void deleteUser(ClientHandler ch){
+        UserDatabase usrDB = ch.getServer().getUserDatabase();
+        WishListDatabase wldb = ch.getServer().getSystemDatabase();
+        try {
+            User usr = usrDB.getUser(ch.getUser().getUsername());
+            usrDB.deleteUser(usr);
+            wldb.deleteWishList(usr);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

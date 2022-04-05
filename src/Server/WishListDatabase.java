@@ -164,7 +164,7 @@ public class WishListDatabase extends Database{
         return s.toString();
     }
     //method to delete a user's wishlist index
-    private void deleteWishList(User usr){
+    public void deleteWishList(User usr){
         clearWishList(usr);
         update("delete from wishlistindex where ownerId = '" + usr.getId() + "';");
     }
