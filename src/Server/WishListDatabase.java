@@ -163,14 +163,20 @@ public class WishListDatabase extends Database{
         }
         return s.toString();
     }
+    //method to delete a user's wishlist index
+    private void deleteWishList(User usr){
+        clearWishList(usr);
+        update("delete from wishlistindex where ownerId = '" + usr.getId() + "';");
+    }
     //main method for testing
     public static void main(String[] args) {
         Config.initializeConfig("ServerConfiguration.conf");
         try {
             WishListDatabase wlDB = new WishListDatabase(Config.getSystemDatabaseServerAddress(),Config.getDatabaseUsername(),Config.getDatabasePassword());
             User usr = new User();
-            usr.setId(10);
-            System.out.println(wlDB.addIndex(usr));
+            usr.setId(2);
+            //System.out.println(wlDB.addIndex(usr));
+            wlDB.deleteWishList(usr);
         } catch (ConfigNotInitializedException e) {
             e.printStackTrace();
         }
