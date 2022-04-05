@@ -337,23 +337,34 @@ class UserDatabase extends Database {
     protected void clearRecipientIDS(){
        this.update("update users set recipientId = 0");
     }
-//main method used for testing class code
+    //method to delete a user
+    protected void deleteUser(User usr){
+        try {
+            usr = getUser(usr.getUsername());
+            update("Delete from passwordhistory where userId = '" + usr.getId()+ "';");
+            update("Delete from users where id = '" + usr.getId()+ "';");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    //main method used for testing class code
     public static void main(String[] args) throws ConfigNotInitializedException {
 //        ConfigPopulator.populate();
         Config.initializeConfig("ServerConfiguration.conf");
         UserDatabase usrDB = new UserDatabase(Config.getUserDatabaseServerAddress(), Config.getDatabaseUsername(), Config.getDatabasePassword());
-        try {
-            System.out.println(usrDB.getUserByRecipient(5));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            System.out.println(usrDB.getUserByRecipient(5));
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
         User usr = new User();
-        usr.setName("test name");
-        usr.setEmail("testEmail");
-        usr.setUsername("Bacon");
+//        usr.setEmail("testEmail");
+        usr.setUsername("hello");
 //            usrDB.updateUser(usr);
-        usrDB.addUser(usr);
-        System.out.println(usr);
+//        usrDB.addUser(usr);
+        usrDB.deleteUser(usr);
+
+//        System.out.println(usr);
     }
 
 }
