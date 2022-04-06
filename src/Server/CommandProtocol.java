@@ -224,22 +224,22 @@ public class CommandProtocol {
                     while((!stop) && (i < requiredTypes.length)){
                         if(requiredTypes[i]){
                             if(i ==0){
-                                if(!Utilities.containsLowercase(usr.getPassword())){
+                                if(Utilities.doesNotContainLowercase(usr.getPassword())){
                                     stop = true;
                                 }
                             }
                             else if(i == 1){
-                                if(!Utilities.containsUppercase(usr.getPassword())){
+                                if(Utilities.doesNotContainUppercase(usr.getPassword())){
                                     stop = true;
                                 }
                             }
                             else if(i == 2){
-                                if(!Utilities.containsNumbers(usr.getPassword())){
+                                if(Utilities.doesNotContainNumbers(usr.getPassword())){
                                     stop = true;
                                 }
                             }
                             else{
-                                if(!Utilities.containsSymbols(usr.getPassword())){
+                                if(Utilities.doesNotContainSymbols(usr.getPassword())){
                                     stop = true;
                                 }
                             }
@@ -327,22 +327,22 @@ public class CommandProtocol {
                                 while((!stop) && (i < requiredTypes.length)){
                                     if(requiredTypes[i]){
                                         if(i ==0){
-                                            if(!Utilities.containsLowercase(usr.getPassword())){
+                                            if(Utilities.doesNotContainLowercase(usr.getPassword())){
                                                 stop = true;
                                             }
                                         }
                                         else if(i == 1){
-                                            if(!Utilities.containsUppercase(usr.getPassword())){
+                                            if(Utilities.doesNotContainUppercase(usr.getPassword())){
                                                 stop = true;
                                             }
                                         }
                                         else if(i == 2){
-                                            if(!Utilities.containsNumbers(usr.getPassword())){
+                                            if(Utilities.doesNotContainNumbers(usr.getPassword())){
                                                 stop = true;
                                             }
                                         }
                                         else{
-                                            if(!Utilities.containsSymbols(usr.getPassword())){
+                                            if(Utilities.doesNotContainSymbols(usr.getPassword())){
                                                 stop = true;
                                             }
                                         }

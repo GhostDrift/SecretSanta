@@ -29,39 +29,39 @@ public class Utilities {
         }
         return stop;
     }
-    public static boolean containsLowercase(String test){
+    public static boolean doesNotContainLowercase(String test){
         boolean result = false;
         int i = 0;
         while((!result)&&(i < test.length())){
             result = Character.isLowerCase(test.charAt(i));
             i++;
         }
-        return result;
+        return !result;
     }
-    public static boolean containsUppercase(String test){
+    public static boolean doesNotContainUppercase(String test){
         boolean result = false;
         int i = 0;
         while((!result)&&(i < test.length())){
             result = Character.isUpperCase(test.charAt(i));
             i++;
         }
-        return result;
+        return !result;
     }
-    public static boolean containsNumbers(String test){
+    public static boolean doesNotContainNumbers(String test){
         boolean result = false;
         int i = 0;
         while((!result)&&(i < test.length())){
             result = Character.isDigit(test.charAt(i));
             i++;
         }
-        return result;
+        return !result;
     }
-    public static boolean containsSymbols(String test){
+    public static boolean doesNotContainSymbols(String test){
         //Modified code from
         //https://stackoverflow.com/questions/1795402/check-if-a-string-contains-a-special-character
         Pattern symbols = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
         Matcher hasSymbol = symbols.matcher(test);
-        return hasSymbol.find();
+        return !hasSymbol.find();
     }
     //method to check the format of the Email
     public static boolean goodEmail(String email) throws ConfigNotInitializedException {
@@ -121,20 +121,15 @@ public class Utilities {
         int targetStringLength = 5;
         Random random = new Random();
 
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
+        return random.ints(leftLimit, rightLimit + 1)
                 .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
-        return generatedString;
 //        System.out.println(generatedString);
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static void main(String[] args) throws ConfigNotInitializedException {
-//        Config.initializeConfig("ServerConfiguration.conf");
-//        String test = "jstojkovic@Callutheran";
-//        System.out.println(goodEmail(test));
-//        generateString();
     }
 
 }
