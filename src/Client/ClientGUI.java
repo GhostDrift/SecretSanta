@@ -618,11 +618,27 @@ private class EditConnection extends displayPanel{
 
     private void prepareActionListeners() {
             save.addActionListener(actionEvent -> {
+                String ipFormat = "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$";
+                Pattern ipPattern = Pattern.compile(ipFormat);
+                String host;
+                //checks to see if host box is empty
+                if(!ipText.getText().equals("")) {
+                    host = ipText.getText();
+                }
+                else{
+                    host = "127.0.0.1";
+                }
+                System.out.println("Host: " + host);
+                Matcher matcher = ipPattern.matcher(host);
                 if(names.contains(hostText.getText())){
                     int testIndex = names.indexOf(hostText.getText());
                     if(testIndex != index){
                         title.setForeground(Color.RED);
                         title.setText("That name is already taken");
+                    }
+                    else if(!matcher.find()){
+                        title.setForeground(Color.RED);
+                        title.setText("Invalid ip format");
                     }
                     else{
                         saveConnection();

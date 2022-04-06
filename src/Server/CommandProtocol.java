@@ -52,7 +52,7 @@ public class CommandProtocol {
 
                 break;
             case "Register":
-                na.sendMessage(register(cmd.user, ch), false);
+                na.sendMessage(register(ch), false);
                 break;
             case "verifyEmail":
                 na.sendMessage(sendVerificationCode(ch),false);
@@ -165,51 +165,11 @@ public class CommandProtocol {
         return userDB.logout(usr);
     }
     //method to register a user
-    public static Message register(User usr, ClientHandler ch){
+    public static Message register(ClientHandler ch){
         Message result = new Message(null,"success");
-//        try {
-//            if(Config.getMinUsernameLength() >usr.getUsername().length()){
-////                na.sendMessage(new Message(null,"Username must be at least " + Config.getMinUsernameLength() + " characters long"),false);
-//                result.message = "Username must be at least " + Config.getMinUsernameLength() + " characters long";
-//                return result;
-//            }
-//            else if(Config.getMaxUsernameLength() < usr.getUsername().length()){
-////                na.sendMessage(new Message(null,"Username must be less than or equal to " + Config.getMaxUsernameLength() + " characters long"),false);
-//                result.message = "Username must be less than or equal to " + Config.getMaxUsernameLength() + " characters long";
-//                return result;
-//            }
-//            else {
-//                char[] illegalChars = Config.getIllegalUsernameCharacters();
-//                Boolean stop = Utilities.containsCharacters(usr.getUsername(),illegalChars);
-//                if(stop){
-////                    na.sendMessage(new Message(null, "Usernames cannot contain the following: " + Utilities.getStringFromArray(illegalChars)),false);
-//                    result.message = "Usernames cannot contain the following: " + Utilities.getStringFromArray(illegalChars);
-//                }
-//                else{
-//                    User test = ch.getServer().getUserDatabase().getUser(usr.getUsername());
-//                    if(test.getUsername() != null){
-////                        na.sendMessage(new Message(null, "Username already exists"),false);
-//                        result.message = "Username already exists";
-//                    }
-//                    else{
-//                        validatePasswordAndEmail(usr,result);
-//                        if(result.message.equals("success")){
-//                            ch.getServer().getUserDatabase().addUser(usr);
-//                            usr = ch.getServer().getUserDatabase().getUser(usr.getUsername());
-//                            ch.getServer().getSystemDatabase().addIndex(usr);
-//                            Utilities.accountCreated(usr);
-//                        }
-//                    }
-//                }
-//                return result;
-//
-//            }
-//        } catch (ConfigNotInitializedException | SQLException e) {
-//            e.printStackTrace();
-//        }
         try {
             ch.getServer().getUserDatabase().addUser(ch.getUser());
-            usr = ch.getServer().getUserDatabase().getUser(ch.getUser().getUsername());
+            User usr = ch.getServer().getUserDatabase().getUser(ch.getUser().getUsername());
             ch.getServer().getSystemDatabase().addIndex(usr);
             Utilities.accountCreated(usr);
         } catch (SQLException | ConfigNotInitializedException throwables) {
