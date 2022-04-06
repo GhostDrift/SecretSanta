@@ -107,6 +107,11 @@ public class Utilities {
         String message =  "Hello,\nThank you for making an account with the Secret Santa Management System.\n Your verification code is\n" + code + "\nIf you received this email by mistake please ignore it.\n\nWith regards, Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(email,"Verify Your Email", message);
     }
+    //method to send account deleted notification email
+    public static void accountDeleted(User usr){
+        String message = "Dear " + usr.getName() + ",\nYour account with the username " + usr.getUsername() + " has been deleted.\nThank you for using the Secret Santa Management System.\n\nWith regards, Stojkovic Technical Solutions.";
+        new SendEmailUsingGMailSMTP(usr.getEmail(),"Account Deleted",message);
+    }
     //method to generate random string of numbers and characters
     public static String generateString(){
         //Modified code from https://www.baeldung.com/java-random-string

@@ -710,6 +710,7 @@ public class CommandProtocol {
         WishListDatabase wldb = ch.getServer().getSystemDatabase();
         try {
             User usr = usrDB.getUser(ch.getUser().getUsername());
+            Utilities.accountDeleted(usr);
             usrDB.deleteUser(usr);
             wldb.deleteWishList(usr);
         } catch (SQLException e) {
