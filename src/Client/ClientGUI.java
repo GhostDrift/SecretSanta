@@ -8,8 +8,6 @@ import Common.displayPanel;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -1515,8 +1513,6 @@ private class EditConnection extends displayPanel{
                             repaint();
                         }
                         else {
-//                            String result = client.register(usrName.getText().toLowerCase(), eMailText.getText(), pasWord.getText(), rePassText.getText(),nameText.getText());
-//                            String result = client.sendVerificationCode(eMailText.getText()).message;
                             String result = client.validateUser(usrName.getText().toLowerCase(), eMailText.getText(), pasWord.getText(), rePassText.getText(),nameText.getText());
                             if (result.equals("success")) {
 //                                updateData(new Login(true, "Account successfully created!"));
@@ -1552,12 +1548,12 @@ private class EditConnection extends displayPanel{
         }
     }
     private class VerifyEmail extends displayPanel{
-        private JTextField codeText;
-        private JButton resendEmail;
-        private JButton back;
-        private JButton submit;
-        private JLabel status;
-        private User usr;
+        private final JTextField codeText;
+        private final JButton resendEmail;
+        private final JButton back;
+        private final JButton submit;
+        private final JLabel status;
+        private final User usr;
 
         //constructor
         VerifyEmail(User usr){
@@ -1623,60 +1619,45 @@ private class EditConnection extends displayPanel{
         }
 
         private void prepareButtonHandlers() {
-            back.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    if(client != null){
-                        System.out.println(client.networkaccess.testConnection());
-                        if(client.networkaccess.testConnection()){
-                            updateData(new Register(1));
-                        }
-                        else{
-                            System.out.println("Connection test failed");
-                            updateData(new newConnection(true));
-                        }
+            back.addActionListener(actionEvent -> {
+                if(client != null){
+                    System.out.println(client.networkaccess.testConnection());
+                    if(client.networkaccess.testConnection()){
+                        updateData(new Register(1));
                     }
                     else{
-                        System.out.println("client is null");
-                        updateData(new newConnection(true));
-                    }
-//                    if(client != null && client.networkaccess.testConnection()){
-//                        updateData(new Register());
-//                    }
-//                    else{
-//                            updateData(new newConnection(true));
-//                    }
-                }
-            });
-            submit.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    if(client != null && client.networkaccess.testConnection()){
-                        Message result = client.checkCode(codeText.getText());
-                        if(result.message.equals("success")){
-                            client.register();
-                            updateData(new Login(true, "Account successfully created!"));
-                        }
-                        else{
-                            error(result.message);
-                        }
-                    }
-                    else{
+                        System.out.println("Connection test failed");
                         updateData(new newConnection(true));
                     }
                 }
+                else{
+                    System.out.println("client is null");
+                    updateData(new newConnection(true));
+                }
             });
-            resendEmail.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    if(client != null && client.networkaccess.testConnection()){
-                        status.setText("A new code has ben sent to " + usr.getEmail());
-                        status.setForeground(Color.black);
-                        client.sendVerificationCode(usr.getEmail());
+            submit.addActionListener(actionEvent -> {
+                if(client != null && client.networkaccess.testConnection()){
+                    Message result = client.checkCode(codeText.getText());
+                    if(result.message.equals("success")){
+                        client.register();
+                        updateData(new Login(true, "Account successfully created!"));
                     }
                     else{
-                        updateData(new newConnection(true));
+                        error(result.message);
                     }
+                }
+                else{
+                    updateData(new newConnection(true));
+                }
+            });
+            resendEmail.addActionListener(actionEvent -> {
+                if(client != null && client.networkaccess.testConnection()){
+                    status.setText("A new code has ben sent to " + usr.getEmail());
+                    status.setForeground(Color.black);
+                    client.sendVerificationCode(usr.getEmail());
+                }
+                else{
+                    updateData(new newConnection(true));
                 }
             });
             updateControl(back,submit);
@@ -2429,12 +2410,9 @@ private class EditConnection extends displayPanel{
                     updateData(new SavedConnections(true,0));
                 }
             });
-            delete.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    System.out.println("Delete User");
-                    updateData(new ConfirmDeletion());
-                }
+            delete.addActionListener(actionEvent -> {
+                System.out.println("Delete User");
+                updateData(new ConfirmDeletion());
             });
             updateControl(cancel,apply);
         }
@@ -2465,18 +2443,10 @@ private class EditConnection extends displayPanel{
         }
 
         private void prepareButtonHandlers() {
-            cancel.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    updateData(new AccountSettings());
-                }
-            });
-            confirm.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    client.deleteUser();
-                    updateData(new Login());
-                }
+            cancel.addActionListener(actionEvent -> updateData(new AccountSettings()));
+            confirm.addActionListener(actionEvent -> {
+                client.deleteUser();
+                updateData(new Login());
             });
         }
     }
