@@ -352,16 +352,9 @@ class UserDatabase extends Database {
 //        ConfigPopulator.populate();
         Config.initializeConfig("ServerConfiguration.conf");
         UserDatabase usrDB = new UserDatabase(Config.getUserDatabaseServerAddress(), Config.getDatabaseUsername(), Config.getDatabasePassword());
-//        try {
-//            System.out.println(usrDB.getUserByRecipient(5));
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
         User usr = new User();
 //        usr.setEmail("testEmail");
         usr.setUsername("hello");
-//            usrDB.updateUser(usr);
-//        usrDB.addUser(usr);
         usrDB.deleteUser(usr);
 
 //        System.out.println(usr);
