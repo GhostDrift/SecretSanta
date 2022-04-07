@@ -139,10 +139,8 @@ public class ServerGUI extends JFrame {
 
                     }
                     repaint();
-                } catch (SQLException throwables) {
+                } catch (SQLException | ConfigNotInitializedException throwables) {
                     throwables.printStackTrace();
-                } catch (ConfigNotInitializedException e) {
-                    e.printStackTrace();
                 }
             });
 
