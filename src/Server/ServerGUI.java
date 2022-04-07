@@ -119,27 +119,31 @@ public class ServerGUI extends JFrame {
 
             drawNames.addActionListener(actionEvent -> {
                 System.out.println("Draw Names");
-                if (drawNames.getText().equals("Draw Names")) {
-                    server.drawNames(con,drawNames);
-                    try {
-                        Config.setNamesDrawn(true);
-                        Config.saveConfig();
-                    } catch (ConfigNotInitializedException e) {
-                        e.printStackTrace();
+                try {
+                    if (server.getNumRegistered() < 2) {
+                        con.addToTextArea("There must be more than one registered user.");
                     }
-                }
-                else{
-                    server.resetRecipientIDS();
-                    addToTextArea("Names have been reset");
-                    drawNames.setText("Draw Names");
-                    try {
-                        Config.setNamesDrawn(false);
-                        Config.saveConfig();
-                    } catch (ConfigNotInitializedException e) {
-                        e.printStackTrace();
+                    else if (drawNames.getText().equals("Draw Names")) {
+                        server.drawNames(con, drawNames);
+
+                            Config.setNamesDrawn(true);
+                            Config.saveConfig();
+
+                    } else {
+                        server.resetRecipientIDS();
+                        addToTextArea("Names have been reset");
+                        drawNames.setText("Draw Names");
+
+                            Config.setNamesDrawn(false);
+                            Config.saveConfig();
+
                     }
+                    repaint();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                } catch (ConfigNotInitializedException e) {
+                    e.printStackTrace();
                 }
-                repaint();
             });
 
             JMenuBar MenBar2 = new JMenuBar();
