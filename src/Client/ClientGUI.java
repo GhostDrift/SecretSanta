@@ -793,9 +793,9 @@ private class EditConnection extends displayPanel{
             connect = new JButton("Connect");
             savedConnections = new JButton("Saved Connections");
             save = new JButton("Save");
-            this.errorMessage = new JLabel("Server is unreachable");
+            this.errorMessage = new JLabel("Enter the IP address of the server you would like to connect to");
             this.errorMessage.setFont(new Font("TimesRoman", Font.PLAIN, 15));
-            this.errorMessage.setForeground(Color.RED);
+            this.errorMessage.setForeground(Color.BLACK);
 
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
@@ -805,6 +805,8 @@ private class EditConnection extends displayPanel{
             this.add(errorMessage,gbc);
             gbc.gridy = 1;
             gbc.gridwidth = 1;
+            this.add(Box.createVerticalStrut(20),gbc);
+            gbc.gridy = 2;
             this.add(i, gbc);
             gbc.gridx = 1;
             this.add(Box.createHorizontalStrut(10),gbc);
@@ -813,6 +815,8 @@ private class EditConnection extends displayPanel{
             gbc.gridx = 0;
             gbc.gridy = 3;
             Portn.setVisible(t);
+            this.add(Box.createVerticalStrut(10),gbc);
+            gbc.gridy = 4;
             this.add(Portn, gbc);
             gbc.gridx = 1;
             this.add(Box.createHorizontalStrut(10),gbc);
@@ -822,12 +826,14 @@ private class EditConnection extends displayPanel{
             this.add(portnum, gbc);
 
             gbc.gridx = 0;
-            gbc.gridy = 4;
-            gbc.gridwidth = 3;
-            this.add(save, gbc);
             gbc.gridy = 5;
-            this.add(Box.createVerticalStrut(30),gbc);
+            gbc.gridwidth = 3;
+            this.add(Box.createVerticalStrut(10),gbc);
             gbc.gridy = 6;
+            this.add(save, gbc);
+            gbc.gridy = 7;
+            this.add(Box.createVerticalStrut(30),gbc);
+            gbc.gridy = 8;
             this.add(savedConnections,gbc);
             this.errorMessage.setVisible(false);
             PrepareButtons();
@@ -836,17 +842,20 @@ private class EditConnection extends displayPanel{
                 cannotConnect();
             }
             client = null;
+            this.errorMessage.setVisible(true);
 
         }
 
         protected void cannotConnect(){
             this.errorMessage.setText("Server is unreachable");
             this.errorMessage.setVisible(true);
+            this.errorMessage.setForeground(Color.red);
             this.repaint();
         }
         protected void invalidIP(){
             cannotConnect();
             this.errorMessage.setText("Invalid IP Address");
+            this.errorMessage.setForeground(Color.RED);
             this.repaint();
         }
 
