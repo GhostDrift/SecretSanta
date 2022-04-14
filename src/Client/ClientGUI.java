@@ -1786,7 +1786,7 @@ private class EditConnection extends displayPanel{
             }
             else {
                 for (int i = 0; i < list.size(); i++) {
-                    s.append(i).append(1).append(". ").append(list.get(i)).append("\n");
+                    s.append(i + 1).append(". ").append(list.get(i)).append("\n");
                 }
             }
 //            System.out.println(s);
