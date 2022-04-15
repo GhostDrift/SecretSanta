@@ -51,6 +51,7 @@ public class ClientGUI extends JFrame {
         control = new ControlArea();
         //set the data panel to display the connect panel.
         Data = new ClientGUI.newConnection(false);
+        //Data = new ClientGUI.VerifyEmail(new User());
 
 //          x.setLayout(new BoxLayout(x,BoxLayout.Y_AXIS));
         //set the title panel to display the Connect text
@@ -80,6 +81,7 @@ public class ClientGUI extends JFrame {
         this.repaint();
 //        shutDown();
     }
+
     //method to update the control panel
     protected void updateControl(JButton left, JButton center, JButton right){
         this.remove(control);
@@ -90,6 +92,21 @@ public class ClientGUI extends JFrame {
 //        System.out.println(left.getText() + " " + center.getText() + " " + right.getText() );
         this.add(control, BorderLayout.SOUTH);
 //        this.control.repaint();
+        this.repaint();
+    }
+    protected void updateControl(JButton button,int position){
+        this.remove(control);
+        this.control = new ControlArea();
+        if(position == 0){
+            this.control.setLeft(button);
+        }
+        else if(position == 1){
+            this.control.setCenter(button);
+        }
+        else{
+            this.control.setRight(button);
+        }
+        this.add(control, BorderLayout.SOUTH);
         this.repaint();
     }
     protected void updateControl(JButton left, JButton right){
@@ -1595,7 +1612,13 @@ private class EditConnection extends displayPanel{
             gbc.gridy = 3;
             this.add(Box.createVerticalStrut(10),gbc);
             gbc.gridy = 4;
-            this.add(resendEmail,gbc);
+            ControlArea c = new ControlArea();
+            c.setLeft(resendEmail);
+            c.setRight(submit);
+            this.add(c,gbc);
+//            this.add(resendEmail,gbc);
+//            gbc.gridx = 2;
+//            this.add(submit,gbc);
             this.setVisible(true);
             repaint();
         }
@@ -1673,7 +1696,7 @@ private class EditConnection extends displayPanel{
                     updateData(new newConnection(true));
                 }
             });
-            updateControl(back,submit);
+            updateControl(back,0);
         }
     }
 
