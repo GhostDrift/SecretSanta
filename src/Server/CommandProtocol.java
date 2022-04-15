@@ -189,7 +189,7 @@ public class CommandProtocol {
             }
             else{
                 result.message = "success";
-                usr.setPassword("xxxx");
+                usr.setPassword(Utilities.generateString().toLowerCase());
                 usr.setLockCount(0);
                 userDB.updateUser(usr);
                 Utilities.accountRecovery(usr);
