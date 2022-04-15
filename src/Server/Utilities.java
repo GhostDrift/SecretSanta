@@ -79,7 +79,7 @@ public class Utilities {
     }
     //method to send email with recipient username
     public static void sendRecipient(User usr,String recipient){
-        String message = "Dear " + usr.getUsername() + ",\n\nNames have been drawn.\nYour recipient is:\n" + recipient + "\nWe will notify you when they have confirmed their wish list.\n\nWith regards,Stojkovic Technical Solutions.";
+        String message = "Dear " + usr.getName() + ",\n\nNames have been drawn.\nYour recipient is:\n" + recipient + "\nWe will notify you when they have confirmed their wish list.\n\nWith regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Your recipient is.....",message);
     }
     //method to notify user of account settings update
