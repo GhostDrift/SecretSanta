@@ -74,7 +74,7 @@ public class Utilities {
     }
     //method to send account recovery email
     public static void accountRecovery(User usr){
-        String message = "Dear " + usr.getUsername() + ",\n\nYour account has been recovered.\nYour new password is:\n" + usr.getPassword() + "\n Please login and reset it as soon as possible.\n\nWith regards,Stojkovic Technical Solutions.";
+        String message = "Dear " + usr.getUsername() + ",\n\nYour account has been recovered.\nYour new password is:\n" + usr.getPassword() + "\nPlease login and reset it as soon as possible.\n\nWith regards,Stojkovic Technical Solutions.";
         new SendEmailUsingGMailSMTP(usr.getEmail(),"Account Recovery",message);
     }
     //method to send email with recipient username
