@@ -1729,6 +1729,7 @@ private class EditConnection extends displayPanel{
 //            recipientWishListButton.setSize(new Dimension(100,10));
             wishlist = new JTextArea(5, 40);
             wishlist.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+            wishlist.setEditable(false);
             JScrollPane wishListArea = new JScrollPane(wishlist);
             wishListArea.createVerticalScrollBar();
             add = new JButton("Add Item");
