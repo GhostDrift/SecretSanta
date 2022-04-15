@@ -2321,24 +2321,32 @@ private class EditConnection extends displayPanel{
             gbc.gridy = 0;
             gbc.gridwidth = 2;
             this.add(status, gbc);
-            gbc.gridwidth = 1;
             gbc.gridy = 1;
+            this.add(Box.createVerticalStrut(10),gbc);
+            gbc.gridwidth = 1;
+            gbc.gridy = 2;
             this.add(password, gbc);
             gbc.gridx = 1;
             this.add(passText, gbc);
             gbc.gridx = 0;
-            gbc.gridy = 2;
+            gbc.gridy = 3;
+            this.add(Box.createVerticalStrut(10),gbc);
+            gbc.gridy = 4;
             this.add(email, gbc);
             gbc.gridx = 1;
             this.add(emailText, gbc);
             gbc.gridx = 0;
-            gbc.gridy = 3;
+            gbc.gridy = 5;
+            this.add(Box.createVerticalStrut(10),gbc);
+            gbc.gridy = 6;
             this.add(name, gbc);
             gbc.gridx = 1;
             this.add(nameText, gbc);
             gbc.gridx = 0;
-            gbc.gridy = 4;
+            gbc.gridy = 7;
             gbc.gridwidth = 2;
+            this.add(Box.createVerticalStrut(10),gbc);
+            gbc.gridy = 8;
             this.add(delete,gbc);
         }
 
