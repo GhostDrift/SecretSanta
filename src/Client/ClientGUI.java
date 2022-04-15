@@ -2063,14 +2063,18 @@ private class EditConnection extends displayPanel{
                     if(client.networkaccess.testConnection()){
                         User usr = new User();
                         usr.setEntry(itemEntry.getText());
-                        System.out.println(usr.getEntry());
-                        String result = client.addItem(usr);
-                        System.out.println(usr);
-                        if(result.equals("success")){
-                        updateData(new Interaction());
+                        if(usr.getEntry().length() > 100){
+                            error("Entry is too long");
                         }
                         else {
-                            error(result);
+                            System.out.println(usr.getEntry());
+                            String result = client.addItem(usr);
+                            System.out.println(usr);
+                            if (result.equals("success")) {
+                                updateData(new Interaction());
+                            } else {
+                                error(result);
+                            }
                         }
                     }
                     else {
