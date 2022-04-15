@@ -1013,7 +1013,7 @@ private class EditConnection extends displayPanel{
              pasWord = new JPasswordField(25);
              //create the JButtons for the control panel
              disconnect = new JButton("Disconnect");
-             register = new JButton("Register");
+             register = new JButton("Sign Up");
              login = new JButton("Login");
              recover = new JButton("Recover");
              //add components to the window
@@ -1065,7 +1065,7 @@ private class EditConnection extends displayPanel{
              pasWord = new JPasswordField(25);
              //create the JButtons for the control panel
              disconnect = new JButton("Disconnect");
-             register = new JButton("Register");
+             register = new JButton("Sign Up");
              login = new JButton("Login");
              recover = new JButton("Recover");
              //add components to the window
