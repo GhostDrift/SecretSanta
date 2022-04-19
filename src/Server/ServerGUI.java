@@ -671,7 +671,7 @@ private void saveChanges() throws ConfigNotInitializedException{
             }
             catch (Exception e){
                 lockoutThresholdValue.setForeground(Color.RED);
-                lockoutThresholdValue.setText(lockoutThresholdValue.getText() + " Must be an integer");
+                lockoutThresholdValue.setText(lockoutThresholdValue.getText() + " Must be a positive integer");
                 flag = 1;
             }
             if(Config.getEnforcePasswordHistory() != passHistoryValue){
