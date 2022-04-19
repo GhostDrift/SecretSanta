@@ -120,7 +120,15 @@ public class Client {
     public String removeItem(User usr){
         System.out.println("index of item to be removed from the wish list: " + usr.getEntry());
         Message msg = new Message(usr,"remove");
-        return networkaccess.sendMessage(msg,true).message;
+        String message;
+        if(Integer.parseInt(usr.getEntry()) <= -1) {
+            message = "You must enter a number larger than 0";
+
+        }
+        else{
+            message = networkaccess.sendMessage(msg, true).message;
+        }
+        return message;
     }
     //method to clear a users wish list
     public String clearWishList(){

@@ -2129,8 +2129,12 @@ private class EditConnection extends displayPanel{
             gbc.gridx = 0;
             this.add(status, gbc);
             gbc.gridy = 1;
-            this.add(removeHere, gbc);
+            this.add(Box.createVerticalStrut(10),gbc);
             gbc.gridy = 2;
+            this.add(removeHere, gbc);
+            gbc.gridy = 3;
+            this.add(Box.createVerticalStrut(10),gbc);
+            gbc.gridy = 4;
             this.add(itemToRemove, gbc);
         }
         private void error(String error){
@@ -2169,21 +2173,15 @@ private class EditConnection extends displayPanel{
                             User usr = new User();
                             int index =  Integer.parseInt(itemToRemove.getText()) - 1;
                             System.out.println("index of item to be removed: " + (index));
-                            System.out.println("Item to be removed: " + index);
                             String entry = "" + index;
                             usr.setEntry(entry);
-                            System.out.println("Entry in usr: " + usr.getEntry());
                             String result = client.removeItem(usr);
                             if(result.equals("success")){
                                 updateData(new Interaction());
                             }
                             else {
-                                System.out.println(result);
+                                error(result);
                             }
-                        }
-                        catch(IndexOutOfBoundsException ex){
-//                                ex.printStackTrace();
-                            error("You must enter the number of an item on your list");
                         }
                         catch(NumberFormatException ex){
                             error("you must enter a number ex: 1");
@@ -2415,6 +2413,10 @@ private class EditConnection extends displayPanel{
                 }
             });
         }
+        private void error(String text){
+            status.setText(text);
+            status.setForeground(Color.RED);
+        }
 
         private void prepareButtonHandlers() {
             cancel.addActionListener(e -> {
@@ -2439,15 +2441,18 @@ private class EditConnection extends displayPanel{
                         User usr = new User();
                         usr.setPassword(passText.getText());
                         usr.setEmail(emailText.getText());
-                        usr.setName(nameText.getText());
-                        String result = client.updateSettings(usr);
-                        if(result.equals("success")) {
-                            status.setText("Account Updated");
-                            status.setForeground(Color.black);
+                        if(nameText.getText().equals("") || nameText.getText() == null){
+                            error("You must enter a name");
                         }
-                        else{
-                            status.setText(result);
-                            status.setForeground(Color.red);
+                        else {
+                            usr.setName(nameText.getText());
+                            String result = client.updateSettings(usr);
+                            if (result.equals("success")) {
+                                status.setText("Account Updated");
+                                status.setForeground(Color.black);
+                            } else {
+                                error(result);
+                            }
                         }
                         status.setVisible(true);
                     }

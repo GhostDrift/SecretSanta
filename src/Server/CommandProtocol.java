@@ -478,15 +478,23 @@ public class CommandProtocol {
         Message result = new Message(usr,"success");
         UserDatabase usrDB = ch.getServer().getUserDatabase();
         String entry = usr.getEntry();
+        ArrayList<String> wl;
         System.out.println("index of item to be removed from the list: " + entry);
         try{
             usr = usrDB.getUser(ch.getUser().getUsername());
             System.out.println("User to have item removed: " + usr.getUsername());
             WishListDatabase wldb = ch.getServer().getSystemDatabase();
+            wl = wldb.getWishList(ch.getUser());
+            if(wl.size() < Integer.parseInt(entry)){
+                throw new IndexOutOfBoundsException();
+            }
             wldb.removeEntry(usr,entry);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             result.message = "error";
+        }
+        catch (IndexOutOfBoundsException e){
+            result.message = "Index is to large";
         }
         return result;
     }
