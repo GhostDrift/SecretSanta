@@ -1616,9 +1616,6 @@ private class EditConnection extends displayPanel{
             c.setLeft(resendEmail);
             c.setRight(submit);
             this.add(c,gbc);
-//            this.add(resendEmail,gbc);
-//            gbc.gridx = 2;
-//            this.add(submit,gbc);
             this.setVisible(true);
             repaint();
         }
@@ -2062,9 +2059,12 @@ private class EditConnection extends displayPanel{
                 if(client != null){
                     if(client.networkaccess.testConnection()){
                         User usr = new User();
-                        usr.setEntry(itemEntry.getText());
+                        usr.setEntry(itemEntry.getText().trim());
                         if(usr.getEntry().length() > 100){
                             error("Entry is too long");
+                        }
+                        else if(usr.getEntry().length() == 0){
+                            error("You must enter and item");
                         }
                         else {
                             System.out.println(usr.getEntry());
