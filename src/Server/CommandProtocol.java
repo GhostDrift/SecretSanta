@@ -294,6 +294,9 @@ public class CommandProtocol {
 //                na.sendMessage(new Message(null,"Username must be less than or equal to " + Config.getMaxUsernameLength() + " characters long"),false);
                 result.message = "Username must be less than or equal to " + Config.getMaxUsernameLength() + " characters long";
             }
+            else if(usr.getUsername().contains(" ")){
+                result.message = "Usernames cannot contain spaces";
+            }
             else {
                 char[] illegalChars = Config.getIllegalUsernameCharacters();
                 Boolean stop = Utilities.containsCharacters(usr.getUsername(),illegalChars);
@@ -314,7 +317,11 @@ public class CommandProtocol {
                         }else if(usr.getPassword().length() < Config.getMinPasswordLength()){
 //                        na.sendMessage(new Message(null, "Password must be at least " + Config.getMinPasswordLength() + " characters long"),false);
                             result.message = "Password must be at least " + Config.getMinPasswordLength() + " characters long";
-                        }else{
+                        }
+                        else if(usr.getPassword().contains(" ")){
+                            result.message = "Passwords may not contain spaces";
+                        }
+                        else{
                             stop = Utilities.containsCharacters(usr.getPassword(),Config.getIllegalPasswordCharacters().toCharArray());
                             if(stop){
 //                            na.sendMessage(new Message(null, "Passwords cannot contain the following: " + Config.getIllegalPasswordCharacters()),false);
