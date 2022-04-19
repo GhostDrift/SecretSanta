@@ -2502,6 +2502,7 @@ private class EditConnection extends displayPanel{
                 client.deleteUser();
                 updateData(new Login());
             });
+            updateControl(cancel, 0);
         }
     }
 
