@@ -17,6 +17,7 @@ public class ServerGUI extends JFrame {
     private  FieldPanel con;
     private displayPanel data;
     private final Label windowTitle;
+    private final JButton drawNames = new JButton("Draw Names");
 //    private ClientGUI.Label windowTitle;
 
 
@@ -37,7 +38,7 @@ public class ServerGUI extends JFrame {
         // 5, 5 is the border around the edges of the areas
         setLayout(new BorderLayout(1, 1));
         this.windowTitle = new Label();
-        this.data = new ServerControl();
+        this.data = new ServerControl(this);
         this.add(data,BorderLayout.CENTER);
         this.add(windowTitle, BorderLayout.NORTH);
         setVisible(true);
@@ -59,6 +60,7 @@ public class ServerGUI extends JFrame {
             }
         });
 
+
     }
     protected void updateData(displayPanel dataNew){
         this.remove(data);
@@ -69,7 +71,9 @@ public class ServerGUI extends JFrame {
 //        shutDown();
     }
     private class ServerControl extends displayPanel{
-        protected ServerControl(){
+        private ServerGUI gui;
+        protected ServerControl(ServerGUI gui){
+            this.gui = gui;
             this.setPanelName("Server");
             this.setSpaces("                                                                                                              ");
 //            setTitle("Server");
@@ -98,7 +102,6 @@ public class ServerGUI extends JFrame {
             //  JButton DeAct = new JButton("Deactivate Server");
             JButton Conf = new JButton("Edit Config");
             JButton AConnect = new JButton("Number of Active Connections");
-            JButton drawNames = new JButton("Draw Names");
             try {
                 if(Config.getNamesDrawn()){
                     drawNames.setText("Clear Names");
@@ -120,22 +123,23 @@ public class ServerGUI extends JFrame {
             drawNames.addActionListener(actionEvent -> {
                 System.out.println("Draw Names");
                 try {
-                    if (server.getNumRegistered() < 2) {
-                        con.addToTextArea("There must be more than one registered user.");
-                    }
-                    else if (drawNames.getText().equals("Draw Names")) {
-                        server.drawNames(con, drawNames);
-
+                    if (drawNames.getText().equals("Draw Names")) {
+                        if (server.getNumRegistered() < 2) {
+                            con.addToTextArea("There must be more than one registered user.");
+                        }
+                        else {
+                            server.drawNames(con, drawNames);
                             Config.setNamesDrawn(true);
                             Config.saveConfig();
-
+                        }
                     } else {
-                        server.resetRecipientIDS();
+//                        server.resetRecipientIDS();
+                        resetNames();
                         addToTextArea("Names have been reset");
-                        drawNames.setText("Draw Names");
-
-                            Config.setNamesDrawn(false);
-                            Config.saveConfig();
+//                        drawNames.setText("Draw Names");
+//
+//                            Config.setNamesDrawn(false);
+//                            Config.saveConfig();
 
                     }
                     repaint();
@@ -215,7 +219,7 @@ public class ServerGUI extends JFrame {
             Act.addActionListener(e -> {
                 if(Act.getText().equals("Activate Server")) {
                     System.out.println("activating server");
-                    server = new Server(null);
+                    server = new Server(gui);
                     System.out.println("Server has been created");
                     server.start();
                     System.out.println("Server has started");
@@ -251,7 +255,7 @@ public class ServerGUI extends JFrame {
 // Config File Button
             Conf.addActionListener(e -> {
                 try {
-                    updateData(new EditConfig());
+                    updateData(new EditConfig(gui));
                 } catch (ConfigNotInitializedException ex) {
                     ex.printStackTrace();
                     System.out.println("Config has not been initialized");
@@ -277,6 +281,18 @@ public class ServerGUI extends JFrame {
 
 
         }
+    }
+    //method to reset the names assigned to users
+    public void resetNames(){
+        server.resetRecipientIDS();
+        addToTextArea("Names have been reset");
+        drawNames.setText("Draw Names");
+        try {
+            Config.setNamesDrawn(false);
+        } catch (ConfigNotInitializedException e) {
+            e.printStackTrace();
+        }
+        Config.saveConfig();
     }
     //innerclass for holding the window title
     private static class Label extends JPanel{
@@ -328,8 +344,10 @@ public class ServerGUI extends JFrame {
         private boolean numbersValue;
         private boolean symbolsValue;
         private boolean passHistoryValue;
+        private ServerGUI gui;
 
-        protected EditConfig() throws ConfigNotInitializedException {
+        protected EditConfig(ServerGUI gui) throws ConfigNotInitializedException {
+            this.gui = gui;
             this.setPanelName("Config Editor");
             setSize(WIDTH, HEIGHT);
 //            setLayout(new FlowLayout(1,10,10));
@@ -567,7 +585,7 @@ public class ServerGUI extends JFrame {
             }
             return ch;
         }
-private void saveChanges() throws ConfigNotInitializedException{
+        private void saveChanges() throws ConfigNotInitializedException{
             int flag = 0;
             try {
                 Config.setMinUsernameLength(Integer.parseInt(minUsernameValue.getText()));
@@ -707,7 +725,7 @@ private void saveChanges() throws ConfigNotInitializedException{
 
             if(flag == 0) {
                 Config.saveConfig();
-                updateData(new ServerControl());
+                updateData(new ServerControl(gui));
             }
         }
         public void itemStateChanged(ItemEvent e){
@@ -883,7 +901,7 @@ private void saveChanges() throws ConfigNotInitializedException{
         private void prepareButtonHandlers() {
             cancel.addActionListener(e -> {
                 System.out.println("Cancel");
-                updateData(new ServerControl());
+                updateData(new ServerControl(gui));
             });
             apply.addActionListener(actionEvent -> {
                 System.out.println("Apply");

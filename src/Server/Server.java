@@ -117,6 +117,10 @@ public class Server extends Thread {
     public void drawNames(ServerGUI.FieldPanel textArea, JButton button){
 	    new DrawNames(getUserDatabase(),getSystemDatabase(),textArea,button);
     }
+    //method to return the GUI asociated with the server
+    public ServerGUI getServergui(){
+	    return this.servergui;
+    }
 
     /**
 	 * constructor creates the list of clients and

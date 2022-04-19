@@ -2491,6 +2491,8 @@ private class EditConnection extends displayPanel{
             GridBagConstraints gbc = new GridBagConstraints();
             this.add(notice,gbc);
             gbc.gridy = 1;
+            this.add(Box.createVerticalStrut(10),gbc);
+            gbc.gridy = 2;
             this.add(confirm,gbc);
             this.setVisible(true);
             repaint();
