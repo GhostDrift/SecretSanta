@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class ServerGUI extends JFrame {
 
     private Server server;
-    private  FieldPanel con;
+    private FieldPanel con;
     private displayPanel data;
     private final Label windowTitle;
     private final JButton drawNames = new JButton("Draw Names");
@@ -100,6 +100,7 @@ public class ServerGUI extends JFrame {
             //  JButton DeAct = new JButton("Deactivate Server");
             JButton Conf = new JButton("Edit Config");
             JButton AConnect = new JButton("Number of Active Connections");
+            JButton clearTextArea = new JButton("Clear Text Area");
             try {
                 if(Config.getNamesDrawn()){
                     drawNames.setText("Clear Names");
@@ -117,6 +118,7 @@ public class ServerGUI extends JFrame {
             AConnect.setVisible(false);
             MenBar.add(drawNames);
             drawNames.setVisible(false);
+            MenBar.add(clearTextArea);
 
             drawNames.addActionListener(actionEvent -> {
                 System.out.println("Draw Names");
@@ -145,6 +147,7 @@ public class ServerGUI extends JFrame {
                     throwables.printStackTrace();
                 }
             });
+            clearTextArea.addActionListener(actionEvent -> con.clearTextArea());
 
             JMenuBar MenBar2 = new JMenuBar();
             JButton WhoLog = new JButton("Who is Logged in ");
