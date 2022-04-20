@@ -71,9 +71,7 @@ public class ServerGUI extends JFrame {
 //        shutDown();
     }
     private class ServerControl extends displayPanel{
-        private ServerGUI gui;
         protected ServerControl(ServerGUI gui){
-            this.gui = gui;
             this.setPanelName("Server");
             this.setSpaces("                                                                                                              ");
 //            setTitle("Server");
@@ -344,7 +342,7 @@ public class ServerGUI extends JFrame {
         private boolean numbersValue;
         private boolean symbolsValue;
         private boolean passHistoryValue;
-        private ServerGUI gui;
+        private final ServerGUI gui;
 
         protected EditConfig(ServerGUI gui) throws ConfigNotInitializedException {
             this.gui = gui;
@@ -928,7 +926,6 @@ public class ServerGUI extends JFrame {
         public FieldPanel() {
 //            setLayout(new FlowLayout(20, 20, 10));
             setLayout(new FlowLayout(FlowLayout.CENTER));
-
             Text = new TextArea("Information Will be Displayed Here", 20, 50);
 
             this.add(Text);
@@ -937,8 +934,13 @@ public class ServerGUI extends JFrame {
         }
 
         public void addToTextArea(String x) {
-            Text.setText("");
+            if(Text.getText().equals("Information Will be Displayed Here")){
+                Text.setText("");
+            }
             Text.append(x + "\n");
+        }
+        public void clearTextArea(){
+            Text.setText("");
         }
 
 
