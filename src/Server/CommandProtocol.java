@@ -688,9 +688,7 @@ public class CommandProtocol {
             Utilities.accountDeleted(usr);
             usrDB.deleteUser(usr);
             wldb.deleteWishList(usr);
-            if(ch.getServer().getNumRegistered() == 1){
-                ch.getServer().getServergui().resetNames();
-            }
+            ch.getServer().getServergui().resetNames();
         } catch (SQLException e) {
             e.printStackTrace();
         }
