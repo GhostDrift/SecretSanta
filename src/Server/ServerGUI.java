@@ -19,12 +19,13 @@ public class ServerGUI extends JFrame {
     private displayPanel data;
     private final Label windowTitle;
     private final JButton drawNames = new JButton("Draw Names");
+
 //    private ClientGUI.Label windowTitle;
 
 
     public ServerGUI() {
         setTitle("Secret Santa Management System Server");
-
+        setResizable(false);
         // -- size of the frame: width, height
         int WIDTH = 680;
         int HEIGHT = 500;
@@ -243,6 +244,7 @@ public class ServerGUI extends JFrame {
                     AConnect.setVisible(false);
                     MenBar2.setVisible(false);
                 }
+                con.toggleStatus();
                 requestFocus();
 
             });
@@ -927,18 +929,32 @@ public class ServerGUI extends JFrame {
         //private JButton loadButton;
         private final JTextArea Text;
         private final JScrollPane scrollPane;
+        private final JLabel status;
+        private final Font timesRoman = new Font("TimesRoman", Font.PLAIN, 15);
 
         public FieldPanel() {
 //            setLayout(new FlowLayout(20, 20, 10));
             setLayout(new FlowLayout(FlowLayout.CENTER));
+            status = new JLabel("The server is stopped");
+            status.setFont(timesRoman);
             Text = new JTextArea("Information Will be Displayed Here", 20, 50);
             Text.setDisabledTextColor(Color.BLACK);
             Text.setEnabled(false);
+            Text.setColumns(65);
             scrollPane = new JScrollPane(Text);
             scrollPane.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+            this.add(status);
             this.add(scrollPane);
 
 
+        }
+        public void toggleStatus(){
+            if(status.getText().equals("The server is stopped")){
+                status.setText("The server is running");
+            }
+            else{
+                status.setText("The server is stopped");
+            }
         }
 
         public void addToTextArea(String x) {
