@@ -132,6 +132,7 @@ public class CommandProtocol {
                         userDB.login(usr);
                         msg.message = "success";
                         ch.setUser(usr);
+                        ch.getServer().getServergui().addToTextArea(usr.getUsername() + " logged in.");
                         return msg;
                     }
                     else {
