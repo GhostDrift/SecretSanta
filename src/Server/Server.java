@@ -220,6 +220,7 @@ public class Server extends Thread {
 		// -- place some text in the area to let the server operator know
 		//    what is going on
 		System.out.println("SERVER: connection received for id " + nextId + "\n");
+		servergui.addToTextArea("SERVER: connection received for id " + nextId);
 		++nextId;
 	}
 	
@@ -244,6 +245,7 @@ public class Server extends Thread {
 				// -- place some text in the area to let the server operator know
 				//    what is going on
 				System.out.println("SERVER: connection closed for client id " + id + "\n");
+				servergui.addToTextArea("SERVER: connection closed for client id " + id);
 				//decrements the ids of all the other connections after removed id
 				for(int j = i; j < clientConnections.size(); j++){
 				    clientConnections.get(j).decId();
