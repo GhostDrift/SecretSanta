@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import static javax.swing.ScrollPaneConstants.*;
 //import Server.java;
 
 
@@ -280,7 +281,7 @@ public class ServerGUI extends JFrame {
             setVisible(true);
 
 
-
+            con.requestFocus();
         }
     }
     //method to reset the names assigned to users
@@ -924,14 +925,18 @@ public class ServerGUI extends JFrame {
     public static class FieldPanel extends JPanel {
 
         //private JButton loadButton;
-        private final TextArea Text;
+        private final JTextArea Text;
+        private final JScrollPane scrollPane;
 
         public FieldPanel() {
 //            setLayout(new FlowLayout(20, 20, 10));
             setLayout(new FlowLayout(FlowLayout.CENTER));
-            Text = new TextArea("Information Will be Displayed Here", 20, 50);
-
-            this.add(Text);
+            Text = new JTextArea("Information Will be Displayed Here", 20, 50);
+            Text.setDisabledTextColor(Color.BLACK);
+            Text.setEnabled(false);
+            scrollPane = new JScrollPane(Text);
+            scrollPane.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+            this.add(scrollPane);
 
 
         }
