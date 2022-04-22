@@ -693,6 +693,7 @@ public class CommandProtocol {
             Utilities.accountDeleted(usr);
             usrDB.deleteUser(usr);
             wldb.deleteWishList(usr);
+            ch.getServer().getServergui().addToTextArea("The account with the username '" + usr.getUsername() + "' has been deleted");
             ch.getServer().getServergui().resetNames();
         } catch (SQLException e) {
             e.printStackTrace();
