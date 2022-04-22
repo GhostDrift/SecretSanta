@@ -132,7 +132,7 @@ public class CommandProtocol {
                         userDB.login(usr);
                         msg.message = "success";
                         ch.setUser(usr);
-                        ch.getServer().getServergui().addToTextArea(usr.getUsername() + " logged in.");
+                        ch.getServer().getServergui().addToTextArea(usr.getUsername() + " logged in");
                         return msg;
                     }
                     else {
@@ -162,8 +162,11 @@ public class CommandProtocol {
         String username = usr.getUsername();
         System.out.println(username + " logout method CommandProtocol");
         //            User result = userDB.getUser(username);
-
-        return userDB.logout(usr);
+        if(userDB.logout(usr)){
+            ch.getServer().getServergui().addToTextArea(usr.getUsername() + " logged out");
+            return true;
+        }
+        return false;
     }
     //method to register a user
     public static Message register(ClientHandler ch){

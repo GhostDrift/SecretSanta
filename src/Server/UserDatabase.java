@@ -191,8 +191,8 @@ class UserDatabase extends Database {
             e.printStackTrace();
         }
         int loggedIn = usr.getLoggedIn();
-        System.out.println("logout in userDatabase");
-        System.out.println( usr.getUsername()+ " logged in count: " + loggedIn);
+//        System.out.println("logout in userDatabase");
+//        System.out.println( usr.getUsername()+ " logged in count: " + loggedIn);
         if(loggedIn > 0) {
             usr.setLoggedIn(loggedIn - 1);
             this.update("UPDATE `userdb`.`users` SET `loggedIn` = '" + usr.getLoggedIn() + "' WHERE (`username` = '" + usr.getUsername() + "');");
