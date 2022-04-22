@@ -175,6 +175,7 @@ public class CommandProtocol {
             ch.getServer().getUserDatabase().addUser(ch.getUser());
             User usr = ch.getServer().getUserDatabase().getUser(ch.getUser().getUsername());
             ch.getServer().getSystemDatabase().addIndex(usr);
+            ch.getServer().getServergui().addToTextArea("An account with the username '" + usr.getUsername() + "' has been created");
             Utilities.accountCreated(usr);
         } catch (SQLException | ConfigNotInitializedException throwables) {
             throwables.printStackTrace();
