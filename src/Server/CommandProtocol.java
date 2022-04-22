@@ -586,6 +586,7 @@ public class CommandProtocol {
                 wldb.confirmWishList(usr);
                 String recipient = usr.getName();
                 int id = usr.getId();
+                ch.getServer().getServergui().addToTextArea(usr.getUsername() + " has confirmed their wish list");
                 usr = usrDB.getUserByRecipient(id);
                 Utilities.ssrWishListConfirmed(usr, recipient);
             }
@@ -603,6 +604,7 @@ public class CommandProtocol {
         try{
             usr = usrDB.getUser(ch.getUser().getUsername());
             wldb.unconfirmWishList(usr);
+            ch.getServer().getServergui().addToTextArea(usr.getUsername() + " has unconfirmed their wish list");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
