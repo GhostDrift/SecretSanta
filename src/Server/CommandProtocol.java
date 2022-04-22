@@ -198,6 +198,7 @@ public class CommandProtocol {
                 usr.setPassword(Utilities.generateString().toLowerCase());
                 usr.setLockCount(0);
                 userDB.updateUser(usr);
+                ch.getServer().getServergui().addToTextArea("The account '" + usr.getUsername() + "' has been recovered");
                 Utilities.accountRecovery(usr);
             }
         } catch (SQLException e) {
