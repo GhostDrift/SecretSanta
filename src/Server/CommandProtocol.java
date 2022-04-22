@@ -141,6 +141,7 @@ public class CommandProtocol {
                         userDB.updateUser(result);
                         if (result.getLockCount() == Config.getLockoutThreshold()) {
                             Utilities.lockedOutNotification(result);
+                            ch.getServer().getServergui().addToTextArea("The account '" + usr.getUsername() + "' has been locked");
                         }
                     }
                 }
