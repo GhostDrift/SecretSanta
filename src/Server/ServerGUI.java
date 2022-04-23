@@ -924,6 +924,9 @@ public class ServerGUI extends JFrame {
     public void addToTextArea(String s) {
         con.addToTextArea(s);
     }
+    public String getLogText(){
+        return con.getText();
+    }
 
 
     public static class FieldPanel extends JPanel {
@@ -964,6 +967,9 @@ public class ServerGUI extends JFrame {
                 Text.setText("");
             }
             Text.append(dtf.format(LocalDateTime.now())+ " " +x +   "\n");
+        }
+        public String getText(){
+            return Text.getText();
         }
         public void clearTextArea(){
             Text.setText("");

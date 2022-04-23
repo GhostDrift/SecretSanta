@@ -5,10 +5,15 @@ import Common.NetworkAccess;
 import Common.User;
 
 import javax.swing.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
@@ -73,6 +78,10 @@ public class Server extends Thread {
 	 */
 	private UserDatabase userDatabase;
 	private WishListDatabase systemDatabase;
+	private LocalDateTime startTime;
+	private LocalDateTime currentTime;
+    private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd::HH:mm:ss");
+    private String lastLogFile = "";
 	
 	public int getConnections()
 	{
@@ -128,6 +137,7 @@ public class Server extends Thread {
 	 */
 	public Server (ServerGUI gui) {
 		this.servergui = gui;
+		this.startTime = LocalDateTime.now();
 		//System.out.println("yay");
         System.out.println("Gui added");
 		
@@ -180,6 +190,7 @@ public class Server extends Thread {
 			while (running) {
 				
 				try {
+				    checkIfSaveLog();
                     // -- block until a client comes along (listen for the phone to ring)
                     Socket socket = serversocket.accept();
 
@@ -199,8 +210,39 @@ public class Server extends Thread {
 		}
 	}
 
+    private void checkIfSaveLog() {
+	    this.currentTime = LocalDateTime.now();
+	    int currentDay = currentTime.getDayOfYear();
+	    int startDay = startTime.getDayOfYear();
+	    if(startDay == 365){
+	        if(currentDay != 365){
+	            saveLog();
+            }
+        }
+	    else if(currentDay > startDay){
+	        saveLog();
+        }
+    }
 
-	/**
+    private void saveLog() {
+        try {
+            String fileName = "\\Logs\\"+ dtf.format(currentTime) + "Log.txt";
+            File logFile = new File(fileName);
+            if (logFile.createNewFile()) {
+                System.out.println("File created: " + logFile.getName());
+                FileWriter fw = new FileWriter(fileName);
+                fw.write(servergui.getLogText());
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
 	 * creates a direct (peer-to-peer) connection between the client and the server
 	 * via a thread
 	 * 

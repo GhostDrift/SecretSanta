@@ -4,21 +4,26 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Test implements Serializable {
-   public ArrayList<String> names;
-
     public static void main(String[] args) {
-        Connections.initialize();
-
-
-    }
-    public void Test(){
-    }
-    private void loadNames(ArrayList<String> names){
+        int i = 1;
         try {
-            System.out.println(Connections.getNames());
-            names = Connections.getNames();
-        } catch (Connections.ConnectionsNotInitialized e) {
-            names = new ArrayList<String>();
+            //String fileName = "Logs\\"+i+ "Log.txt";
+            String fileName = "Logs";
+            File logFile = new File(fileName);
+            logFile.mkdir();
+            fileName = fileName + "\\"+i+ "Log.txt";
+            logFile = new File(fileName);
+            if (logFile.createNewFile()) {
+                System.out.println("File created: " + logFile.getName());
+                FileWriter fw = new FileWriter(fileName);
+                fw.write("This is a test of the fileWriteMethod");
+                fw.close();
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
     }
 }
