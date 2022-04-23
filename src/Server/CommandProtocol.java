@@ -19,6 +19,8 @@ public class CommandProtocol {
      * @param cmd: command to be processed
      * @param na:  NetworkAccess object for communication
      * @param ch:  ClientHandler object requesting the processing
+     * code for obtaining the current date and time was derived from the information on this website:
+     *          https://www.javatpoint.com/java-get-current-date
      */
     public static void processCommand(Message cmd, NetworkAccess na, ClientHandler ch) {
 //            System.out.println("CP user: " + cmd.user);
@@ -132,7 +134,7 @@ public class CommandProtocol {
                         userDB.login(usr);
                         msg.message = "success";
                         ch.setUser(usr);
-                        ch.getServer().getServergui().addToTextArea(usr.getUsername() + " logged in");
+                        ch.getServer().getServergui().addToTextArea(usr.getUsername() + " logged in ");
                         return msg;
                     }
                     else {

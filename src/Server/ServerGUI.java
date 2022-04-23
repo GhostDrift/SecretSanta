@@ -7,6 +7,8 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import static javax.swing.ScrollPaneConstants.*;
 //import Server.java;
@@ -931,7 +933,7 @@ public class ServerGUI extends JFrame {
         private final JScrollPane scrollPane;
         private final JLabel status;
         private final Font timesRoman = new Font("TimesRoman", Font.PLAIN, 15);
-
+        private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         public FieldPanel() {
 //            setLayout(new FlowLayout(20, 20, 10));
             setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -961,7 +963,7 @@ public class ServerGUI extends JFrame {
             if(Text.getText().equals("Information Will be Displayed Here")){
                 Text.setText("");
             }
-            Text.append(x + "\n");
+            Text.append(dtf.format(LocalDateTime.now())+ " " +x +   "\n");
         }
         public void clearTextArea(){
             Text.setText("");
