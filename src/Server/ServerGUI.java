@@ -233,7 +233,7 @@ public class ServerGUI extends JFrame {
                     AConnect.setVisible(true);
                     MenBar2.setVisible(true);
                     drawNames.setVisible(true);
-                    addToTextArea("Server is running");
+                    addToTextArea("Server started");
 
                 }
                 else if(Act.getText().equals("Deactivate Server")){
@@ -242,7 +242,7 @@ public class ServerGUI extends JFrame {
                     Act.setText("Activate Server");
                     Conf.setVisible(true);
                     drawNames.setVisible(false);
-                    addToTextArea("Server has stopped");
+                    addToTextArea("Server    stopped");
                     AConnect.setVisible(false);
                     MenBar2.setVisible(false);
                 }
