@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
+import java.util.logging.*;
 
 /*
  * The server class must run in its own thread since the ServerSocket.accept() method
@@ -82,6 +83,8 @@ public class Server extends Thread {
 	private LocalDateTime currentTime;
     private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd::HH:mm:ss");
     private String lastLogFile = "";
+    private Logger logger;
+    private FileHandler fh;
 	
 	public int getConnections()
 	{
@@ -140,7 +143,7 @@ public class Server extends Thread {
 		this.startTime = LocalDateTime.now();
 		//System.out.println("yay");
         System.out.println("Gui added");
-		
+        setupLogger();
 		// -- construct the list of active client threads
 		clientConnections = new Vector<>();
 
@@ -169,7 +172,24 @@ public class Server extends Thread {
 		}
 	}
 
-	/**
+    private void setupLogger() {
+        String fileName = "Logs";
+        File logFile = new File(fileName);
+        logFile.mkdir();
+        logger = Logger.getLogger("serverLog");
+        String fileSeparator = System.getProperty("file.separator");
+        try {
+            fh = new FileHandler(System.getProperty("user.dir") + fileSeparator + fileName + fileSeparator + "Log:" + dtf.format(startTime) + ".log");
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+            logger.info("Logger initialised");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
 	 * listen for incoming client connections
 	 * analogous to a telephone operator
 	 * listens for the phone to ring
