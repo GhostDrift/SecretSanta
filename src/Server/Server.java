@@ -81,7 +81,7 @@ public class Server extends Thread {
 	private WishListDatabase systemDatabase;
 	private LocalDateTime startTime;
 	private LocalDateTime currentTime;
-    private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd::HH:mm:ss");
+    private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private String lastLogFile = "";
     private Logger logger;
     private FileHandler fh;
@@ -134,6 +134,7 @@ public class Server extends Thread {
 	    return this.servergui;
     }
 
+
     /**
 	 * constructor creates the list of clients and
 	 * starts the server listening on the port
@@ -143,6 +144,8 @@ public class Server extends Thread {
 		this.startTime = LocalDateTime.now();
 		//System.out.println("yay");
         System.out.println("Gui added");
+        //next line of code from https://www.logicbig.com/tutorials/core-java-tutorial/logging/customizing-default-format.html
+        System.setProperty("java.util.logging.SimpleFormatter.format","[%1$tF %1$tT] [%4$-7s] %5$s %n");
         setupLogger();
 		// -- construct the list of active client threads
 		clientConnections = new Vector<>();
@@ -171,7 +174,7 @@ public class Server extends Thread {
 			System.exit(1);
 		}
 	}
-
+    //method for setting up the logging system
     private void setupLogger() {
         String fileName = "Logs";
         File logFile = new File(fileName);
@@ -179,7 +182,7 @@ public class Server extends Thread {
         logger = Logger.getLogger("serverLog");
         String fileSeparator = System.getProperty("file.separator");
         try {
-            fh = new FileHandler(System.getProperty("user.dir") + fileSeparator + fileName + fileSeparator + "Log:" + dtf.format(startTime) + ".log");
+            fh = new FileHandler(System.getProperty("user.dir") + fileSeparator + fileName + fileSeparator + "Log" + dtf.format(startTime) + ".log",true);
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);

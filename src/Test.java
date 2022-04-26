@@ -8,6 +8,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+
 public class Test implements Serializable {
     Logger logger;
     FileHandler fh;
@@ -38,6 +39,8 @@ public class Test implements Serializable {
 
     }
     public Test(){
+        //next line of code from https://www.logicbig.com/tutorials/core-java-tutorial/logging/customizing-default-format.html
+        System.setProperty("java.util.logging.SimpleFormatter.format","[%1$tF %1$tT] [%4$-7s] %5$s %n");
         startTime = LocalDateTime.now();
         setupLogger();
     }
