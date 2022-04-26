@@ -191,6 +191,10 @@ public class Server extends Thread {
             e.printStackTrace();
         }
     }
+    //method to add data to the log file
+    public void appendLog(String s){
+	    logger.info(s);
+    }
 
     /**
 	 * listen for incoming client connections
@@ -285,7 +289,9 @@ public class Server extends Thread {
 		// -- place some text in the area to let the server operator know
 		//    what is going on
 		System.out.println("SERVER: connection received for id " + nextId + "\n");
-		servergui.addToTextArea("SERVER: connection received for id " + nextId);
+		String s = "SERVER: connection received for id " + nextId;
+		servergui.addToTextArea(s);
+		appendLog(s);
 		++nextId;
 	}
 	
@@ -310,7 +316,9 @@ public class Server extends Thread {
 				// -- place some text in the area to let the server operator know
 				//    what is going on
 				System.out.println("SERVER: connection closed for client id " + id + "\n");
-				servergui.addToTextArea("SERVER: connection closed for client id " + id);
+				String s = "SERVER: connection closed for client id " + id;
+				servergui.addToTextArea(s);
+				appendLog(s);
 				//decrements the ids of all the other connections after removed id
 				for(int j = i; j < clientConnections.size(); j++){
 				    clientConnections.get(j).decId();
