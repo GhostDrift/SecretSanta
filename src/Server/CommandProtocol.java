@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 /**
  * @author reinhart
+ * @CoAuthor Stojkovic
  */
 public class CommandProtocol {
 

@@ -140,6 +140,7 @@ public class ServerGUI extends JFrame {
 //                        server.resetRecipientIDS();
                         resetNames();
                         addToTextArea("Names have been reset");
+                        server.appendLog("Names have been reset");
 //                        drawNames.setText("Draw Names");
 //
 //                            Config.setNamesDrawn(false);
@@ -234,6 +235,7 @@ public class ServerGUI extends JFrame {
                     MenBar2.setVisible(true);
                     drawNames.setVisible(true);
                     addToTextArea("Server started");
+                    server.appendLog("Server started");
 
                 }
                 else if(Act.getText().equals("Deactivate Server")){
@@ -243,6 +245,7 @@ public class ServerGUI extends JFrame {
                     Conf.setVisible(true);
                     drawNames.setVisible(false);
                     addToTextArea("Server stopped");
+                    server.appendLog("Server stopped");
                     AConnect.setVisible(false);
                     MenBar2.setVisible(false);
                 }
@@ -292,6 +295,7 @@ public class ServerGUI extends JFrame {
     public void resetNames(){
         server.resetRecipientIDS();
         addToTextArea("Names have been reset");
+        server.appendLog("Names have been reset");
         drawNames.setText("Draw Names");
         try {
             Config.setNamesDrawn(false);
