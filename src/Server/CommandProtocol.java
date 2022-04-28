@@ -135,7 +135,7 @@ public class CommandProtocol {
                         userDB.login(usr);
                         msg.message = "success";
                         ch.setUser(usr);
-                        ch.getServer().getServergui().addToTextArea(usr.getUsername() + " logged in ");
+                        ch.getServer().getServergui().addToTextArea(usr.getUsername() + " logged in ",true);
                         return msg;
                     }
                     else {
@@ -144,7 +144,7 @@ public class CommandProtocol {
                         userDB.updateUser(result);
                         if (result.getLockCount() == Config.getLockoutThreshold()) {
                             Utilities.lockedOutNotification(result);
-                            ch.getServer().getServergui().addToTextArea("The account '" + usr.getUsername() + "' has been locked");
+                            ch.getServer().getServergui().addToTextArea("The account '" + usr.getUsername() + "' has been locked",true);
                         }
                     }
                 }
@@ -167,7 +167,7 @@ public class CommandProtocol {
         System.out.println(username + " logout method CommandProtocol");
         //            User result = userDB.getUser(username);
         if(userDB.logout(usr)){
-            ch.getServer().getServergui().addToTextArea(usr.getUsername() + " logged out");
+            ch.getServer().getServergui().addToTextArea(usr.getUsername() + " logged out",true);
             return true;
         }
         return false;
@@ -179,7 +179,7 @@ public class CommandProtocol {
             ch.getServer().getUserDatabase().addUser(ch.getUser());
             User usr = ch.getServer().getUserDatabase().getUser(ch.getUser().getUsername());
             ch.getServer().getSystemDatabase().addIndex(usr);
-            ch.getServer().getServergui().addToTextArea("An account with the username '" + usr.getUsername() + "' has been created");
+            ch.getServer().getServergui().addToTextArea("An account with the username '" + usr.getUsername() + "' has been created",true);
             Utilities.accountCreated(usr);
         } catch (SQLException | ConfigNotInitializedException throwables) {
             throwables.printStackTrace();
@@ -201,7 +201,7 @@ public class CommandProtocol {
                 usr.setPassword(Utilities.generateString().toLowerCase());
                 usr.setLockCount(0);
                 userDB.updateUser(usr);
-                ch.getServer().getServergui().addToTextArea("The account '" + usr.getUsername() + "' has been recovered");
+                ch.getServer().getServergui().addToTextArea("The account '" + usr.getUsername() + "' has been recovered",true);
                 Utilities.accountRecovery(usr);
             }
         } catch (SQLException e) {
@@ -589,7 +589,7 @@ public class CommandProtocol {
                 wldb.confirmWishList(usr);
                 String recipient = usr.getName();
                 int id = usr.getId();
-                ch.getServer().getServergui().addToTextArea(usr.getUsername() + " has confirmed their wish list");
+                ch.getServer().getServergui().addToTextArea(usr.getUsername() + " has confirmed their wish list",true);
                 usr = usrDB.getUserByRecipient(id);
                 Utilities.ssrWishListConfirmed(usr, recipient);
             }
@@ -607,7 +607,7 @@ public class CommandProtocol {
         try{
             usr = usrDB.getUser(ch.getUser().getUsername());
             wldb.unconfirmWishList(usr);
-            ch.getServer().getServergui().addToTextArea(usr.getUsername() + " has unconfirmed their wish list");
+            ch.getServer().getServergui().addToTextArea(usr.getUsername() + " has unconfirmed their wish list",true);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -700,7 +700,7 @@ public class CommandProtocol {
             Utilities.accountDeleted(usr);
             usrDB.deleteUser(usr);
             wldb.deleteWishList(usr);
-            ch.getServer().getServergui().addToTextArea("The account with the username '" + usr.getUsername() + "' has been deleted");
+            ch.getServer().getServergui().addToTextArea("The account with the username '" + usr.getUsername() + "' has been deleted",true);
             ch.getServer().getServergui().resetNames();
         } catch (SQLException e) {
             e.printStackTrace();

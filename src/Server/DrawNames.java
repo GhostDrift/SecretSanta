@@ -26,7 +26,7 @@ public class DrawNames extends Thread{
         this.button = button;
         this.button.setEnabled(false);
         this.cleared = false;
-        textArea.addToTextArea("Drawing Names.....");
+        textArea.addToTextArea("Drawing Names.....",true);
         this.start();
     }
     //constructor that sends the names reset email out to users
@@ -104,7 +104,7 @@ public class DrawNames extends Thread{
             }
 
         }
-        this.textArea.addToTextArea("Names have been drawn.");
+        this.textArea.addToTextArea("Names have been drawn.",true);
         this.go = false;
 
     }

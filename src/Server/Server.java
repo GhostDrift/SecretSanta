@@ -186,7 +186,6 @@ public class Server extends Thread {
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
-            logger.info("Logger initialised");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -290,7 +289,7 @@ public class Server extends Thread {
 		//    what is going on
 		System.out.println("SERVER: connection received for id " + nextId + "\n");
 		String s = "SERVER: connection received for id " + nextId;
-		servergui.addToTextArea(s);
+		servergui.addToTextArea(s,true);
 		appendLog(s);
 		++nextId;
 	}
@@ -317,7 +316,7 @@ public class Server extends Thread {
 				//    what is going on
 				System.out.println("SERVER: connection closed for client id " + id + "\n");
 				String s = "SERVER: connection closed for client id " + id;
-				servergui.addToTextArea(s);
+				servergui.addToTextArea(s,true);
 				appendLog(s);
 				//decrements the ids of all the other connections after removed id
 				for(int j = i; j < clientConnections.size(); j++){

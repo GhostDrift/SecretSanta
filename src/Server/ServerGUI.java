@@ -91,7 +91,7 @@ public class ServerGUI extends JFrame {
             // -- set the layout manager and add items
             // 5, 5 is the border around the edges of the areas
             setLayout(new BorderLayout(15, 5));
-            con = new FieldPanel();
+            con = new FieldPanel(server);
             this.add(con, BorderLayout.CENTER);
 
 
@@ -129,7 +129,7 @@ public class ServerGUI extends JFrame {
                 try {
                     if (drawNames.getText().equals("Draw Names")) {
                         if (server.getNumRegistered() < 2) {
-                            con.addToTextArea("There must be more than one registered user.");
+                            con.addToTextArea("There must be more than one registered user.",false);
                         }
                         else {
                             server.drawNames(con, drawNames);
@@ -139,8 +139,7 @@ public class ServerGUI extends JFrame {
                     } else {
 //                        server.resetRecipientIDS();
                         resetNames();
-                        addToTextArea("Names have been reset");
-                        server.appendLog("Names have been reset");
+                        addToTextArea("Names have been reset",true);
 //                        drawNames.setText("Draw Names");
 //
 //                            Config.setNamesDrawn(false);
@@ -164,7 +163,7 @@ public class ServerGUI extends JFrame {
             NumLog.addActionListener(e -> {
                 System.out.println("Number of logged in");
                 int numLoggedIn = server.getNumLoggedIn();
-                addToTextArea( "Number of logged in clients: " + numLoggedIn);
+                addToTextArea( "Number of logged in clients: " + numLoggedIn,false);
                 requestFocus();
             });
             WhoLog.addActionListener(e -> {
@@ -177,7 +176,7 @@ public class ServerGUI extends JFrame {
 //                       addToTextArea(loggedInAccounts.get(i) + "\n");
                         result.append(loggedInAccount).append("\n");
                     }
-                    addToTextArea(result.toString());
+                    addToTextArea(result.toString(),false);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -191,7 +190,7 @@ public class ServerGUI extends JFrame {
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-                addToTextArea( "Number of registered accounts: " + numRegistered);
+                addToTextArea( "Number of registered accounts: " + numRegistered,false);
                 requestFocus();
             });
             WhoLock.addActionListener(e -> {
@@ -204,7 +203,7 @@ public class ServerGUI extends JFrame {
 //                       addToTextArea(loggedInAccounts.get(i) + "\n");
                         result.append(lockedOutAccount).append("\n");
                     }
-                    addToTextArea(result.toString());
+                    addToTextArea(result.toString(),false);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -234,9 +233,8 @@ public class ServerGUI extends JFrame {
                     AConnect.setVisible(true);
                     MenBar2.setVisible(true);
                     drawNames.setVisible(true);
-                    addToTextArea("Server started");
-                    server.appendLog("Server started");
-
+                    con.setServer(server);
+                    addToTextArea("Server started",true);
                 }
                 else if(Act.getText().equals("Deactivate Server")){
                     server.stopServer();
@@ -244,8 +242,7 @@ public class ServerGUI extends JFrame {
                     Act.setText("Activate Server");
                     Conf.setVisible(true);
                     drawNames.setVisible(false);
-                    addToTextArea("Server stopped");
-                    server.appendLog("Server stopped");
+                    addToTextArea("Server stopped",true);
                     AConnect.setVisible(false);
                     MenBar2.setVisible(false);
                 }
@@ -275,7 +272,7 @@ public class ServerGUI extends JFrame {
             AConnect.addActionListener(e -> {
                 System.out.println(server);
                 String p = "Number of active connections: " + server.getConnections();
-                addToTextArea(p + "");
+                addToTextArea(p + "",false);
                 requestFocus();
             });
 
@@ -294,8 +291,7 @@ public class ServerGUI extends JFrame {
     //method to reset the names assigned to users
     public void resetNames(){
         server.resetRecipientIDS();
-        addToTextArea("Names have been reset");
-        server.appendLog("Names have been reset");
+        addToTextArea("Names have been reset",true);
         drawNames.setText("Draw Names");
         try {
             Config.setNamesDrawn(false);
@@ -925,8 +921,8 @@ public class ServerGUI extends JFrame {
 
     }
 
-    public void addToTextArea(String s) {
-        con.addToTextArea(s);
+    public void addToTextArea(String s,boolean log) {
+        con.addToTextArea(s,log);
     }
     public String getLogText(){
         return con.getText();
@@ -941,7 +937,8 @@ public class ServerGUI extends JFrame {
         private final JLabel status;
         private final Font timesRoman = new Font("TimesRoman", Font.PLAIN, 15);
         private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        public FieldPanel() {
+        private Server server;
+        public FieldPanel(Server server) {
 //            setLayout(new FlowLayout(20, 20, 10));
             setLayout(new FlowLayout(FlowLayout.CENTER));
             status = new JLabel("The server is stopped");
@@ -954,6 +951,7 @@ public class ServerGUI extends JFrame {
             scrollPane.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
             this.add(status);
             this.add(scrollPane);
+            this.server = server;
 
 
         }
@@ -966,17 +964,26 @@ public class ServerGUI extends JFrame {
             }
         }
 
-        public void addToTextArea(String x) {
+        public void addToTextArea(String x, boolean log) {
             if(Text.getText().equals("Information Will be Displayed Here")){
                 Text.setText("");
             }
             Text.append(dtf.format(LocalDateTime.now())+ " " +x +   "\n");
+            if(log){
+                server.appendLog(x);
+            }
         }
         public String getText(){
             return Text.getText();
         }
         public void clearTextArea(){
             Text.setText("");
+        }
+        public Server getServer(){
+            return this.server;
+        }
+        public void setServer(Server s){
+            this.server = s;
         }
 
 
