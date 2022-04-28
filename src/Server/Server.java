@@ -146,7 +146,7 @@ public class Server extends Thread {
         System.out.println("Gui added");
         //next line of code from https://www.logicbig.com/tutorials/core-java-tutorial/logging/customizing-default-format.html
         System.setProperty("java.util.logging.SimpleFormatter.format","[%1$tF %1$tT] [%4$-7s] %5$s %n");
-        setupLogger();
+        setupLogger(startTime);
 		// -- construct the list of active client threads
 		clientConnections = new Vector<>();
 
@@ -175,14 +175,14 @@ public class Server extends Thread {
 		}
 	}
     //method for setting up the logging system
-    private void setupLogger() {
+    private void setupLogger(LocalDateTime date) {
         String fileName = "Logs";
         File logFile = new File(fileName);
         logFile.mkdir();
         logger = Logger.getLogger("serverLog");
         String fileSeparator = System.getProperty("file.separator");
         try {
-            fh = new FileHandler(System.getProperty("user.dir") + fileSeparator + fileName + fileSeparator + "Log" + dtf.format(startTime) + ".log",true);
+            fh = new FileHandler(System.getProperty("user.dir") + fileSeparator + fileName + fileSeparator + "Log" + dtf.format(date) + ".log",true);
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
@@ -192,6 +192,13 @@ public class Server extends Thread {
     }
     //method to add data to the log file
     public void appendLog(String s){
+	    currentTime = LocalDateTime.now();
+	    int startDay = startTime.getDayOfYear();
+	    int currentDay = currentTime.getDayOfYear();
+        if(((startDay >= 365) && currentDay == 1)||currentDay >startDay){
+            setupLogger(currentTime);
+            startTime = currentTime;
+        }
 	    logger.info(s);
     }
 
@@ -366,6 +373,7 @@ public class Server extends Thread {
     //method to stop the server
     protected void stopServer(){
 	    this.running = false;
+	    appendLog("Server Stopped");
 	    logoutAndDisconnectClients();
     }
     //method to reset the recipient ID's

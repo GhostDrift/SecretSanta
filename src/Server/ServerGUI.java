@@ -242,7 +242,7 @@ public class ServerGUI extends JFrame {
                     Act.setText("Activate Server");
                     Conf.setVisible(true);
                     drawNames.setVisible(false);
-                    addToTextArea("Server stopped",true);
+                    addToTextArea("Server stopped",false);
                     AConnect.setVisible(false);
                     MenBar2.setVisible(false);
                 }
